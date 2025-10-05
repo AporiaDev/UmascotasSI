@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mascotas CRUD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
+        <h1 class="text-3xl font-bold mb-6 text-center">Gestión de Mascotas</h1>
+
+        <!-- FORMULARIO CREAR/EDITAR -->
+        <form id="mascotaForm" class="space-y-4 mb-8">
+            <input type="hidden" id="mascotaId">
+
+            <div>
+                <label class="block font-semibold">Nombre</label>
+                <input type="text" id="nombre" class="w-full border rounded-lg px-3 py-2" required>
+            </div>
+            
+            <div>
+                <label class="block font-semibold">Especie</label>
+                <input type="text" id="especie" class="w-full border rounded-lg px-3 py-2" required>
+            </div>
+            
+            <div>
+                <label class="block font-semibold">Raza</label>
+                <input type="text" id="raza" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            
+            <div>
+                <label class="block font-semibold">Edad</label>
+                <input type="number" id="edad" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            
+            <div>
+                <label class="block font-semibold">Descripción</label>
+                <textarea id="descripcion" class="w-full border rounded-lg px-3 py-2"></textarea>
+            </div>
+
+            <div>
+                <label class="block font-semibold">Estado de Salud</label>
+                <input type="text" id="estadoSalud" class="w-full border rounded-lg px-3 py-2">
+            </div>
+
+            <div>
+                <label class="block font-semibold">Foto (URL)</label>
+                <input type="text" id="foto" class="w-full border rounded-lg px-3 py-2">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                Guardar Mascota
+            </button>
+        </form>
+
+        <!-- LISTADO -->
+        <h2 class="text-2xl font-bold mb-4">Listado de Mascotas</h2>
+        <table class="w-full border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="border px-3 py-2">ID</th>
+                    <th class="border px-3 py-2">Nombre</th>
+                    <th class="border px-3 py-2">Especie</th>
+                    <th class="border px-3 py-2">Raza</th>
+                    <th class="border px-3 py-2">Edad</th>
+                    <th class="border px-3 py-2">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="mascotasTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const apiUrl = "/api/mascotas";
+        const form = document.getElementById("mascotaForm");
+        const table = document.getElementById("mascotasTable");
+
+        // Cargar lista al inicio
+        document.addEventListener("DOMContentLoaded", cargarMascotas);
+
+        async function cargarMascotas() {
+            table.innerHTML = "";
+            const res = await fetch(apiUrl);
+            const mascotas = await res.json();
+
+            mascotas.forEach(m => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td class="border px-3 py-2">${m.id}</td>
+                    <td class="border px-3 py-2">${m.nombre}</td>
+                    <td class="border px-3 py-2">${m.especie}</td>
+                    <td class="border px-3 py-2">${m.raza || ''}</td>
+                    <td class="border px-3 py-2">${m.edad || ''}</td>
+                    <td class="border px-3 py-2 space-x-2">
+                        <button class="bg-yellow-400 px-3 py-1 rounded" onclick="editarMascota(${m.id})">Editar</button>
+                        <button class="bg-red-500 text-white px-3 py-1 rounded" onclick="eliminarMascota(${m.id})">Eliminar</button>
+                    </td>
+                `;
+                table.appendChild(row);
+            });
+        }
+
+        // Guardar (Crear o Editar)
+        form.addEventListener("submit", async e => {
+            e.preventDefault();
+            const id = document.getElementById("mascotaId").value;
+
+            const mascota = {
+                nombre: document.getElementById("nombre").value,
+                especie: document.getElementById("especie").value,
+                raza: document.getElementById("raza").value,
+                edad: document.getElementById("edad").value,
+                descripcion: document.getElementById("descripcion").value,
+                estadoSalud: document.getElementById("estadoSalud").value,
+                foto: document.getElementById("foto").value
+            };
+
+            if (id) {
+                await fetch(`${apiUrl}/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(mascota)
+                });
+            } else {
+                await fetch(apiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(mascota)
+                });
+            }
+
+            form.reset();
+            document.getElementById("mascotaId").value = "";
+            cargarMascotas();
+        });
+
+        // Editar
+        async function editarMascota(id) {
+            const res = await fetch(`${apiUrl}/${id}`);
+            const mascota = await res.json();
+
+            document.getElementById("mascotaId").value = mascota.id;
+            document.getElementById("nombre").value = mascota.nombre;
+            document.getElementById("especie").value = mascota.especie;
+            document.getElementById("raza").value = mascota.raza;
+            document.getElementById("edad").value = mascota.edad;
+            document.getElementById("descripcion").value = mascota.descripcion;
+            document.getElementById("estadoSalud").value = mascota.estadoSalud;
+            document.getElementById("foto").value = mascota.foto;
+        }
+
+        // Eliminar
+        async function eliminarMascota(id) {
+            if (confirm("¿Seguro que deseas eliminar esta mascota?")) {
+                await fetch(`${apiUrl}/${id}`, { method: "DELETE" });
+                cargarMascotas();
+            }
+        }
+    </script>
+</body>
+</html>
