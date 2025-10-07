@@ -24,4 +24,12 @@ public class UsuarioService {
         Usuario usuarioDB = usuarioRepository.findByCorreoElectronico(correoElectronico);
         return usuarioDB != null && PasswordUtil.verificar(password, usuarioDB.getContrasena());
     }
+
+    //Validar correo unico
+    public void validarCorreoUnico(String correo) {
+        if(usuarioRepository.findByCorreoElectronico(correo)) {
+        throw new IllegalArgumentException("El correo ya está registrado");
+    }
+}
+
 }
