@@ -23,7 +23,7 @@ public class UsuarioService {
         user.setContrasena(passwordEncriptada);
 
         try {
-            return usuarioRepository.save(user);
+            return usuarioRepository.save(user);// revisar
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("El correo ya está registrado");
         }
