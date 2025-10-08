@@ -1,11 +1,15 @@
+-- ================================================
+-- Tabla: usuarios
+-- ================================================
 CREATE TABLE usuarios (
     id_usuario BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre_completo VARCHAR(255) NOT NULL,
     correo_electronico VARCHAR(255) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     ciudad VARCHAR(100),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    tipo_usuario ENUM('adoptante', 'publicador') NOT NULL
+    tipo_usuario ENUM('ADOPTANTE', 'PUBLICADOR') NOT NULL
 ) ENGINE=InnoDB;
 
 -- ================================================
