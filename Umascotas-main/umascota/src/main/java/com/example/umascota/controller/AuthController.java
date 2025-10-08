@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.umascota.model.Usuario;
 import com.example.umascota.service.UsuarioService;
 
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -14,15 +15,25 @@ public class AuthController {
     @Autowired
     private UsuarioService usuarioService;
 
-    // Registro de usuario
+
     @PostMapping("/registro")
-    public String register(@RequestBody Usuario user) {
-        usuarioService.registrarUsuario(user);
-        return "Usuario registrado con éxito";
+    public ResponseEntity<?> registrarUsuario(@RequestBody Usuario user) {
+        try {
+            Usuario nuevoUsuario = usuarioService.registrarUsuario(user);
+            return ResponseEntity.ok("Usuario registrado exitosamente: " + nuevoUsuario.getCorreoElectronico());
+        } catch (IllegalArgumentException e) {
+            // mensaje  desde el service
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            // cualquier otro error inesperado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error al registrar usuario: " + e.getMessage());
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario user) {
+
         try {
             boolean loginValido = usuarioService.validarLogin(user.getCorreoElectronico(), user.getContrasena());
             if (loginValido) {
@@ -34,5 +45,6 @@ public class AuthController {
             e.printStackTrace(); // log en consola
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno en el login: " + e.getMessage());
         }
-        }
+
+    }
 }
