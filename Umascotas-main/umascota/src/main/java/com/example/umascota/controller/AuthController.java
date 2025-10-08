@@ -25,7 +25,6 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody Usuario user) {
         try {
             boolean loginValido = usuarioService.validarLogin(user.getCorreoElectronico(), user.getContrasena());
-
             if (loginValido) {
                 return ResponseEntity.ok("Login exitoso. Bienvenido, " + user.getCorreoElectronico());
             } else {
