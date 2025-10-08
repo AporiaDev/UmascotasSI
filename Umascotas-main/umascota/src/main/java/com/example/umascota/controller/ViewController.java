@@ -26,9 +26,15 @@ public class ViewController {
     public String register() {
         return "view/register"; // templates/register.html
     }
+        // Vista para crear mascotas
+    @GetMapping("/crear-mascota")
+    public String crearMascota() {
+        return "view/crear-mascota";
+    }
 
-    @GetMapping("/mascotas")
-    public String mascotas() {
-        return "view/mascotas"; // busca mascotas.html en /templates
+    // Vista para listar todas las mascotas
+    @GetMapping("/listar-mascotas")
+    public String listarMascotas() {
+        return "view/listar-mascotas";
     }
 }

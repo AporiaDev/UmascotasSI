@@ -34,6 +34,13 @@ public class Usuario {
     @Column(name = "tipo_usuario", nullable = false)
     private TipoUsuario tipoUsuario;
 
+    public enum TipoUsuario {
+
+        ADOPTANTE,
+        PUBLICADOR;
+        
+    }
+
     public Usuario() {
     }
 

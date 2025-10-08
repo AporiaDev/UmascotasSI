@@ -52,7 +52,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
         const result = await response.text();
         alert("Respuesta del servidor: " + result);
-        window.location.href = "/mascotas";
+        window.location.href = "/listar-mascotas";
     } catch (error) {
         console.error("Error en la petición:", error);
         alert("Hubo un problema con el login: " + error.message);

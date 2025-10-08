@@ -21,12 +21,10 @@ public class MascotaController {
         return mascotaRepository.findAll();
     }
 
-    // Obtener una mascota por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Mascota> getMascotaById(@PathVariable Long id) {
-        return mascotaRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    // Obtener una mascota por Nombre
+    @GetMapping("/{nombre}")
+    public List<Mascota> getMascotaById(@PathVariable String nombre) {
+        return mascotaRepository.findByNombreIgnoreCase(nombre);
     }
 
     // Crear una mascota
