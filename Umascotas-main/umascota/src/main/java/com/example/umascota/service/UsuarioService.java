@@ -12,7 +12,6 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     // Registrar un nuevo usuario con contraseña encriptada
     public Usuario registrarUsuario(Usuario user) {
 
