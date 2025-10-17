@@ -32,14 +32,14 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
         try {
-            // Modificar esta línea para que el servicio devuelva el usuario completo
+            // Ahora recibimos el usuario completo con su tipoUsuario
             Usuario usuarioAutenticado = usuarioService.login(usuario.getCorreoElectronico(), usuario.getContrasena());
             
             Map<String, Object> respuesta = new HashMap<>();
-            respuesta.put("token", usuarioAutenticado.getToken()); // O como manejes el token
+            respuesta.put("token", usuarioAutenticado.getToken());
             respuesta.put("mensaje", "Inicio de sesión exitoso");
-            respuesta.put("rol", usuarioAutenticado.getRol()); // ← Esto es lo importante
-            respuesta.put("redirectUrl", getRedirectUrlByRole(usuarioAutenticado.getRol()));
+            respuesta.put("tipoUsuario", usuarioAutenticado.getTipoUsuario().name());
+            respuesta.put("redirectUrl", getRedirectUrlByRole(usuarioAutenticado.getTipoUsuario()));
             
             return ResponseEntity.ok(respuesta);
         } catch (IllegalArgumentException e) {
@@ -53,10 +53,10 @@ public class AuthController {
         return ResponseEntity.ok("¿Token válido?: " + valido);
     }
 
-    // Método auxiliar para determinar a dónde redirigir según el rol
-    private String getRedirectUrlByRole(String rol) {
-        if ("ADMIN".equals(rol)) {
-            return "/dashboard-admin";
+    // Método auxiliar para determinar a dónde redirigir según el tipo de usuario
+    private String getRedirectUrlByRole(Usuario.TipoUsuario tipoUsuario) {
+        if (tipoUsuario == Usuario.TipoUsuario.PUBLICADOR) {
+            return "/dashboard-publicador";
         } else {
             return "/dashboard-adoptante";
         }
