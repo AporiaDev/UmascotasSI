@@ -1,4 +1,5 @@
 package com.example.umascota.model;
+
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
@@ -34,11 +35,12 @@ public class Usuario {
     @Column(name = "tipo_usuario", nullable = false)
     private TipoUsuario tipoUsuario;
 
-    public enum TipoUsuario {
+    @Transient // No se guarda en la base de datos, solo para uso temporal
+    private String token;
 
+    public enum TipoUsuario {
         ADOPTANTE,
         PUBLICADOR;
-        
     }
 
     public Usuario() {
@@ -107,5 +109,13 @@ public class Usuario {
 
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
