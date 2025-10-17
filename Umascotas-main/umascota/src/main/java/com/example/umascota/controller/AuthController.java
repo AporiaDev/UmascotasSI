@@ -19,7 +19,6 @@ public class AuthController {
         this.usuarioService = usuarioService;
     }
 
-
     @PostMapping("/registro")
     public ResponseEntity<?> registrar(@RequestBody Usuario usuario) {
         try {
@@ -30,14 +29,18 @@ public class AuthController {
         }
     }
 
-  
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario usuario) {
         try {
-            String token = usuarioService.login(usuario.getCorreoElectronico(), usuario.getContrasena());
+            // Modificar esta línea para que el servicio devuelva el usuario completo
+            Usuario usuarioAutenticado = usuarioService.login(usuario.getCorreoElectronico(), usuario.getContrasena());
+            
             Map<String, Object> respuesta = new HashMap<>();
-            respuesta.put("token", token);
+            respuesta.put("token", usuarioAutenticado.getToken()); // O como manejes el token
             respuesta.put("mensaje", "Inicio de sesión exitoso");
+            respuesta.put("rol", usuarioAutenticado.getRol()); // ← Esto es lo importante
+            respuesta.put("redirectUrl", getRedirectUrlByRole(usuarioAutenticado.getRol()));
+            
             return ResponseEntity.ok(respuesta);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body(e.getMessage());
@@ -48,5 +51,14 @@ public class AuthController {
     public ResponseEntity<?> verificar(@RequestParam String token) {
         boolean valido = usuarioService.validarToken(token);
         return ResponseEntity.ok("¿Token válido?: " + valido);
+    }
+
+    // Método auxiliar para determinar a dónde redirigir según el rol
+    private String getRedirectUrlByRole(String rol) {
+        if ("ADMIN".equals(rol)) {
+            return "/dashboard-admin";
+        } else {
+            return "/dashboard-adoptante";
+        }
     }
 }
