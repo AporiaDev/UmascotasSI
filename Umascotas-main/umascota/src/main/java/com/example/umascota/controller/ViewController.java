@@ -39,30 +39,45 @@ public class ViewController {
     }
 
     // ===========================================
-    // NUEVAS VISTAS PARA MANEJAR ROLES
+    // NUEVAS VISTAS PARA MANEJAR TIPOS DE USUARIO
     // ===========================================
 
     // Vista del dashboard del adoptante (lo que debería ver después del login)
     @GetMapping("/dashboard-adoptante")
     public String dashboardAdoptante(Model model) {
-        model.addAttribute("rol", "ADOPTANTE");
+        model.addAttribute("tipoUsuario", "ADOPTANTE");
         model.addAttribute("mensaje", "Bienvenido Adoptante");
+        model.addAttribute("descripcion", "Aquí puedes encontrar mascotas para adoptar");
         return "view/home"; // Puedes cambiar esto por una vista específica
     }
 
-    // Vista del dashboard del admin
-    @GetMapping("/dashboard-admin")
-    public String dashboardAdmin(Model model) {
-        model.addAttribute("rol", "ADMIN");
-        model.addAttribute("mensaje", "Bienvenido Administrador");
+    // Vista del dashboard del publicador
+    @GetMapping("/dashboard-publicador")
+    public String dashboardPublicador(Model model) {
+        model.addAttribute("tipoUsuario", "PUBLICADOR");
+        model.addAttribute("mensaje", "Bienvenido Publicador");
+        model.addAttribute("descripcion", "Aquí puedes gestionar las mascotas que publicas");
         return "view/home"; // Puedes cambiar esto por una vista específica
     }
 
-    // Vista de redirección después del login (determina a dónde ir según el rol)
-    @GetMapping("/after-login")
-    public String afterLogin() {
-        // Esta vista debería ser manejada con lógica de seguridad/roles
-        // Por ahora redirige al home, pero necesitamos modificar el AuthController
-        return "redirect:/";
+    // Vista de perfil de usuario
+    @GetMapping("/perfil")
+    public String perfilUsuario(Model model) {
+        model.addAttribute("mensaje", "Mi Perfil");
+        return "view/home"; // Cambiar por vista de perfil cuando exista
+    }
+
+    // Vista de mascotas favoritas (para adoptantes)
+    @GetMapping("/mis-favoritas")
+    public String misFavoritas(Model model) {
+        model.addAttribute("mensaje", "Mis Mascotas Favoritas");
+        return "view/home"; // Cambiar por vista de favoritos cuando exista
+    }
+
+    // Vista de mis publicaciones (para publicadores)
+    @GetMapping("/mis-publicaciones")
+    public String misPublicaciones(Model model) {
+        model.addAttribute("mensaje", "Mis Publicaciones");
+        return "view/home"; // Cambiar por vista de publicaciones cuando exista
     }
 }
