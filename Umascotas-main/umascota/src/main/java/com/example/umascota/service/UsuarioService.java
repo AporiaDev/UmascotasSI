@@ -30,16 +30,19 @@ public class UsuarioService {
         }
     }
 
-    // Login — genera un token JWT si las credenciales son correctas
-    public String login(String correoElectronico, String password) {
+    // Login — MODIFICADO: ahora devuelve el usuario completo
+    public Usuario login(String correoElectronico, String password) {
         Usuario usuarioDB = usuarioRepository.findByCorreoElectronico(correoElectronico.trim().toLowerCase());
 
         if (usuarioDB == null || !PasswordUtil.verificar(password, usuarioDB.getContrasena())) {
             throw new IllegalArgumentException("Correo o contraseña incorrectos");
         }
 
-        // Generar token JWT
-        return JwtUtil.generateToken(usuarioDB.getCorreoElectronico());
+        // Generar token JWT y asignarlo al usuario
+        String token = JwtUtil.generateToken(usuarioDB.getCorreoElectronico());
+        usuarioDB.setToken(token); // Necesitamos agregar este campo al modelo
+        
+        return usuarioDB;
     }
 
     // Verificar si un token es válido
