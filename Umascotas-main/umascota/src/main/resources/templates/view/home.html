@@ -2,21 +2,181 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>U-Mascota - Bienvenido</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U-Mascota - Conectando corazones con patitas</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-2xl shadow-xl text-center">
-        <h1 class="text-3xl font-bold mb-6" th:text="${mensaje}">Bienvenido a U-Mascota</h1>
-        
-        <div class="space-y-4">
-            <a href="/login" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
-                Iniciar Sesión
-            </a>
-            <a href="/registro" class="block w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
-                Registrarse
-            </a>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-3xl font-bold text-blue-600">
+                        <i class="fas fa-paw mr-2"></i>U-Mascota
+                    </h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#about" class="text-gray-700 hover:text-blue-600 font-medium">Acerca de</a>
+                    <a href="#features" class="text-gray-700 hover:text-blue-600 font-medium">Características</a>
+                    <a href="#contact" class="text-gray-700 hover:text-blue-600 font-medium">Contacto</a>
+                </div>
+            </div>
         </div>
-    </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="max-w-7xl mx-auto px-4 py-16">
+        <div class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6" th:text="${mensaje}">
+                Bienvenido a U-Mascota
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Conectamos corazones con patitas. Encuentra tu compañero perfecto o ayuda a una mascota a encontrar su hogar para siempre.
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                <a href="/login" 
+                   class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
+                </a>
+                <a href="/registro" 
+                   class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition-all transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-user-plus mr-2"></i>Registrarse
+                </a>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div id="features" class="grid md:grid-cols-3 gap-8 mb-16">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-heart text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Adopta</h3>
+                <p class="text-gray-600">Encuentra tu compañero perfecto entre cientos de mascotas que buscan un hogar lleno de amor.</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center">
+                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-paw text-2xl text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Publica</h3>
+                <p class="text-gray-600">Ayuda a una mascota a encontrar su familia ideal publicando su perfil en nuestra plataforma.</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow text-center">
+                <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-users text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Conecta</h3>
+                <p class="text-gray-600">Únete a una comunidad de amantes de las mascotas y comparte experiencias.</p>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about" class="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">¿Por qué elegir U-Mascota?</h2>
+                <p class="text-lg text-gray-600">Somos más que una plataforma, somos una familia</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-shield-alt text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800 mb-2">Seguro y Confiable</h3>
+                                <p class="text-gray-600">Todos nuestros usuarios son verificados para garantizar adopciones seguras.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-search text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800 mb-2">Fácil de Usar</h3>
+                                <p class="text-gray-600">Navega y encuentra mascotas con filtros avanzados y búsquedas inteligentes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                                <i class="fas fa-heart text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800 mb-2">Amor Garantizado</h3>
+                                <p class="text-gray-600">Cada adopción es una historia de amor que cambia vidas para siempre.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-gradient-to-br from-blue-100 to-indigo-200 rounded-2xl p-8">
+                        <i class="fas fa-paw text-6xl text-blue-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">¡Únete a nosotros!</h3>
+                        <p class="text-gray-600 mb-6">Forma parte de una comunidad que hace la diferencia en la vida de las mascotas.</p>
+                        <a href="/registro" 
+                           class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-medium">
+                            Comenzar Ahora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="grid md:grid-cols-4 gap-6 mb-16">
+            <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">500+</div>
+                <div class="text-gray-600">Mascotas Adoptadas</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                <div class="text-3xl font-bold text-green-600 mb-2">200+</div>
+                <div class="text-gray-600">Familias Felices</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                <div class="text-3xl font-bold text-purple-600 mb-2">50+</div>
+                <div class="text-gray-600">Ciudades</div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                <div class="text-3xl font-bold text-pink-600 mb-2">100%</div>
+                <div class="text-gray-600">Gratuito</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="mb-6">
+                <h3 class="text-2xl font-bold mb-2">
+                    <i class="fas fa-paw mr-2"></i>U-Mascota
+                </h3>
+                <p class="text-gray-400">Conectando corazones con patitas desde 2024</p>
+            </div>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-gray-400 hover:text-white">
+                    <i class="fab fa-facebook text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white">
+                    <i class="fab fa-twitter text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+            </div>
+            <p class="text-gray-400 text-sm">
+                © 2024 U-Mascota. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
 </body>
 </html>

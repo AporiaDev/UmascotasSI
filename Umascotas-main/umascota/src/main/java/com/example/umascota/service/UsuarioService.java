@@ -36,4 +36,13 @@ public class UsuarioService {
         return usuarioDB != null && PasswordUtil.verificar(password, usuarioDB.getContrasena());
     }
 
+    // Validar login y retornar usuario completo
+    public Usuario validarLoginYRetornarUsuario(String correoElectronico, String password) {
+        Usuario usuarioDB = usuarioRepository.findByCorreoElectronico(correoElectronico);
+        if (usuarioDB != null && PasswordUtil.verificar(password, usuarioDB.getContrasena())) {
+            return usuarioDB;
+        }
+        return null;
+    }
+
 }

@@ -18,12 +18,18 @@
                     </a>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <span id="usuarioNombre" class="text-gray-700 font-medium">
+                        <i class="fas fa-user mr-1"></i>Cargando...
+                    </span>
                     <a href="/crear-mascota" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                         <i class="fas fa-plus mr-1"></i>Nueva Mascota
                     </a>
                     <a href="/" class="text-gray-700 hover:text-blue-600">
                         <i class="fas fa-home mr-1"></i>Inicio
                     </a>
+                    <button onclick="cerrarSesion()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Cerrar Sesión
+                    </button>
                 </div>
             </div>
         </div>
@@ -142,10 +148,32 @@
     <script>
         let todasLasMascotas = [];
 
-        // Cargar mascotas al cargar la página
+        // Cargar información del usuario y mascotas al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
+            cargarUsuario();
             cargarMascotas();
         });
+
+        // Cargar información del usuario desde localStorage
+        function cargarUsuario() {
+            const usuarioData = localStorage.getItem('usuario');
+            if (usuarioData) {
+                const usuario = JSON.parse(usuarioData);
+                document.getElementById('usuarioNombre').innerHTML = 
+                    `<i class="fas fa-user mr-1"></i>${usuario.nombreCompleto}`;
+            } else {
+                // Si no hay usuario, redirigir al login
+                window.location.href = '/login';
+            }
+        }
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                localStorage.removeItem('usuario');
+                window.location.href = '/';
+            }
+        }
 
         // Función para cargar mascotas desde la API
         async function cargarMascotas() {

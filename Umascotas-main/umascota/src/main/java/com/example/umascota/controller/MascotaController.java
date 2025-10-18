@@ -58,4 +58,35 @@ public class MascotaController {
             return ResponseEntity.noContent().build();
         }).orElse(ResponseEntity.notFound().build());
     }
+
+    // Obtener mascotas disponibles para adopción
+    @GetMapping("/disponibles")
+    public List<Mascota> getMascotasDisponibles() {
+        return mascotaRepository.findByEstadoPublicacion(Mascota.EstadoPublicacion.disponible);
+    }
+
+    // Adoptar una mascota
+    @PostMapping("/{id}/adoptar")
+    public ResponseEntity<?> adoptarMascota(@PathVariable Long id, @RequestBody AdopcionRequest request) {
+        return mascotaRepository.findById(id).map(mascota -> {
+            if (mascota.getEstadoPublicacion() == Mascota.EstadoPublicacion.disponible) {
+                mascota.setEstadoPublicacion(Mascota.EstadoPublicacion.adoptado);
+                mascotaRepository.save(mascota);
+                return ResponseEntity.ok("Mascota adoptada exitosamente");
+            } else {
+                return ResponseEntity.badRequest().body("La mascota no está disponible para adopción");
+            }
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // Clase para la solicitud de adopción
+    public static class AdopcionRequest {
+        private Long idAdoptante;
+        private String mensaje;
+
+        public Long getIdAdoptante() { return idAdoptante; }
+        public void setIdAdoptante(Long idAdoptante) { this.idAdoptante = idAdoptante; }
+        public String getMensaje() { return mensaje; }
+        public void setMensaje(String mensaje) { this.mensaje = mensaje; }
+    }
 }

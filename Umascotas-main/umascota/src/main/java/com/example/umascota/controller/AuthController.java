@@ -35,9 +35,15 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody Usuario user) {
 
         try {
-            boolean loginValido = usuarioService.validarLogin(user.getCorreoElectronico(), user.getContrasena());
-            if (loginValido) {
-                return ResponseEntity.ok("Login exitoso. Bienvenido, " + user.getCorreoElectronico());
+            Usuario usuarioEncontrado = usuarioService.validarLoginYRetornarUsuario(user.getCorreoElectronico(), user.getContrasena());
+            if (usuarioEncontrado != null) {
+                // Crear objeto de respuesta con información del usuario
+                LoginResponse response = new LoginResponse();
+                response.setMensaje("Login exitoso. Bienvenido, " + usuarioEncontrado.getNombreCompleto());
+                response.setTipoUsuario(usuarioEncontrado.getTipoUsuario().toString());
+                response.setIdUsuario(usuarioEncontrado.getIdUsuario());
+                response.setNombreCompleto(usuarioEncontrado.getNombreCompleto());
+                return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrectos");
             }
@@ -46,5 +52,23 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno en el login: " + e.getMessage());
         }
 
+    }
+
+    // Clase interna para la respuesta del login
+    public static class LoginResponse {
+        private String mensaje;
+        private String tipoUsuario;
+        private Long idUsuario;
+        private String nombreCompleto;
+
+        // Getters y Setters
+        public String getMensaje() { return mensaje; }
+        public void setMensaje(String mensaje) { this.mensaje = mensaje; }
+        public String getTipoUsuario() { return tipoUsuario; }
+        public void setTipoUsuario(String tipoUsuario) { this.tipoUsuario = tipoUsuario; }
+        public Long getIdUsuario() { return idUsuario; }
+        public void setIdUsuario(Long idUsuario) { this.idUsuario = idUsuario; }
+        public String getNombreCompleto() { return nombreCompleto; }
+        public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
     }
 }
