@@ -58,4 +58,23 @@ public class MascotaController {
             return ResponseEntity.noContent().build();
         }).orElse(ResponseEntity.notFound().build());
     }
+
+    // Adoptar una mascota (cambiar estado a adoptado)
+    @PutMapping("/{id}/adoptar")
+    public ResponseEntity<?> adoptarMascota(@PathVariable Long id) {
+        return mascotaRepository.findById(id).map(mascota -> {
+            if (mascota.getEstadoPublicacion() == Mascota.EstadoPublicacion.disponible) {
+                mascota.setEstadoPublicacion(Mascota.EstadoPublicacion.adoptado);
+                return ResponseEntity.ok(mascotaRepository.save(mascota));
+            } else {
+                return ResponseEntity.badRequest().body("La mascota no está disponible para adopción");
+            }
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // Obtener mascotas disponibles para adopción
+    @GetMapping("/disponibles")
+    public List<Mascota> getMascotasDisponibles() {
+        return mascotaRepository.findByEstadoPublicacion(Mascota.EstadoPublicacion.disponible);
+    }
 }

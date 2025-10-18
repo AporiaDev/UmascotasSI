@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MascotaRepository extends JpaRepository<Mascota, Long> {
     List<Mascota> findByNombreIgnoreCase(String nombre);
+    List<Mascota> findByEstadoPublicacion(Mascota.EstadoPublicacion estadoPublicacion);
 }
 

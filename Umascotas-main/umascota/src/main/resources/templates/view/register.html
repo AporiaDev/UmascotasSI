@@ -2,75 +2,229 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - U-Mascota</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-96">
-        <h1 class="text-2xl font-bold mb-6 text-center">Registrarse</h1>
-
-        <form id="registerForm" class="space-y-4">
-            <div>
-                <label class="block text-gray-700">Nombre Completo</label>
-                <input type="text" name="nombreCompleto" class="w-full border rounded-lg px-3 py-2" required>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen">
+    <!-- Navegación -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-blue-600">
+                        <i class="fas fa-paw mr-2"></i>U-Mascota
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/login" class="text-gray-700 hover:text-blue-600 font-medium">
+                        <i class="fas fa-sign-in-alt mr-1"></i>Iniciar Sesión
+                    </a>
+                </div>
             </div>
+        </div>
+    </nav>
 
-            <div>
-                <label class="block text-gray-700">Correo Electrónico</label>
-                <input type="email" name="correoElectronico" class="w-full border rounded-lg px-3 py-2" required>
+    <!-- Contenido principal -->
+    <div class="max-w-4xl mx-auto py-8 px-4">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="md:flex">
+                <!-- Panel izquierdo con información -->
+                <div class="md:w-1/2 bg-gradient-to-br from-blue-600 to-purple-600 p-8 text-white">
+                    <div class="text-center">
+                        <i class="fas fa-user-plus text-6xl mb-6"></i>
+                        <h1 class="text-3xl font-bold mb-4">¡Únete a U-Mascota!</h1>
+                        <p class="text-lg opacity-90 mb-8">
+                            Forma parte de nuestra comunidad y ayuda a las mascotas a encontrar el hogar que merecen.
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-heart text-2xl mr-4"></i>
+                            <div>
+                                <h3 class="font-bold">Adopción Responsable</h3>
+                                <p class="text-sm opacity-90">Proceso seguro y confiable</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-2xl mr-4"></i>
+                            <div>
+                                <h3 class="font-bold">Comunidad Activa</h3>
+                                <p class="text-sm opacity-90">Conecta con otros amantes de las mascotas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-2xl mr-4"></i>
+                            <div>
+                                <h3 class="font-bold">Datos Seguros</h3>
+                                <p class="text-sm opacity-90">Tu información está protegida</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel derecho con formulario -->
+                <div class="md:w-1/2 p-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Crear Cuenta</h2>
+
+                    <form id="registerForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-user mr-1"></i>Nombre Completo *
+                                </label>
+                                <input type="text" name="nombreCompleto" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                       placeholder="Tu nombre completo" required>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-envelope mr-1"></i>Correo Electrónico *
+                                </label>
+                                <input type="email" name="correoElectronico" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                       placeholder="tu@email.com" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-lock mr-1"></i>Contraseña *
+                            </label>
+                            <input type="password" name="contrasena" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                   placeholder="Mínimo 6 caracteres" required>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-phone mr-1"></i>Teléfono
+                                </label>
+                                <input type="text" name="telefono" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                       placeholder="+57 300 123 4567">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-map-marker-alt mr-1"></i>Ciudad
+                                </label>
+                                <input type="text" name="ciudad" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                       placeholder="Tu ciudad">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-user-tag mr-1"></i>Tipo de Usuario *
+                            </label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="relative">
+                                    <input type="radio" name="tipoUsuario" value="ADOPTANTE" class="sr-only peer" checked>
+                                    <div class="p-4 border-2 border-gray-300 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50 transition duration-200">
+                                        <div class="text-center">
+                                            <i class="fas fa-heart text-2xl text-red-500 mb-2"></i>
+                                            <div class="font-medium">Adoptante</div>
+                                            <div class="text-sm text-gray-600">Quiero adoptar una mascota</div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="relative">
+                                    <input type="radio" name="tipoUsuario" value="PUBLICADOR" class="sr-only peer">
+                                    <div class="p-4 border-2 border-gray-300 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50 transition duration-200">
+                                        <div class="text-center">
+                                            <i class="fas fa-upload text-2xl text-green-500 mb-2"></i>
+                                            <div class="font-medium">Publicador</div>
+                                            <div class="text-sm text-gray-600">Quiero publicar mascotas</div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input type="checkbox" id="terminos" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" required>
+                            <label for="terminos" class="ml-2 block text-sm text-gray-700">
+                                Acepto los <a href="#" class="text-blue-600 hover:underline">términos y condiciones</a> y la <a href="#" class="text-blue-600 hover:underline">política de privacidad</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-lg hover:from-blue-700 hover:to-purple-700 font-bold text-lg transition duration-200">
+                            <i class="fas fa-user-plus mr-2"></i>Crear Cuenta
+                        </button>
+                    </form>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-gray-600">
+                            ¿Ya tienes una cuenta? 
+                            <a href="/login" class="text-blue-600 hover:underline font-medium">Inicia sesión aquí</a>
+                        </p>
+                    </div>
+
+                    <!-- Mensaje de éxito/error -->
+                    <div id="mensaje" class="mt-6 hidden">
+                        <div id="mensajeContenido" class="p-4 rounded-lg"></div>
+                    </div>
+                </div>
             </div>
-
-            <div>
-                <label class="block text-gray-700">Contraseña</label>
-                <input type="password" name="contrasena" class="w-full border rounded-lg px-3 py-2" required>
-            </div>
-
-            <div>
-                <label class="block text-gray-700">Teléfono</label>
-                <input type="text" name="telefono" class="w-full border rounded-lg px-3 py-2">
-            </div>
-
-            <div>
-                <label class="block text-gray-700">Ciudad</label>
-                <input type="text" name="ciudad" class="w-full border rounded-lg px-3 py-2">
-            </div>
-
-            <div>
-                <label class="block text-gray-700">Tipo de Usuario</label>
-                <select name="tipoUsuario" class="w-full border rounded-lg px-3 py-2">
-                    <option value="ADOPTANTE">Adoptante</option>
-                    <option value="PUBLICADOR">Publicador</option>
-                </select>
-            </div>
-
-            <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
-                Crear Cuenta
-            </button>
-        </form>
+        </div>
     </div>
 
     <script>
-    document.getElementById('registerForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+        // Función para mostrar mensajes
+        function mostrarMensaje(mensaje, tipo) {
+            const mensajeDiv = document.getElementById('mensaje');
+            const mensajeContenido = document.getElementById('mensajeContenido');
+            
+            mensajeDiv.classList.remove('hidden');
+            mensajeContenido.textContent = mensaje;
+            mensajeContenido.className = `p-4 rounded-lg ${tipo === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+            
+            // Ocultar mensaje después de 5 segundos
+            setTimeout(() => {
+                mensajeDiv.classList.add('hidden');
+            }, 5000);
+        }
 
-        const data = {
-            nombreCompleto: e.target.nombreCompleto.value,
-            correoElectronico: e.target.correoElectronico.value,
-            contrasena: e.target.contrasena.value,
-            telefono: e.target.telefono.value,
-            ciudad: e.target.ciudad.value,
-            tipoUsuario: e.target.tipoUsuario.value
-        };
+        // Manejo del envío del formulario
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-        const response = await fetch('/auth/registro', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            const data = {
+                nombreCompleto: e.target.nombreCompleto.value,
+                correoElectronico: e.target.correoElectronico.value,
+                contrasena: e.target.contrasena.value,
+                telefono: e.target.telefono.value,
+                ciudad: e.target.ciudad.value,
+                tipoUsuario: e.target.tipoUsuario.value
+            };
+
+            try {
+                const response = await fetch('/auth/registro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.text();
+
+                if (response.ok) {
+                    mostrarMensaje('¡Cuenta creada exitosamente! Redirigiendo al login...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    mostrarMensaje('Error: ' + result, 'error');
+                }
+            } catch (error) {
+                mostrarMensaje('Error de conexión: ' + error.message, 'error');
+            }
         });
-
-        const result = await response.text();
-        alert(result);
-    });
     </script>
 </body>
 </html>

@@ -32,9 +32,21 @@ public class ViewController {
         return "view/crear-mascota";
     }
 
-    // Vista para listar todas las mascotas
+    // Vista para listar todas las mascotas (admin/publicador)
     @GetMapping("/listar-mascotas")
     public String listarMascotas() {
         return "view/listar-mascotas";
+    }
+
+    // Vista específica para adoptantes
+    @GetMapping("/adoptante")
+    public String adoptante() {
+        return "view/adoptante";
+    }
+
+    // Vista específica para publicadores
+    @GetMapping("/publicador")
+    public String publicador() {
+        return "view/publicador";
     }
 }

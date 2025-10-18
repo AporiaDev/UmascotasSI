@@ -35,9 +35,9 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody Usuario user) {
 
         try {
-            boolean loginValido = usuarioService.validarLogin(user.getCorreoElectronico(), user.getContrasena());
-            if (loginValido) {
-                return ResponseEntity.ok("Login exitoso. Bienvenido, " + user.getCorreoElectronico());
+            Usuario usuarioEncontrado = usuarioService.validarLoginYRetornarUsuario(user.getCorreoElectronico(), user.getContrasena());
+            if (usuarioEncontrado != null) {
+                return ResponseEntity.ok(usuarioEncontrado);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrectos");
             }
