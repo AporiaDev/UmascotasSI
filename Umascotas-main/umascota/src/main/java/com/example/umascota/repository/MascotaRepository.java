@@ -1,15 +1,19 @@
 package com.example.umascota.repository;
 
-import com.example.umascota.model.Mascota;
-import com.example.umascota.model.Mascota.EstadoPublicacion;
-
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.example.umascota.model.mascota.Mascota;
+
 @Repository
 public interface MascotaRepository extends JpaRepository<Mascota, Long> {
-    List<Mascota> findByNombreIgnoreCase(String nombre);
-    List<Mascota> findByEstadoPublicacion(EstadoPublicacion estadoPublicacion);
+    Optional<Mascota> findByIdMascota(Long idMascota);
+    boolean existsByNombreIgnoreCase(String nombre);
+    List<Mascota> deleteByIdMascota(Long id);
+    boolean existsByIdMascota(Long idMascota);
+    
 }
 

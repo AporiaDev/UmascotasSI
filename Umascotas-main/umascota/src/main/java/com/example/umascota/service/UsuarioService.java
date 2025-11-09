@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.example.umascota.model.Usuario;
+import com.example.umascota.model.usuario.Usuario;
 import com.example.umascota.repository.UsuarioRepository;
 import com.example.umascota.util.PasswordUtil;
 import com.example.umascota.util.JwtUtil;
@@ -17,6 +17,7 @@ public class UsuarioService {
 
     // Registrar nuevo usuario
     public Usuario registrarUsuario(Usuario user) {
+
         String emailNormalizado = user.getCorreoElectronico().trim().toLowerCase();
         user.setCorreoElectronico(emailNormalizado);
 
@@ -37,16 +38,13 @@ public class UsuarioService {
         if (usuarioDB == null || !PasswordUtil.verificar(password, usuarioDB.getContrasena())) {
             throw new IllegalArgumentException("Correo o contraseña incorrectos");
         }
-
         // Generar token JWT
         return JwtUtil.generateToken(usuarioDB.getCorreoElectronico());
     }
-
     // Verificar si un token es válido
     public boolean validarToken(String token) {
         return JwtUtil.validateToken(token);
     }
-
     // Obtener el correo desde el token
     public String obtenerCorreoDesdeToken(String token) {
         return JwtUtil.getSubjectFromToken(token);

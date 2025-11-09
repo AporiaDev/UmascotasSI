@@ -1,61 +1,83 @@
 package com.example.umascota.controller;
 
-import com.example.umascota.model.Mascota;
-import com.example.umascota.repository.MascotaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.example.umascota.model.mascota.Mascota;
+import com.example.umascota.service.Mascota2Service;
+
 
 @RestController
 @RequestMapping("/api/mascotas")
 public class MascotaController {
 
-    @Autowired
-    private MascotaRepository mascotaRepository;
+    
+    private final Mascota2Service mascotaService;
 
-    // Obtener todas las mascotas
-    @GetMapping
-    public List<Mascota> getAllMascotas() {
-        return mascotaRepository.findAll();
+    public MascotaController(Mascota2Service mascotaService){this.mascotaService = mascotaService;}
+
+    //GET
+    @GetMapping("/obtener-mascota/{id}")
+    public ResponseEntity<Mascota> obtenerMascota(@PathVariable Long id){
+
+        Optional <Mascota> mascota = mascotaService.obtenerPorId(id);
+        
+        if(mascota.isPresent()){
+            return ResponseEntity.ok(mascota.get());
+        }else { 
+            return ResponseEntity.notFound().build();
+        }
+        
     }
 
-    // Obtener una mascota por Nombre
-    @GetMapping("/{nombre}")
-    public List<Mascota> getMascotaById(@PathVariable String nombre) {
-        return mascotaRepository.findByNombreIgnoreCase(nombre);
+    @PostMapping("/crear-mascota")
+    public ResponseEntity<Mascota> crearMascota(@RequestBody Mascota mascota){
+        
+        Mascota nuevaMascota = mascotaService.crearMascota(mascota);
+        return new ResponseEntity<>(nuevaMascota, HttpStatus.CREATED);
+
+
     }
 
-    // Crear una mascota
-    @PostMapping
-    public Mascota createMascota(@RequestBody Mascota mascota) {
-        return mascotaRepository.save(mascota);
+    //DELETE
+    @DeleteMapping("/borrar-mascota/{idMascota}")
+    public ResponseEntity<Void> borrarMascota(@PathVariable Long idMascota){
+
+        mascotaService.borrarMascota(idMascota);
+        return ResponseEntity.noContent().build();  
+
     }
 
-    // Actualizar una mascota
-    @PutMapping("/{id}")
-    public ResponseEntity<Mascota> updateMascota(@PathVariable Long id, @RequestBody Mascota mascotaDetails) {
-        return mascotaRepository.findById(id).map(mascota -> {
-            mascota.setNombre(mascotaDetails.getNombre());
-            mascota.setEspecie(mascotaDetails.getEspecie());
-            mascota.setRaza(mascotaDetails.getRaza());
-            mascota.setEdad(mascotaDetails.getEdad());
-            mascota.setDescripcion(mascotaDetails.getDescripcion());
-            mascota.setEstadoSalud(mascotaDetails.getEstadoSalud());
-            mascota.setFoto(mascotaDetails.getFoto());
-            mascota.setEstadoPublicacion(mascotaDetails.getEstadoPublicacion());
-            mascota.setIdUsuarioPublica(mascotaDetails.getIdUsuarioPublica());
-            return ResponseEntity.ok(mascotaRepository.save(mascota));
-        }).orElse(ResponseEntity.notFound().build());
+    @GetMapping("/obtener-mascotas")
+    public ResponseEntity<List<Mascota>> obtenerMascotas(){
+
+        List<Mascota> mascotas = mascotaService.obtenerTodas();
+        return ResponseEntity.ok(mascotas);
+
     }
 
-    // Eliminar una mascota
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteMascota(@PathVariable Long id) {
-        return mascotaRepository.findById(id).map(mascota -> {
-            mascotaRepository.delete(mascota);
-            return ResponseEntity.noContent().build();
-        }).orElse(ResponseEntity.notFound().build());
+    //PUT
+    @PutMapping("/actualizar-mascota/{idMascota}")
+    public ResponseEntity<Mascota> actualizarMascota(@PathVariable Long idMascota, @RequestBody Mascota nuevosDatosMascota){
+
+        Optional<Mascota> mascotaNueva = mascotaService.actualizarDatosMascota(idMascota, nuevosDatosMascota);
+        if (mascotaNueva.isPresent()) {
+            return ResponseEntity.ok(mascotaNueva.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
