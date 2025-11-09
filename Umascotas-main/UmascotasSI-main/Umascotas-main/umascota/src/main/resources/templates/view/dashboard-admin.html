@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - U-Mascota</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        body {
+            background: #f5f5f7;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .stat-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+        .stat-card.purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .stat-card.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .stat-card.green {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        .stat-card.orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navegación -->
+    <nav class="bg-white/80 backdrop-blur-xl border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <span class="text-xl font-semibold text-gray-800">U-Mascota Admin</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/listar-mascotas" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+                        <i class="fas fa-paw mr-2"></i>Mascotas
+                    </a>
+                    <a href="/listar-solicitudes" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+                        <i class="fas fa-file-alt mr-2"></i>Solicitudes
+                    </a>
+                    <a href="/crear-mascota" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+                        <i class="fas fa-plus mr-2"></i>Nueva Mascota
+                    </a>
+                    <button onclick="cerrarSesion()" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Bienvenida -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-light text-gray-800 mb-2">Panel de Administración</h1>
+            <p class="text-gray-500">Gestiona mascotas, solicitudes y adopciones</p>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card purple rounded-2xl p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <i class="fas fa-paw text-3xl opacity-80"></i>
+                    <span class="text-3xl font-light" id="totalMascotas">-</span>
+                </div>
+                <h3 class="text-sm font-medium opacity-90">Total Mascotas</h3>
+            </div>
+            <div class="stat-card blue rounded-2xl p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <i class="fas fa-file-alt text-3xl opacity-80"></i>
+                    <span class="text-3xl font-light" id="totalSolicitudes">-</span>
+                </div>
+                <h3 class="text-sm font-medium opacity-90">Solicitudes</h3>
+            </div>
+            <div class="stat-card green rounded-2xl p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <i class="fas fa-check-circle text-3xl opacity-80"></i>
+                    <span class="text-3xl font-light" id="solicitudesAceptadas">-</span>
+                </div>
+                <h3 class="text-sm font-medium opacity-90">Aceptadas</h3>
+            </div>
+            <div class="stat-card orange rounded-2xl p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <i class="fas fa-clock text-3xl opacity-80"></i>
+                    <span class="text-3xl font-light" id="solicitudesPendientes">-</span>
+                </div>
+                <h3 class="text-sm font-medium opacity-90">Pendientes</h3>
+            </div>
+        </div>
+
+        <!-- Acciones Rápidas -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="glass-card rounded-2xl p-6 border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-plus-circle text-purple-600 mr-2"></i>Nueva Mascota
+                </h2>
+                <p class="text-gray-600 mb-4 text-sm">Registra una nueva mascota en el sistema</p>
+                <a href="/crear-mascota" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700 transition font-medium">
+                    Crear Mascota
+                </a>
+            </div>
+            <div class="glass-card rounded-2xl p-6 border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-list text-blue-600 mr-2"></i>Gestionar Solicitudes
+                </h2>
+                <p class="text-gray-600 mb-4 text-sm">Revisa y aprueba solicitudes de adopción</p>
+                <a href="/listar-solicitudes" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition font-medium">
+                    Ver Solicitudes
+                </a>
+            </div>
+            <div class="glass-card rounded-2xl p-6 border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-paw text-green-600 mr-2"></i>Ver Mascotas
+                </h2>
+                <p class="text-gray-600 mb-4 text-sm">Administra todas las mascotas registradas</p>
+                <a href="/listar-mascotas" class="inline-block bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition font-medium">
+                    Ver Mascotas
+                </a>
+            </div>
+        </div>
+
+        <!-- Solicitudes Pendientes -->
+        <div class="glass-card rounded-2xl p-6 border border-gray-200 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Solicitudes Pendientes</h2>
+                <a href="/listar-solicitudes" class="text-purple-600 hover:text-purple-700 text-sm font-medium">
+                    Ver todas <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            <div id="solicitudesPendientesList" class="space-y-4">
+                <div class="text-center py-8 text-gray-400">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                    <p>Cargando solicitudes...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mascotas Recientes -->
+        <div class="glass-card rounded-2xl p-6 border border-gray-200">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Mascotas Recientes</h2>
+                <a href="/listar-mascotas" class="text-purple-600 hover:text-purple-700 text-sm font-medium">
+                    Ver todas <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            <div id="mascotasRecientes" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="text-center py-8 text-gray-400">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                    <p>Cargando mascotas...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cargar estadísticas
+        async function cargarEstadisticas() {
+            try {
+                // Cargar mascotas
+                const mascotasResponse = await fetch('/api/mascotas');
+                if (mascotasResponse.ok) {
+                    const mascotas = await mascotasResponse.json();
+                    document.getElementById('totalMascotas').textContent = mascotas.length;
+                    
+                    // Mostrar mascotas recientes (últimas 4)
+                    const mascotasRecientes = mascotas.slice(0, 4);
+                    mostrarMascotasRecientes(mascotasRecientes);
+                }
+
+                // Cargar solicitudes
+                const solicitudesResponse = await fetch('/api/solicitudes/solicitudes');
+                if (solicitudesResponse.ok) {
+                    const solicitudes = await solicitudesResponse.json();
+                    document.getElementById('totalSolicitudes').textContent = solicitudes.length;
+                    
+                    const aceptadas = solicitudes.filter(s => s.estadoSolicitud === 'ACEPTADA').length;
+                    document.getElementById('solicitudesAceptadas').textContent = aceptadas;
+                    
+                    const pendientes = solicitudes.filter(s => s.estadoSolicitud === 'PENDIENTE');
+                    document.getElementById('solicitudesPendientes').textContent = pendientes.length;
+                    
+                    // Mostrar solicitudes pendientes
+                    mostrarSolicitudesPendientes(pendientes.slice(0, 5));
+                }
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+            }
+        }
+
+        function mostrarMascotasRecientes(mascotas) {
+            const container = document.getElementById('mascotasRecientes');
+            if (mascotas.length === 0) {
+                container.innerHTML = '<div class="col-span-4 text-center py-8 text-gray-400">No hay mascotas disponibles</div>';
+                return;
+            }
+            container.innerHTML = mascotas.map(mascota => `
+                <div class="bg-white rounded-xl p-4 border border-gray-200 hover:shadow-lg transition">
+                    ${mascota.foto ? 
+                        `<img src="${mascota.foto}" alt="${mascota.nombre}" class="w-full h-32 object-cover rounded-lg mb-3">` :
+                        `<div class="w-full h-32 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+                            <i class="fas fa-paw text-3xl text-gray-400"></i>
+                        </div>`
+                    }
+                    <h3 class="font-semibold text-gray-800 mb-1">${mascota.nombre}</h3>
+                    <p class="text-sm text-gray-500">${mascota.especie || 'Sin especificar'}</p>
+                    <span class="inline-block mt-2 px-2 py-1 text-xs rounded-full ${mascota.statusPublicacion === 'DISPONIBLE' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}">
+                        ${mascota.statusPublicacion || 'N/A'}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function mostrarSolicitudesPendientes(solicitudes) {
+            const container = document.getElementById('solicitudesPendientesList');
+            if (solicitudes.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-gray-400">No hay solicitudes pendientes</div>';
+                return;
+            }
+            container.innerHTML = solicitudes.map(solicitud => {
+                const nombreMascota = solicitud.mascotaSolicitada?.nombre || 'Mascota no disponible';
+                const nombreUsuario = solicitud.usuarioAdoptante?.nombreCompleto || 'Usuario no disponible';
+                return `
+                    <div class="bg-white rounded-xl p-4 border border-gray-200 hover:shadow-md transition">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 mb-1">Solicitud #${solicitud.idSolicitud}</h3>
+                                <p class="text-sm text-gray-600 mb-2">
+                                    <i class="fas fa-paw mr-1"></i>${nombreMascota}
+                                </p>
+                                <p class="text-sm text-gray-600">
+                                    <i class="fas fa-user mr-1"></i>${nombreUsuario}
+                                </p>
+                            </div>
+                            <a href="/decision-solicitud/${solicitud.idSolicitud}" 
+                               class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition text-sm font-medium">
+                                Revisar
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+
+        // Cargar al iniciar
+        document.addEventListener('DOMContentLoaded', cargarEstadisticas);
+    </script>
+</body>
+</html>
+

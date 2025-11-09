@@ -1,0 +1,96 @@
+package com.example.umascota.model.adopcion;
+
+import jakarta.persistence.*;
+import java.sql.Timestamp;
+
+import com.example.umascota.model.mascota.Mascota;
+import com.example.umascota.model.usuario.Usuario;
+
+@Entity
+@Table(name = "adopcion")
+public class Adopcion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_adopcion")
+    private Long idAdopcion;
+
+    @ManyToOne
+    @JoinColumn(name = "id_mascota", nullable = false)
+    private Mascota mascota;
+
+    @ManyToOne
+    @JoinColumn(name = "id_adoptante", nullable = false)
+    private Usuario adoptante;
+
+    @ManyToOne
+    @JoinColumn(name = "id_solicitud", nullable = false)
+    private SolicitudAdopcion solicitud;
+
+    @Column(name = "fecha_adopcion")
+    private Timestamp fechaAdopcion;
+
+    @Column(name = "notas")
+    private String notas;
+
+    // Relación 1:1 con EncuestaPostAdopcion (Adopcion es el lado "padre")
+    @OneToOne(mappedBy = "adopcion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private EncuestaPostAdopcion encuestaPostAdopcion;
+
+    // Getters y Setters
+    public Long getIdAdopcion() {
+        return idAdopcion;
+    }
+
+    public void setIdAdopcion(Long idAdopcion) {
+        this.idAdopcion = idAdopcion;
+    }
+
+    public Mascota getMascota() {
+        return mascota;
+    }
+
+    public void setMascota(Mascota mascota) {
+        this.mascota = mascota;
+    }
+
+    public Usuario getAdoptante() {
+        return adoptante;
+    }
+
+    public void setAdoptante(Usuario adoptante) {
+        this.adoptante = adoptante;
+    }
+
+    public SolicitudAdopcion getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(SolicitudAdopcion solicitud) {
+        this.solicitud = solicitud;
+    }
+
+    public Timestamp getFechaAdopcion() {
+        return fechaAdopcion;
+    }
+
+    public void setFechaAdopcion(Timestamp fechaAdopcion) {
+        this.fechaAdopcion = fechaAdopcion;
+    }
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
+    }
+
+    public EncuestaPostAdopcion getEncuestaPostAdopcion() {
+        return encuestaPostAdopcion;
+    }
+
+    public void setEncuestaPostAdopcion(EncuestaPostAdopcion encuestaPostAdopcion) {
+        this.encuestaPostAdopcion = encuestaPostAdopcion;
+    }
+}

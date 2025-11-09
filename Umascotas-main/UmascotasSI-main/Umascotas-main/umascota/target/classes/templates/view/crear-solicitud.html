@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Solicitud de Adopción - U-Mascota</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navegación -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-blue-600">
+                        <i class="fas fa-paw mr-2"></i>U-Mascota
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/listar-mascotas" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-list mr-1"></i>Ver Mascotas
+                    </a>
+                    <a href="/" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-home mr-1"></i>Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="max-w-4xl mx-auto py-8 px-4">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+                Crear Solicitud de Adopción
+            </h1>
+
+            <!-- Información de la Mascota -->
+            <div id="infoMascota" class="bg-blue-50 rounded-lg p-6 mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-paw text-blue-600 mr-2"></i>Mascota a Adoptar
+                </h2>
+                <div id="detallesMascota" class="space-y-2 text-sm">
+                    <p class="text-gray-600">Cargando información de la mascota...</p>
+                </div>
+            </div>
+
+            <!-- Formulario de Solicitud -->
+            <form id="solicitudForm" class="space-y-6">
+                <input type="hidden" id="idMascota" name="idMascota">
+                
+                <!-- Mensaje del Adoptante -->
+                <div>
+                    <label for="mensajeAdoptante" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-comment text-blue-600 mr-1"></i>Mensaje para el Administrador *
+                    </label>
+                    <textarea id="mensajeAdoptante" name="mensajeAdoptante" rows="6" required
+                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Escribe un mensaje explicando por qué quieres adoptar a esta mascota, tu experiencia con mascotas, y cómo planeas cuidarla..."></textarea>
+                    <p class="mt-1 text-xs text-gray-500">Este mensaje será revisado por el administrador antes de aprobar tu solicitud.</p>
+                </div>
+
+                <!-- Información Adicional (Opcional) -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-info-circle text-blue-600 mr-2"></i>Información Adicional
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                ¿Tienes experiencia previa con mascotas?
+                            </label>
+                            <select id="experiencia" name="experiencia"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Seleccionar...</option>
+                                <option value="Si, tengo mucha experiencia">Sí, tengo mucha experiencia</option>
+                                <option value="Si, tengo algo de experiencia">Sí, tengo algo de experiencia</option>
+                                <option value="No, pero estoy dispuesto a aprender">No, pero estoy dispuesto a aprender</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                ¿Tienes otras mascotas en casa?
+                            </label>
+                            <select id="otrasMascotas" name="otrasMascotas"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Seleccionar...</option>
+                                <option value="Si">Sí</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                    <button type="submit" 
+                            class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition duration-200 font-medium">
+                        <i class="fas fa-paper-plane mr-2"></i>Enviar Solicitud
+                    </button>
+                    <button type="button" onclick="limpiarFormulario()"
+                            class="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 transition duration-200 font-medium">
+                        <i class="fas fa-eraser mr-2"></i>Limpiar
+                    </button>
+                    <a href="/listar-mascotas"
+                       class="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 transition duration-200 font-medium text-center">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver a Mascotas
+                    </a>
+                </div>
+            </form>
+
+            <!-- Mensaje de éxito/error -->
+            <div id="mensaje" class="mt-6 hidden">
+                <div id="mensajeContenido" class="p-4 rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Obtener el ID de la mascota de la URL
+        const urlParts = window.location.pathname.split('/');
+        const mascotaId = urlParts[urlParts.length - 1];
+
+        // Cargar información de la mascota al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('idMascota').value = mascotaId;
+            cargarMascota();
+        });
+
+        // Función para cargar información de la mascota
+        async function cargarMascota() {
+            try {
+                const response = await fetch(`/api/mascotas/${mascotaId}`);
+                if (response.ok) {
+                    const mascota = await response.json();
+                    mostrarInfoMascota(mascota);
+                } else {
+                    mostrarMensaje('Error al cargar la información de la mascota.', 'error');
+                }
+            } catch (error) {
+                mostrarMensaje('Error de conexión: ' + error.message, 'error');
+            }
+        }
+
+        // Función para mostrar información de la mascota
+        function mostrarInfoMascota(mascota) {
+            const detallesDiv = document.getElementById('detallesMascota');
+            detallesDiv.innerHTML = `
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p><strong>Nombre:</strong> ${mascota.nombre || 'No disponible'}</p>
+                        <p><strong>Especie:</strong> ${mascota.especie || 'No disponible'}</p>
+                        <p><strong>Raza:</strong> ${mascota.raza || 'No disponible'}</p>
+                    </div>
+                    <div>
+                        <p><strong>Edad:</strong> ${mascota.edad ? mascota.edad + ' años' : 'No disponible'}</p>
+                        <p><strong>Estado de Salud:</strong> ${mascota.estadoSalud || 'No disponible'}</p>
+                        <p><strong>Estado:</strong> ${mascota.estadoPublicacion || 'No disponible'}</p>
+                    </div>
+                </div>
+                ${mascota.descripcion ? 
+                    `<div class="mt-4">
+                        <p><strong>Descripción:</strong></p>
+                        <p class="text-gray-700 mt-1">${mascota.descripcion}</p>
+                    </div>` : ''
+                }
+            `;
+        }
+
+        // Función para limpiar el formulario
+        function limpiarFormulario() {
+            document.getElementById('mensajeAdoptante').value = '';
+            document.getElementById('experiencia').value = '';
+            document.getElementById('otrasMascotas').value = '';
+            ocultarMensaje();
+        }
+
+        // Función para mostrar mensajes
+        function mostrarMensaje(mensaje, tipo) {
+            const mensajeDiv = document.getElementById('mensaje');
+            const mensajeContenido = document.getElementById('mensajeContenido');
+            
+            mensajeDiv.classList.remove('hidden');
+            mensajeContenido.textContent = mensaje;
+            mensajeContenido.className = `p-4 rounded-lg ${tipo === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+            
+            // Ocultar mensaje después de 5 segundos
+            setTimeout(ocultarMensaje, 5000);
+        }
+
+        // Función para ocultar mensajes
+        function ocultarMensaje() {
+            document.getElementById('mensaje').classList.add('hidden');
+        }
+
+        // Manejo del envío del formulario
+        document.getElementById('solicitudForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const mensajeAdoptante = document.getElementById('mensajeAdoptante').value;
+            const idUsuario = localStorage.getItem('idUsuario');
+            
+            if (!idUsuario) {
+                mostrarMensaje('Error: No se encontró el ID de usuario. Por favor, inicia sesión nuevamente.', 'error');
+                return;
+            }
+            
+            // Preparar datos de la solicitud - solo enviar el mensaje y el ID de usuario
+            const solicitudData = {
+                mensajeAdoptante: mensajeAdoptante,
+                idUsuario: parseInt(idUsuario)
+            };
+            
+            try {
+                // Obtener token de autenticación
+                const token = localStorage.getItem('token');
+                const headers = {
+                    'Content-Type': 'application/json',
+                };
+                
+                // Agregar token si existe
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                const response = await fetch(`/api/solicitudes/solicitud-mascota/${mascotaId}`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(solicitudData)
+                });
+                
+                if (response.ok) {
+                    const solicitud = await response.json();
+                    mostrarMensaje(`¡Solicitud creada exitosamente! Tu solicitud #${solicitud.idSolicitud} está pendiente de revisión.`, 'success');
+                    setTimeout(() => {
+                        window.location.href = '/listar-solicitudes';
+                    }, 2000);
+                } else {
+                    const error = await response.text();
+                    mostrarMensaje(`Error al crear la solicitud: ${error}`, 'error');
+                }
+            } catch (error) {
+                mostrarMensaje(`Error de conexión: ${error.message}`, 'error');
+            }
+        });
+    </script>
+</body>
+</html>
+
