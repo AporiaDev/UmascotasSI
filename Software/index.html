@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMascotas - Adopción Responsable</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #000;
+        }
+
+        .header {
+            background-color: #7cc144;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background-color: white;
+            color: #7cc144;
+            border: 2px solid #7cc144;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #7cc144;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-section:hover {
+            background-color: #5fa230;
+        }
+
+        .user-icon {
+            width: 35px;
+            height: 35px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7cc144;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* HOME PAGE */
+        .welcome-section {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .welcome-image {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .welcome-text {
+            font-size: 36px;
+            color: #7cc144;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .welcome-description {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* REGISTRATION PAGE */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 28px;
+            color: #7cc144;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #7cc144;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #7cc144;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #5fa230;
+            transform: scale(1.02);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .form-footer a {
+            color: #7cc144;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* VISION PAGE */
+        .vision-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .vision-title {
+            text-align: center;
+            font-size: 36px;
+            color: #7cc144;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        .vision-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #7cc144;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .section-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+
+        .valores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .valor-card {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #7cc144;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .valor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(124, 193, 68, 0.2);
+        }
+
+        .valor-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .valor-nombre {
+            font-size: 20px;
+            color: #7cc144;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .valor-descripcion {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* ADOPTAR PAGE */
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            color: #7cc144;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        .mascotas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .mascota-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .mascota-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .mascota-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .mascota-info {
+            padding: 20px;
+        }
+
+        .mascota-nombre {
+            font-size: 24px;
+            color: #7cc144;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .mascota-detalles {
+            margin-bottom: 15px;
+        }
+
+        .detalle-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 14px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detalle-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detalle-value {
+            color: #333;
+        }
+
+        .mascota-descripcion {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .ver-detalles-btn {
+            width: 100%;
+            background-color: #7cc144;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ver-detalles-btn:hover {
+            background-color: #5fa230;
+            transform: scale(1.02);
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            overflow: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20px;
+            padding: 0;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: white;
+            color: #333;
+            border: none;
+            font-size: 32px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background-color: #7cc144;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-mascota-nombre {
+            font-size: 32px;
+            color: #7cc144;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .modal-detalles {
+            margin-bottom: 25px;
+        }
+
+        .modal-detalle-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-detalle-label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .modal-detalle-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .modal-descripcion {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .adoptar-btn {
+            width: 100%;
+            background-color: #7cc144;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .adoptar-btn:hover {
+            background-color: #5fa230;
+            transform: scale(1.02);
+        }
+
+        /* DONAR PAGE */
+        .donar-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .donar-intro h2 {
+            font-size: 32px;
+            color: #7cc144;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .donar-intro p {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .donacion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .monto-opciones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .monto-btn {
+            padding: 15px;
+            border: 2px solid #7cc144;
+            background-color: white;
+            color: #7cc144;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .monto-btn:hover,
+        .monto-btn.selected {
+            background-color: #7cc144;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .donacion-info {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #7cc144;
+        }
+
+        .donacion-info h3 {
+            color: #7cc144;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .donacion-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .donacion-info li {
+            padding: 10px 0;
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .donacion-info li:before {
+            content: "✓ ";
+            color: #7cc144;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-message {
+            background-color: #7cc144;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(124, 193, 68, 0.3);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-menu {
+                justify-content: center;
+            }
+
+            .nav-btn {
+                font-size: 14px;
+                padding: 8px 18px;
+            }
+
+            .welcome-text {
+                font-size: 28px;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .vision-content {
+                padding: 30px 20px;
+            }
+
+            .vision-title {
+                font-size: 28px;
+            }
+
+            .mascotas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .donacion-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .monto-opciones {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                margin: 10px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .modal-mascota-nombre {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <img src="Logo.png" alt="Logo Mascotas" width="100" height="100">
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="navigateTo('adoptar')">Adoptar</button>
+            <button class="nav-btn" onclick="navigateTo('donar')">Donar</button>
+            <button class="nav-btn" onclick="navigateTo('vision')">Visión</button>
+        </nav>
+        <div class="user-section" onclick="navigateTo('registro')">
+            <span>Usuario</span>
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <div class="welcome-section">
+                <img src="Mascotas_Bienvenida.jpg" alt="Animales"  width="300" height="500">
+                <h1 class="welcome-text">¡Bienvenido Usuario!</h1>
+                <p class="welcome-description">
+                    Encuentra tu compañero perfecto en UMascotas. Conectamos mascotas en busca de un hogar con estudiantes dispuestos a brindarles amor y cuidado. ¡Adopta, dona y cambia una vida hoy!
+                </p>
+            </div>
+        </div>
+
+        <!-- REGISTRO PAGE -->
+        <div id="registro" class="page">
+            <div class="form-container">
+                <h2 class="form-title">Registro de Usuario</h2>
+                <form id="registroForm" onsubmit="handleRegistro(event)">
+                    <div class="form-group">
+                        <label class="form-label">Nombre Completo *</label>
+                        <input type="text" class="form-input" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Correo Electrónico *</label>
+                        <input type="email" class="form-input" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contraseña *</label>
+                        <input type="password" class="form-input" name="password" id="password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirmar Contraseña *</label>
+                        <input type="password" class="form-input" name="confirmPassword" id="confirmPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Teléfono *</label>
+                        <input type="tel" class="form-input" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dirección *</label>
+                        <textarea class="form-input" name="direccion" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Registrarse</button>
+                </form>
+                <div class="form-footer">
+                    <p>¿Ya tienes cuenta? <a href="#" onclick="navigateTo('home'); return false;">Inicia sesión</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISION PAGE -->
+        <div id="vision" class="page">
+            <div class="vision-content">
+                <h1 class="vision-title">Nuestra Visión</h1>
+                
+                <div class="vision-section">
+                    <h2 class="section-title">🎯 Misión</h2>
+                    <p class="section-text">
+                        Conectar mascotas en situación de abandono con estudiantes dispuestos a brindarles un hogar lleno de amor y cuidado. Promovemos la adopción responsable y el bienestar animal en nuestra comunidad universitaria.
+                    </p>
+                </div>
+
+                <div class="vision-section">
+                    <h2 class="section-title">🌟 Visión</h2>
+                    <p class="section-text">
+                        Ser la plataforma líder de adopción de mascotas a nivel universitario, logrando que cada animal encuentre un hogar amoroso y fomentando una cultura de responsabilidad y cuidado animal.
+                    </p>
+                </div>
+
+                <div class="vision-section">
+                    <h2 class="section-title">💎 Nuestros Valores</h2>
+                    <div class="valores-grid">
+                        <div class="valor-card">
+                            <div class="valor-icon">❤️</div>
+                            <h3 class="valor-nombre">Amor y Compasión</h3>
+                            <p class="valor-descripcion">Tratamos a cada mascota con amor y respeto</p>
+                        </div>
+                        <div class="valor-card">
+                            <div class="valor-icon">🤝</div>
+                            <h3 class="valor-nombre">Responsabilidad</h3>
+                            <p class="valor-descripcion">Promovemos la adopción responsable y el cuidado permanente</p>
+                        </div>
+                        <div class="valor-card">
+                            <div class="valor-icon">💪</div>
+                            <h3 class="valor-nombre">Compromiso</h3>
+                            <p class="valor-descripcion">Nos comprometemos con el bienestar de cada animal</p>
+                        </div>
+                        <div class="valor-card">
+                            <div class="valor-icon">🔍</div>
+                            <h3 class="valor-nombre">Transparencia</h3>
+                            <p class="valor-descripcion">Información clara sobre cada mascota y el proceso de adopción</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADOPTAR PAGE -->
+        <div id="adoptar" class="page">
+            <h1 class="page-title">Mascotas Disponibles para Adopción</h1>
+            <div class="mascotas-grid" id="mascotasGrid"></div>
+        </div>
+
+        <!-- DONAR PAGE -->
+        <div id="donar" class="page">
+            <div class="donar-intro">
+                <h2>Apoya Nuestra Causa</h2>
+                <p>
+                    Tu donación nos ayuda a continuar conectando mascotas con estudiantes amorosos. Cada contribución se destina al cuidado, alimentación y atención veterinaria de nuestras mascotas en espera de adopción.
+                </p>
+            </div>
+
+            <div class="donacion-grid">
+                <div class="form-container">
+                    <h3 class="form-title">Formulario de Donación</h3>
+                    <form id="donarForm" onsubmit="handleDonar(event)">
+                        <div class="form-group">
+                            <label class="form-label">Nombre del Donante *</label>
+                            <input type="text" class="form-input" name="nombreDonante" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico *</label>
+                            <input type="email" class="form-input" name="emailDonante" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Selecciona el Monto *</label>
+                            <div class="monto-opciones">
+                                <button type="button" class="monto-btn" onclick="selectMonto(10)">$10000</button>
+                                <button type="button" class="monto-btn" onclick="selectMonto(25)">$25000</button>
+                                <button type="button" class="monto-btn" onclick="selectMonto(50)">$50000</button>
+                                <button type="button" class="monto-btn" onclick="selectMonto(100)">$100000</button>
+                            </div>
+                            <input type="number" class="form-input" name="montoOtro" placeholder="Otro monto" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Método de Pago *</label>
+                            <select class="form-input" name="metodoPago" required>
+                                <option value="">Selecciona un método</option>
+                                <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                <option value="paypal">PayPal</option>
+                                <option value="transferencia">Transferencia Bancaria</option>
+                                <option value="efectivo">Efectivo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mensaje Opcional</label>
+                            <textarea class="form-input" name="mensaje" rows="4" placeholder="Deja un mensaje de apoyo..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Donar Ahora</button>
+                    </form>
+                </div>
+
+                <div class="donacion-info">
+                    <h3>¿Qué hacemos con tu donación?</h3>
+                    <ul>
+                        <li>Atención veterinaria completa para todas las mascotas</li>
+                        <li>Vacunación y desparasitación regular</li>
+                        <li>Alimentación de calidad y balanceada</li>
+                        <li>Refugio temporal seguro y confortable</li>
+                        <li>Esterilización y control reproductivo</li>
+                        <li>Programas de socialización y entrenamiento</li>
+                        <li>Campañas de concientización sobre adopción responsable</li>
+                        <li>Mantenimiento de nuestra plataforma y servicios</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA DETALLES DE MASCOTA -->
+    <div id="mascotaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img id="modalImage" src="" alt="" class="modal-image">
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h2 id="modalNombre" class="modal-mascota-nombre"></h2>
+                <div class="modal-detalles">
+                    <div class="modal-detalle-item">
+                        <span class="modal-detalle-label">Raza:</span>
+                        <span id="modalRaza" class="modal-detalle-value"></span>
+                    </div>
+                    <div class="modal-detalle-item">
+                        <span class="modal-detalle-label">Edad:</span>
+                        <span id="modalEdad" class="modal-detalle-value"></span>
+                    </div>
+                    <div class="modal-detalle-item">
+                        <span class="modal-detalle-label">Vacunado:</span>
+                        <span id="modalVacunado" class="modal-detalle-value"></span>
+                    </div>
+                    <div class="modal-detalle-item">
+                        <span class="modal-detalle-label">Color:</span>
+                        <span id="modalColor" class="modal-detalle-value"></span>
+                    </div>
+                </div>
+                <p id="modalDescripcion" class="modal-descripcion"></p>
+                <button class="adoptar-btn" onclick="handleAdoptar()">¡Quiero Adoptar a esta Mascota!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de mascotas
+        const mascotas = [
+            {
+                id: 1,
+                nombre: 'Luna',
+                raza: 'Golden Retriever',
+                edad: '2 años',
+                vacunado: 'Sí',
+                descripcion: 'Perrita amigable y cariñosa, perfecta para familias con niños. Le encanta jugar y es muy obediente.',
+                color: 'dorado',
+                imagen: 'https://pplx-res.cloudinary.com/image/upload/v1754745727/pplx_project_search_images/dcdb0b04d39ff9b19ae8bdf6fcc32818e59eb70c.png'
+            },
+            {
+                id: 2,
+                nombre: 'Max',
+                raza: 'Labrador Retriever',
+                edad: '8 meses',
+                vacunado: 'Sí',
+                descripcion: 'Cachorro juguetón y lleno de energía, le encanta correr y jugar al aire libre. Muy sociable con otros perros.',
+                color: 'crema',
+                imagen: 'https://pplx-res.cloudinary.com/image/upload/v1757048404/pplx_project_search_images/ecd33e1f71a309a31f953892dcddc342b7041ea7.png'
+            },
+            {
+                id: 3,
+                nombre: 'Rocky',
+                raza: 'Beagle',
+                edad: '3 años',
+                vacunado: 'Sí',
+                descripcion: 'Perro tranquilo y leal, excelente compañero para todas las edades. Muy cariñoso y adaptable.',
+                color: 'tricolor',
+                imagen: 'https://pplx-res.cloudinary.com/image/upload/v1759766778/pplx_project_search_images/274cae1a6ee7659fc385c8715190943574aac23b.png'
+            },
+            {
+                id: 4,
+                nombre: 'Kira',
+                raza: 'Husky Siberiano',
+                edad: '1 año',
+                vacunado: 'Sí',
+                descripcion: 'Muy activa y sociable, ideal para personas con estilo de vida dinámico. Le encanta el ejercicio y la aventura.',
+                color: 'gris y blanco',
+                imagen: 'https://pplx-res.cloudinary.com/image/upload/v1755200326/pplx_project_search_images/a370440ed3571140214b89818ad0fca6fb7152d1.png'
+            },
+            {
+                id: 5,
+                nombre: 'Bruno',
+                raza: 'Bulldog Francés',
+                edad: '4 años',
+                vacunado: 'Sí',
+                descripcion: 'Cariñoso y adaptable, perfecto para departamentos y espacios pequeños. Tranquilo pero juguetón.',
+                color: 'gris',
+                imagen: 'https://pplx-res.cloudinary.com/image/upload/v1755006174/pplx_project_search_images/59cb604d50d5e310f28d404349c2c53cf7713061.png'
+            }
+        ];
+
+        // Variables de estado
+        let currentPage = 'home';
+        let selectedMascota = null;
+        let selectedMonto = null;
+
+        // Función para navegar entre páginas
+        function navigateTo(page) {
+            // Ocultar todas las páginas
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            // Mostrar la página seleccionada
+            document.getElementById(page).classList.add('active');
+            currentPage = page;
+            
+            // Scroll al inicio
+            window.scrollTo(0, 0);
+        }
+
+        // Renderizar mascotas
+        function renderMascotas() {
+            const grid = document.getElementById('mascotasGrid');
+            grid.innerHTML = mascotas.map(mascota => `
+                <div class="mascota-card">
+                    <img src="${mascota.imagen}" alt="${mascota.nombre}" class="mascota-image">
+                    <div class="mascota-info">
+                        <h3 class="mascota-nombre">${mascota.nombre}</h3>
+                        <div class="mascota-detalles">
+                            <div class="detalle-item">
+                                <span class="detalle-label">Raza:</span>
+                                <span class="detalle-value">${mascota.raza}</span>
+                            </div>
+                            <div class="detalle-item">
+                                <span class="detalle-label">Edad:</span>
+                                <span class="detalle-value">${mascota.edad}</span>
+                            </div>
+                            <div class="detalle-item">
+                                <span class="detalle-label">Vacunado:</span>
+                                <span class="detalle-value">${mascota.vacunado}</span>
+                            </div>
+                        </div>
+                        <p class="mascota-descripcion">${mascota.descripcion}</p>
+                        <button class="ver-detalles-btn" onclick="openModal(${mascota.id})">Ver Detalles</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Abrir modal con detalles de mascota
+        function openModal(id) {
+            selectedMascota = mascotas.find(m => m.id === id);
+            if (!selectedMascota) return;
+
+            document.getElementById('modalImage').src = selectedMascota.imagen;
+            document.getElementById('modalImage').alt = selectedMascota.nombre;
+            document.getElementById('modalNombre').textContent = selectedMascota.nombre;
+            document.getElementById('modalRaza').textContent = selectedMascota.raza;
+            document.getElementById('modalEdad').textContent = selectedMascota.edad;
+            document.getElementById('modalVacunado').textContent = selectedMascota.vacunado;
+            document.getElementById('modalColor').textContent = selectedMascota.color;
+            document.getElementById('modalDescripcion').textContent = selectedMascota.descripcion;
+
+            document.getElementById('mascotaModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            document.getElementById('mascotaModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            selectedMascota = null;
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('mascotaModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Manejar adopción
+        function handleAdoptar() {
+            if (selectedMascota) {
+                alert(`¡Felicidades! Has iniciado el proceso de adopción de ${selectedMascota.nombre}. Pronto nos pondremos en contacto contigo.`);
+                closeModal();
+            }
+        }
+
+        // Manejar formulario de registro
+        function handleRegistro(event) {
+            event.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Las contraseñas no coinciden. Por favor, verifica e intenta nuevamente.');
+                return;
+            }
+            
+            const formData = new FormData(event.target);
+            const nombre = formData.get('nombre');
+            
+            // Mostrar mensaje de éxito
+            const successMsg = document.createElement('div');
+            successMsg.className = 'success-message';
+            successMsg.textContent = `¡Registro exitoso! Bienvenido/a ${nombre} a UMascotas.`;
+            
+            const container = document.querySelector('#home .welcome-section');
+            container.insertBefore(successMsg, container.firstChild);
+            
+            // Actualizar nombre de usuario en header
+            document.querySelector('.user-section span').textContent = nombre.split(' ')[0];
+            
+            // Redirigir al home después de 2 segundos
+            setTimeout(() => {
+                navigateTo('home');
+                setTimeout(() => {
+                    successMsg.remove();
+                }, 3000);
+            }, 2000);
+            
+            // Limpiar formulario
+            event.target.reset();
+        }
+
+        // Seleccionar monto de donación
+        function selectMonto(monto) {
+            selectedMonto = monto;
+            
+            // Actualizar estilos de botones
+            document.querySelectorAll('.monto-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            // Limpiar campo de otro monto
+            document.querySelector('input[name="montoOtro"]').value = '';
+        }
+
+        // Manejar formulario de donación
+        function handleDonar(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const nombre = formData.get('nombreDonante');
+            const montoOtro = formData.get('montoOtro');
+            const monto = montoOtro || selectedMonto;
+            
+            if (!monto) {
+                alert('Por favor selecciona o ingresa un monto para donar.');
+                return;
+            }
+            
+            alert(`¡Gracias ${nombre}! Tu donación de $${monto} será de gran ayuda para nuestras mascotas. Serás redirigido a la página de pago.`);
+            
+            // Limpiar formulario
+            event.target.reset();
+            selectedMonto = null;
+            document.querySelectorAll('.monto-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+        }
+
+        // Inicializar la aplicación
+        window.addEventListener('DOMContentLoaded', function() {
+            renderMascotas();
+        });
+    </script>
+</body>
+</html>
