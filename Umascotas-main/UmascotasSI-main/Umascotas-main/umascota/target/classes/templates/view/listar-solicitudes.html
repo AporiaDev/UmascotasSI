@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Solicitudes - U-Mascota</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navegación -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-blue-600">
+                        <i class="fas fa-paw mr-2"></i>U-Mascota
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/listar-mascotas" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-list mr-1"></i>Ver Mascotas
+                    </a>
+                    <a href="/" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-home mr-1"></i>Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="max-w-7xl mx-auto py-8 px-4">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">
+                    <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+                    Lista de Solicitudes de Adopción
+                </h1>
+                <div class="flex space-x-4">
+                    <button onclick="cargarSolicitudes()" 
+                            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        <i class="fas fa-refresh mr-1"></i>Actualizar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="filtroEstado" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-filter mr-1"></i>Filtrar por Estado
+                        </label>
+                        <select id="filtroEstado" onchange="filtrarSolicitudes()"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Todos los estados</option>
+                            <option value="PENDIENTE">Pendiente</option>
+                            <option value="ACEPTADA">Aceptada</option>
+                            <option value="RECHAZADA">Rechazada</option>
+                            <option value="CANCELADA">Cancelada</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="buscarMascota" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-search mr-1"></i>Buscar por Mascota
+                        </label>
+                        <input type="text" id="buscarMascota" onkeyup="filtrarSolicitudes()"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                               placeholder="Nombre de la mascota...">
+                    </div>
+                    <div>
+                        <label for="buscarUsuario" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-user mr-1"></i>Buscar por Usuario
+                        </label>
+                        <input type="text" id="buscarUsuario" onkeyup="filtrarSolicitudes()"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                               placeholder="Nombre del usuario...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading spinner -->
+            <div id="loading" class="text-center py-8 hidden">
+                <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
+                <p class="mt-2 text-gray-600">Cargando solicitudes...</p>
+            </div>
+
+            <!-- Mensaje de error -->
+            <div id="errorMensaje" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <span id="errorTexto"></span>
+            </div>
+
+            <!-- Lista de solicitudes -->
+            <div id="solicitudesContainer" class="space-y-4">
+                <!-- Las solicitudes se cargarán aquí dinámicamente -->
+            </div>
+
+            <!-- Mensaje cuando no hay solicitudes -->
+            <div id="sinSolicitudes" class="text-center py-12 hidden">
+                <i class="fas fa-file-alt text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">No hay solicitudes registradas</h3>
+                <p class="text-gray-500 mb-6">Aún no se han realizado solicitudes de adopción.</p>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/listar-solicitudes.js}"></script>
+</body>
+</html>
+

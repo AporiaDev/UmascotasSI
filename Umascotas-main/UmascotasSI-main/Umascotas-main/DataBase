@@ -1,0 +1,178 @@
+---------------------------------------------------------------------------------------------
+-- ================================================
+-- Esquema MySQL para proyecto de adopción y donaciones
+-- Basado en el diagrama UML acordado (rol como ENUM ADMIN/USUARIO)
+-- Charset: utf8mb4
+-- Requiere MySQL >= 5.7 para JSON
+-- ================================================
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- =========================
+-- Tabla: usuarios
+-- =========================
+CREATE TABLE IF NOT EXISTS usuarios (
+    id_usuario BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre_completo VARCHAR(255) NOT NULL,
+    correo_electronico VARCHAR(255) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    telefono VARCHAR(30),
+    ciudad VARCHAR(100),
+    direccion VARCHAR(255),
+    documento_identidad VARCHAR(100),
+    rol ENUM('ADMIN','USUARIO') NOT NULL DEFAULT 'USUARIO',
+    email_verified TINYINT(1) DEFAULT 0,
+    notifications_enabled TINYINT(1) DEFAULT 1,
+    fecha_registro TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: mascotas
+-- =========================
+CREATE TABLE IF NOT EXISTS mascotas (
+    id_mascota BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    especie VARCHAR(100) NOT NULL,
+    raza VARCHAR(100),
+    edad INT,
+    sexo ENUM('MACHO','HEMBRA','OTRO') DEFAULT 'OTRO',
+    tamano ENUM('PEQUEÑO','MEDIANO','GRANDE','OTRO') DEFAULT 'OTRO',
+    descripcion TEXT,
+    estado_salud VARCHAR(200),
+    esterilizado TINYINT(1) DEFAULT 0,
+    foto_url VARCHAR(255),
+    status_publicacion ENUM('DISPONIBLE','RESERVADA','ADOPTADA','NO_DISPONIBLE') DEFAULT 'DISPONIBLE',
+    id_usuario_publica BIGINT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario_publica) REFERENCES usuarios(id_usuario) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: vacunas
+-- =========================
+CREATE TABLE IF NOT EXISTS vacunas (
+    id_vacuna BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_mascota BIGINT NOT NULL,
+    nombre VARCHAR(150) NOT NULL,
+    fecha_aplicacion DATE,
+    notas TEXT,
+    FOREIGN KEY (id_mascota) REFERENCES mascotas(id_mascota) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: fotos_mascota (galería)
+-- =========================
+CREATE TABLE IF NOT EXISTS fotos_mascota (
+    id_foto BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_mascota BIGINT NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255),
+    fecha_subida TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    principal TINYINT(1) DEFAULT 0,
+    FOREIGN KEY (id_mascota) REFERENCES mascotas(id_mascota) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: historial_mascota
+-- =========================
+CREATE TABLE IF NOT EXISTS historial_mascota (
+    id_evento BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_mascota BIGINT NOT NULL,
+    fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    tipo_evento ENUM('VACUNACION','TRATAMIENTO','CAMBIO_ESTADO','ADOPCION','DEVOLUCION','OTRO') NOT NULL,
+    descripcion TEXT,
+    FOREIGN KEY (id_mascota) REFERENCES mascotas(id_mascota) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: solicitudes_adopcion
+-- =========================
+CREATE TABLE IF NOT EXISTS solicitudes_adopcion (
+    id_solicitud BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_mascota_solicitada BIGINT NOT NULL,
+    id_usuario_adoptante BIGINT NOT NULL,
+    fecha_solicitud TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    estado_solicitud ENUM('PENDIENTE','ACEPTADA','RECHAZADA','CANCELADA') NOT NULL DEFAULT 'PENDIENTE',
+    mensaje_adoptante TEXT,
+    fecha_resolucion TIMESTAMP NULL,
+    id_usuario_resolvio BIGINT NULL,
+    FOREIGN KEY (id_mascota_solicitada) REFERENCES mascotas(id_mascota) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario_adoptante) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario_resolvio) REFERENCES usuarios(id_usuario) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: adopciones
+-- =========================
+CREATE TABLE IF NOT EXISTS adopciones (
+    id_adopcion BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_mascota BIGINT NOT NULL UNIQUE,         -- una mascota sólo puede tener una adopción activa
+    id_adoptante BIGINT NOT NULL,
+    id_solicitud BIGINT NULL,
+    fecha_adopcion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    notas TEXT,
+    FOREIGN KEY (id_mascota) REFERENCES mascotas(id_mascota) ON DELETE CASCADE,
+    FOREIGN KEY (id_adoptante) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_solicitud) REFERENCES solicitudes_adopcion(id_solicitud) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: encuesta_post_adopcion
+-- =========================
+CREATE TABLE IF NOT EXISTS encuesta_post_adopcion (
+    id_encuesta BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_solicitud BIGINT NULL,
+    id_adopcion BIGINT NULL,
+    fecha_envio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    respuestas JSON,
+    alerta_critica TINYINT(1) DEFAULT 0,
+    FOREIGN KEY (id_solicitud) REFERENCES solicitudes_adopcion(id_solicitud) ON DELETE SET NULL,
+    FOREIGN KEY (id_adopcion) REFERENCES adopciones(id_adopcion) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: donaciones
+-- =========================
+CREATE TABLE IF NOT EXISTS donaciones (
+    id_donacion BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario_donante BIGINT NULL,
+    monto DECIMAL(12,2) NOT NULL,
+    moneda VARCHAR(3) DEFAULT 'USD',
+    pasarela_pago VARCHAR(100),
+    referencia_pago VARCHAR(255),
+    recibo_url VARCHAR(255),
+    fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('PENDIENTE','COMPLETADA','FALLIDA','REEMBOLSADA') DEFAULT 'PENDIENTE',
+    mensaje_donante TEXT,
+    FOREIGN KEY (id_usuario_donante) REFERENCES usuarios(id_usuario) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Tabla: transacciones
+-- =========================
+CREATE TABLE IF NOT EXISTS transacciones (
+    id_transaccion BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_donacion BIGINT NULL,
+    monto DECIMAL(12,2),
+    moneda VARCHAR(3) DEFAULT 'USD',
+    codigo_autorizacion VARCHAR(255),
+    metodo_pago VARCHAR(100),
+    estado_pasarela VARCHAR(100),
+    referencia_externa VARCHAR(255),
+    fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    detalle JSON,
+    FOREIGN KEY (id_donacion) REFERENCES donaciones(id_donacion) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =========================
+-- Índices recomendados
+-- =========================
+CREATE INDEX idx_mascota_status ON mascotas(status_publicacion);
+CREATE INDEX idx_solicitud_estado ON solicitudes_adopcion(estado_solicitud);
+CREATE INDEX idx_donacion_estado ON donaciones(estado);
+CREATE INDEX idx_vacunas_mascota ON vacunas(id_mascota);
+CREATE INDEX idx_fotos_mascota ON fotos_mascota(id_mascota);
+CREATE INDEX idx_historial_mascota ON historial_mascota(id_mascota);
+
+SET FOREIGN_KEY_CHECKS = 1;

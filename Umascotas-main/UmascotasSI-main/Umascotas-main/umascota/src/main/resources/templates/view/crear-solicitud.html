@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Solicitud de Adopción - U-Mascota</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navegación -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-blue-600">
+                        <i class="fas fa-paw mr-2"></i>U-Mascota
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/listar-mascotas" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-list mr-1"></i>Ver Mascotas
+                    </a>
+                    <a href="/" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-home mr-1"></i>Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="max-w-4xl mx-auto py-8 px-4">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+                <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+                Crear Solicitud de Adopción
+            </h1>
+
+            <!-- Información de la Mascota -->
+            <div id="infoMascota" class="bg-blue-50 rounded-lg p-6 mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-paw text-blue-600 mr-2"></i>Mascota a Adoptar
+                </h2>
+                <div id="detallesMascota" class="space-y-2 text-sm">
+                    <p class="text-gray-600">Cargando información de la mascota...</p>
+                </div>
+            </div>
+
+            <!-- Formulario de Solicitud -->
+            <form id="solicitudForm" class="space-y-6">
+                <input type="hidden" id="idMascota" name="idMascota">
+                
+                <!-- Mensaje del Adoptante -->
+                <div>
+                    <label for="mensajeAdoptante" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-comment text-blue-600 mr-1"></i>Mensaje para el Administrador *
+                    </label>
+                    <textarea id="mensajeAdoptante" name="mensajeAdoptante" rows="6" required
+                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Escribe un mensaje explicando por qué quieres adoptar a esta mascota, tu experiencia con mascotas, y cómo planeas cuidarla..."></textarea>
+                    <p class="mt-1 text-xs text-gray-500">Este mensaje será revisado por el administrador antes de aprobar tu solicitud.</p>
+                </div>
+
+                <!-- Información Adicional (Opcional) -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-info-circle text-blue-600 mr-2"></i>Información Adicional
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                ¿Tienes experiencia previa con mascotas?
+                            </label>
+                            <select id="experiencia" name="experiencia"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Seleccionar...</option>
+                                <option value="Si, tengo mucha experiencia">Sí, tengo mucha experiencia</option>
+                                <option value="Si, tengo algo de experiencia">Sí, tengo algo de experiencia</option>
+                                <option value="No, pero estoy dispuesto a aprender">No, pero estoy dispuesto a aprender</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                ¿Tienes otras mascotas en casa?
+                            </label>
+                            <select id="otrasMascotas" name="otrasMascotas"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Seleccionar...</option>
+                                <option value="Si">Sí</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                    <button type="submit" 
+                            class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition duration-200 font-medium">
+                        <i class="fas fa-paper-plane mr-2"></i>Enviar Solicitud
+                    </button>
+                    <button type="button" onclick="limpiarFormulario()"
+                            class="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 transition duration-200 font-medium">
+                        <i class="fas fa-eraser mr-2"></i>Limpiar
+                    </button>
+                    <a href="/listar-mascotas"
+                       class="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 transition duration-200 font-medium text-center">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver a Mascotas
+                    </a>
+                </div>
+            </form>
+
+            <!-- Mensaje de éxito/error -->
+            <div id="mensaje" class="mt-6 hidden">
+                <div id="mensajeContenido" class="p-4 rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/crear-solicitud.js}"></script>
+</body>
+</html>
+
