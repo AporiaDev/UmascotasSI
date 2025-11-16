@@ -1,0 +1,668 @@
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #000;
+        }
+
+        .header {
+            background-color: #7cc144;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background-color: white;
+            color: #7cc144;
+            border: 2px solid #7cc144;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #7cc144;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-section:hover {
+            background-color: #5fa230;
+        }
+
+        .user-icon {
+            width: 35px;
+            height: 35px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7cc144;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* HOME PAGE */
+        .welcome-section {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .welcome-image {
+        max-width: 500px;
+        width: 100%;
+        height: auto;
+        border-radius: 0;     /* quita bordes redondeados */
+        box-shadow: none;     /* quita el recuadro/sombra */
+        }
+
+        .welcome-text {
+            font-size: 36px;
+            color: #7cc144;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .welcome-description {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* REGISTRATION PAGE */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 28px;
+            color: #7cc144;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #7cc144;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #7cc144;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #5fa230;
+            transform: scale(1.02);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .form-footer a {
+            color: #7cc144;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* VISION PAGE */
+        .vision-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .vision-title {
+            text-align: center;
+            font-size: 36px;
+            color: #7cc144;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        .vision-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #7cc144;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .section-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+
+        .valores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .valor-card {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #7cc144;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .valor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(124, 193, 68, 0.2);
+        }
+
+        .valor-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .valor-nombre {
+            font-size: 20px;
+            color: #7cc144;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .valor-descripcion {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* ADOPTAR PAGE */
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            color: #7cc144;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        .mascotas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .mascota-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .mascota-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .mascota-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .mascota-info {
+            padding: 20px;
+        }
+
+        .mascota-nombre {
+            font-size: 24px;
+            color: #7cc144;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .mascota-detalles {
+            margin-bottom: 15px;
+        }
+
+        .detalle-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 14px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detalle-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detalle-value {
+            color: #333;
+        }
+
+        .mascota-descripcion {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .ver-detalles-btn {
+            width: 100%;
+            background-color: #7cc144;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ver-detalles-btn:hover {
+            background-color: #5fa230;
+            transform: scale(1.02);
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            overflow: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20px;
+            padding: 0;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            position: relative;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: white;
+            color: #333;
+            border: none;
+            font-size: 32px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background-color: #7cc144;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-mascota-nombre {
+            font-size: 32px;
+            color: #7cc144;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .modal-detalles {
+            margin-bottom: 25px;
+        }
+
+        .modal-detalle-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-detalle-label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .modal-detalle-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .modal-descripcion {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .adoptar-btn {
+            width: 100%;
+            background-color: #7cc144;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .adoptar-btn:hover {
+            background-color: #5fa230;
+            transform: scale(1.02);
+        }
+
+        /* DONAR PAGE */
+        .donar-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .donar-intro h2 {
+            font-size: 32px;
+            color: #7cc144;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .donar-intro p {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .donacion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .monto-opciones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .monto-btn {
+            padding: 15px;
+            border: 2px solid #7cc144;
+            background-color: white;
+            color: #7cc144;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .monto-btn:hover,
+        .monto-btn.selected {
+            background-color: #7cc144;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .donacion-info {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #7cc144;
+        }
+
+        .donacion-info h3 {
+            color: #7cc144;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .donacion-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .donacion-info li {
+            padding: 10px 0;
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .donacion-info li:before {
+            content: "✓ ";
+            color: #7cc144;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-message {
+            background-color: #7cc144;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(124, 193, 68, 0.3);
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-menu {
+                justify-content: center;
+            }
+
+            .nav-btn {
+                font-size: 14px;
+                padding: 8px 18px;
+            }
+
+            .welcome-text {
+                font-size: 28px;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .vision-content {
+                padding: 30px 20px;
+            }
+
+            .vision-title {
+                font-size: 28px;
+            }
+
+            .mascotas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .donacion-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .monto-opciones {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                margin: 10px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .modal-mascota-nombre {
+                font-size: 24px;
+            }
+        }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMascotas - Donar</title>
+    <link rel="icon" type="image/png" href="../img/Logo.png">
+    <link rel="stylesheet" href="../css/Style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+              <a href="../html/Home.html"><img src="../img/Logo.png" alt="Logo Mascotas" width="100" height="100"></a>
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="window.location.href='Adoptar.html'">Adoptar</button>
+            <button class="nav-btn" onclick="window.location.href='Donar.html'">Donar</button>
+            <button class="nav-btn" onclick="window.location.href='Vision.html'">Visión</button>
+        </nav>
+        <div class="user-section" onclick="window.location.href='../html/Login.html'">
+            <span>Usuario</span>
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="donar" class="page active">
+            <div class="donar-intro">
+                <h2>Apoya Nuestra Causa</h2>
+                <p>
+                    Tu donación nos ayuda a continuar conectando mascotas con estudiantes amorosos. Cada contribución se destina al cuidado, alimentación y atención veterinaria de nuestras mascotas en espera de adopción.
+                </p>
+            </div>
+
+            <div class="donacion-grid">
+                <div class="form-container">
+                    <h3 class="form-title">Formulario de Donación</h3>
+                    <form id="donarForm" onsubmit="handleDonar(event)">
+                        <div class="form-group">
+                            <label class="form-label">Nombre del Donante *</label>
+                            <input type="text" class="form-input" name="nombreDonante" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico *</label>
+                            <input type="email" class="form-input" name="emailDonante" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Selecciona el Monto *</label>
+                            <div class="monto-opciones">
+                                <button type="button" class="monto-btn" data-monto="10000">$10000</button>
+                                <button type="button" class="monto-btn" data-monto="25000">$25000</button>
+                                <button type="button" class="monto-btn" data-monto="50000">$50000</button>
+                                <button type="button" class="monto-btn" data-monto="100000">$100000</button>
+                            </div>
+                            <input type="number" class="form-input" name="montoOtro" placeholder="Otro monto" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Método de Pago *</label>
+                            <select class="form-input" name="metodoPago" required>
+                                <option value="">Selecciona un método</option>
+                                <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                <option value="paypal">PayPal</option>
+                                <option value="transferencia">Transferencia Bancaria</option>
+                                <option value="efectivo">Efectivo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mensaje Opcional</label>
+                            <textarea class="form-input" name="mensaje" rows="4" placeholder="Deja un mensaje de apoyo..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Donar Ahora</button>
+                    </form>
+                </div>
+
+                <div class="donacion-info">
+                    <h3>¿Qué hacemos con tu donación?</h3>
+                    <ul>
+                        <li>Atención veterinaria completa para todas las mascotas</li>
+                        <li>Vacunación y desparasitación regular</li>
+                        <li>Alimentación de calidad y balanceada</li>
+                        <li>Refugio temporal seguro y confortable</li>
+                        <li>Esterilización y control reproductivo</li>
+                        <li>Programas de socialización y entrenamiento</li>
+                        <li>Campañas de concientización sobre adopción responsable</li>
+                        <li>Mantenimiento de nuestra plataforma y servicios</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
+
+

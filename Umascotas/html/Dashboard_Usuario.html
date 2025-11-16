@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMascotas - Dashboard Usuario</title>
+    <link rel="icon" type="image/png" href="../img/Logo.png">
+    <link rel="stylesheet" href="../css/Style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <a href="../html/Home.html">
+                <img src="../img/Logo.png" alt="Logo Mascotas" width="100" height="100">
+            </a>
+        </div>
+
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="window.location.href='../html/ListarMascotas.html'">Mascotas</button>
+            <button class="nav-btn" onclick="window.location.href='../html/ListarSolicitudes.html'">Solicitudes</button>
+        </nav>
+
+        <div class="user-section" onclick="window.location.href='../html/Login.html'">
+            <span>Salir</span>
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container">
+
+        <!-- TÍTULO -->
+        <div class="form-container" style="margin-bottom: 30px;">
+            <h2 class="form-title">Dashboard Usuario</h2>
+            <p style="text-align: center; color: #444;">Gestiona tus solicitudes y adopciones</p>
+        </div>
+
+        <!-- TARJETAS DE ESTADÍSTICAS -->
+        <div class="stats-grid">
+
+            <div class="stat-card purple">
+                <h3>Mis Mascotas Disponibles</h3>
+                <p id="totalMascotas">-</p>
+            </div>
+
+            <div class="stat-card blue">
+                <h3>Mis Solicitudes</h3>
+                <p id="misSolicitudes">-</p>
+            </div>
+
+            <div class="stat-card green">
+                <h3>Solicitudes Aceptadas</h3>
+                <p id="solicitudesAceptadas">-</p>
+            </div>
+
+            <div class="stat-card orange">
+                <h3>Solicitudes Pendientes</h3>
+                <p id="solicitudesPendientes">-</p>
+            </div>
+        </div>
+
+        <!-- ACCIONES RÁPIDAS -->
+        <div class="actions-grid">
+
+            <div class="action-box">
+                <h3>Explorar Mascotas</h3>
+                <p>Descubre mascotas que buscan un hogar lleno de amor.</p>
+                <button class="submit-btn" onclick="window.location.href='../html/ListarMascotas.html'">Ver Mascotas</button>
+            </div>
+
+            <div class="action-box">
+                <h3>Mis Solicitudes</h3>
+                <p>Revisa y administra tus solicitudes de adopción.</p>
+                <button class="submit-btn" onclick="window.location.href='../html/ListarSolicitudes.html'">Ver Solicitudes</button>
+            </div>
+
+        </div>
+
+        <!-- SOLICITUDES PENDIENTES -->
+        <div class="list-box">
+            <div class="list-box-header">
+                <h3>Solicitudes Pendientes</h3>
+                <a href="../html/ListarSolicitudes.html">Ver todas →</a>
+            </div>
+            <div id="solicitudesPendientesList" class="list-content">
+                <p class="loading">Cargando solicitudes...</p>
+            </div>
+        </div>
+
+        <!-- MASCOTAS RECIENTES -->
+        <div class="list-box">
+            <div class="list-box-header">
+                <h3>Mascotas Recientes</h3>
+                <a href="../html/ListarMascotas.html">Ver todas →</a>
+            </div>
+            <div id="mascotasRecientes" class="grid-cards">
+                <p class="loading">Cargando mascotas...</p>
+            </div>
+        </div>
+
+        <!-- MASCOTAS ADOPTADAS -->
+        <div class="list-box">
+            <div class="list-box-header">
+                <h3>Mascotas Adoptadas</h3>
+                <a href="../html/ListarAdopciones.html">Ver todas →</a>
+            </div>
+            <div id="mascotasAdoptadas" class="grid-cards">
+                <p class="loading">Cargando adopciones...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../js/dashboard-usuario.js"></script>
+</body>
+</html>

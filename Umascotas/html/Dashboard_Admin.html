@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMascotas - Panel de Administración</title>
+    <link rel="icon" type="image/png" href="../img/Logo.png">
+    <link rel="stylesheet" href="../css/Style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <a href="../html/Home.html">
+                <img src="../img/Logo.png" alt="Logo Mascotas" width="100" height="100">
+            </a>
+        </div>
+
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="window.location.href='../html/ListarMascotas.html'">Mascotas</button>
+            <button class="nav-btn" onclick="window.location.href='../html/ListarSolicitudes.html'">Solicitudes</button>
+            <button class="nav-btn" onclick="window.location.href='../html/Registrar_Mascota.html'">Nueva Mascota</button>
+        </nav>
+
+        <div class="user-section" onclick="window.location.href='../html/Login.html'">
+            <span>Salir</span>
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container">
+
+        <!-- TÍTULO -->
+        <div class="form-container" style="margin-bottom: 30px;">
+            <h2 class="form-title">Panel de Administración</h2>
+            <p style="text-align: center; color: #444;">Gestiona mascotas, solicitudes y adopciones</p>
+        </div>
+
+        <!-- TARJETAS DE ESTADÍSTICAS -->
+        <div class="stats-grid">
+
+            <div class="stat-card purple">
+                <h3>Total Mascotas</h3>
+                <p id="totalMascotas">-</p>
+            </div>
+
+            <div class="stat-card blue">
+                <h3>Solicitudes</h3>
+                <p id="totalSolicitudes">-</p>
+            </div>
+
+            <div class="stat-card green">
+                <h3>Aceptadas</h3>
+                <p id="solicitudesAceptadas">-</p>
+            </div>
+
+            <div class="stat-card orange">
+                <h3>Pendientes</h3>
+                <p id="solicitudesPendientes">-</p>
+            </div>
+        </div>
+
+        <!-- ACCIONES RÁPIDAS -->
+        <div class="actions-grid">
+
+            <div class="action-box">
+                <h3>Nueva Mascota</h3>
+                <p>Registra una nueva mascota en el sistema.</p>
+                <button class="submit-btn" onclick="window.location.href='../html/Registrar_Mascota.html'">Crear Mascota</button>
+            </div>
+
+            <div class="action-box">
+                <h3>Solicitudes</h3>
+                <p>Revisa y aprueba solicitudes de adopción.</p>
+                <button class="submit-btn" onclick="window.location.href='../html/ListarSolicitudes.html'">Ver Solicitudes</button>
+            </div>
+
+            <div class="action-box">
+                <h3>Mascotas</h3>
+                <p>Administra todas las mascotas registradas.</p>
+                <button class="submit-btn" onclick="window.location.href='../html/ListarMascotas.html'">Ver Mascotas</button>
+            </div>
+
+            <div class="action-box">
+                <h3>Adoptadas</h3>
+                <p>Gestiona las mascotas que han sido adoptadas.</p>
+                <button class="submit-btn" onclick="window.location.href='../html/ListarAdopciones.html'">Ver Adopciones</button>
+            </div>
+
+        </div>
+
+        <!-- SOLICITUDES PENDIENTES -->
+        <div class="list-box">
+            <div class="list-box-header">
+                <h3>Solicitudes Pendientes</h3>
+                <a href="../html/ListarSolicitudes.html">Ver todas →</a>
+            </div>
+            <div id="solicitudesPendientesList" class="list-content">
+                <p class="loading">Cargando solicitudes...</p>
+            </div>
+        </div>
+
+        <!-- MASCOTAS RECIENTES -->
+        <div class="list-box">
+            <div class="list-box-header">
+                <h3>Mascotas Recientes</h3>
+                <a href="../html/ListarMascotas.html">Ver todas →</a>
+            </div>
+            <div id="mascotasRecientes" class="grid-cards">
+                <p class="loading">Cargando mascotas...</p>
+            </div>
+        </div>
+
+        <!-- MASCOTAS ADOPTADAS -->
+        <div class="list-box">
+            <div class="list-box-header">
+                <h3>Mascotas Adoptadas</h3>
+                <a href="../html/ListarAdopciones.html">Ver todas →</a>
+            </div>
+            <div id="mascotasAdoptadas" class="grid-cards">
+                <p class="loading">Cargando adopciones...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../js/dashboard-admin.js"></script>
+</body>
+</html>

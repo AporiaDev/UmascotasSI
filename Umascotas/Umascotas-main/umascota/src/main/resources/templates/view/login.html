@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-96">
+        <h1 class="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h1>
+        
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label class="block text-gray-700">Correo Electrónico</label>
+                <input type="email" name="correoElectronico" class="w-full border rounded-lg px-3 py-2" required>
+            </div>
+
+            <div>
+                <label class="block text-gray-700">Contraseña</label>
+                <input type="password" name="contrasena" class="w-full border rounded-lg px-3 py-2" required>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                Ingresar
+            </button>
+        </form>
+    </div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Obtener valores directamente usando querySelector
+    const correo = document.querySelector('input[name="correoElectronico"]').value;
+    const contrasena = document.querySelector('input[name="contrasena"]').value;
+
+    const data = {
+        correoElectronico: correo,
+        contrasena: contrasena
+    };
+
+    try {
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+    // Leer el texto devuelto por el backend (sea éxito o error)
+        const result = await response.text();
+
+        if (response.ok) {
+            alert("✅ " + result);
+            window.location.href = "/listar-mascotas";
+        } else {
+            // Mostrar el mensaje real que mandó el backend (no el genérico)
+            alert("⚠️ Error del servidor: " + result);
+        }
+
+    } catch (error) {
+        console.error("Error en la petición:", error);
+        alert("❌ Hubo un problema con el login: " + error.message);
+    }
+
+    });
+    </script>
+</body>
+</html>
