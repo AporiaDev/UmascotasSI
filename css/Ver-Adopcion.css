@@ -1,0 +1,42 @@
+/* Caja de detalles de adopción */
+.details-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+.details-container h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Botones */
+.details-container .submit-btn {
+    background-color: #aee666;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.details-container .submit-btn:hover {
+    background-color: #0c874c;
+}
+
+/* Estilo para los enlaces de los detalles */
+.details-container a {
+    font-size: 14px;
+    color: #3b82f6;
+}
+
+.details-container a:hover {
+    color: #2563eb;
+}

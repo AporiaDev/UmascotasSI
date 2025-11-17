@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMascotas - Adoptar</title>
+    <link rel="icon" type="image/png" href="../img/Logo.png">
+    <link rel="stylesheet" href="../css/Style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+              <a href="../html/Home.html"><img src="../img/Logo.png" alt="Logo Mascotas" width="100" height="100"></a>
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="window.location.href='Adoptar.html'">Adoptar</button>
+            <button class="nav-btn" onclick="window.location.href='Donar.html'">Donar</button>
+            <button class="nav-btn" onclick="window.location.href='Vision.html'">Visión</button>
+        </nav>
+        <div class="user-section" onclick="window.location.href='../html/Login.html'">
+            <span>Usuario</span>
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="adoptar" class="page active">
+            <h1 class="page-title">Mascotas Disponibles para Adopción</h1>
+            <div class="mascotas-grid" id="mascotasGrid"></div>
+        </div>
+    </div>
+
+    <div id="mascotaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img id="modalImage" src="" alt="" class="modal-image">
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h2 id="modalNombre" class="modal-mascota-nombre"></h2>
+                <div class="modal-detalles">
+                    <div class="modal-detalle-item">
+                        <span class="modal-detalle-label">Raza:</span>
+                        <span id="modalRaza" class="modal-detalle-value"></span>
+                    </div>
+                    <div class="modal-detalle-item">
+                        <span class="modal-detalle-label">Edad:</span>
+                        <span id="modalEdad" class="modal-detalle-value"></span>
+                    </div>
+                    <div class="modal-detalle-item">
+                        <span class="modal-detalle-label">Vacunado:</span>
+                        <span id="modalVacunado" class="modal-detalle-value"></span>
+                    </div>
+                    <div class="modal-detalle-item">
+                        <span class="modal-detalle-label">Color:</span>
+                        <span id="modalColor" class="modal-detalle-value"></span>
+                    </div>
+                </div>
+                <p id="modalDescripcion" class="modal-descripcion"></p>
+                <button class="adoptar-btn" onclick="handleAdoptar()">¡Quiero Adoptar a esta Mascota!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

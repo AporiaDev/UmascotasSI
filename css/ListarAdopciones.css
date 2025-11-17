@@ -1,0 +1,115 @@
+/* CONTENEDOR PRINCIPAL */
+.user-dashboard {
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+/* TÍTULO */
+.form-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subtitle {
+    color: #6b7280;
+    font-size: 16px;
+}
+
+/* BOTÓN ACTUALIZAR */
+.submit-btn {
+    background-color: #aee666;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #0c874c;
+}
+
+/* CAJA DE FILTROS */
+.filters-container {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-item label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.filter-item select, .filter-item input {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.filter-item select:focus, .filter-item input:focus {
+    border-color: #0f9d58;
+    box-shadow: 0px 0px 0px 3px rgba(15,157,88,0.2);
+}
+
+/* GRID DE ADOPCIONES */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+/* TARJETAS DE ADOPCIÓN */
+.adopcion-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
+    transition: 0.2s;
+}
+
+.adopcion-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 14px rgba(0,0,0,0.12);
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+    .filters-container {
+        flex-direction: column;
+    }
+    .grid-cards {
+        grid-template-columns: 1fr;
+    }
+}
+/* Loading - Cargar adopciones */
+#loading {
+    display: flex;               /* Usa Flexbox */
+    justify-content: center;     /* Centra horizontalmente */
+    align-items: center;         /* Centra verticalmente */
+    text-align: center;          /* Centra el texto */
+    height: 100%;                /* Asegura que ocupe toda la altura del contenedor */
+    padding: 40px 0;             /* Añade espacio superior e inferior */
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    border-radius: 12px;         /* Opcional, para bordes redondeados */
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.08); /* Opcional, sombra suave */
+}
+
+

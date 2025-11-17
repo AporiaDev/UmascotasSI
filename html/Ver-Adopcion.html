@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Adopción - U-Mascota</title>
+    <link rel="icon" type="image/png" href="../img/Logo.png">
+    <link rel="stylesheet" href="../css/Style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <a href="../html/Home.html"><img src="../img/Logo.png" alt="Logo Mascotas" width="100" height="100"></a>
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="window.location.href='../html/Adoptar.html'">Adoptar</button>
+            <button class="nav-btn" onclick="window.location.href='../html/Donar.html'">Donar</button>
+            <button class="nav-btn" onclick="window.location.href='../html/Vision.html'">Visión</button>
+        </nav>
+        <div class="user-section" onclick="window.location.href='../html/Login.html'">
+            <span>Usuario</span>
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container">
+        <table class="w-full table-auto">
+            <!-- TÍTULO -->
+            <tr>
+                <td colspan="3" class="form-container" style="margin-bottom: 30px;">
+                    <h2 class="form-title">Detalles de Adopción #<span id="idAdopcion"></span></h2>
+                    <p style="text-align: center; color: #444;">Información detallada de la adopción</p>
+                </td>
+            </tr>
+
+            <!-- CARGANDO Y ERROR -->
+            <tr>
+                <td colspan="3" id="loading" class="text-center py-12 hidden">
+                    <i class="fas fa-spinner fa-spin text-4xl text-purple-600 mb-4"></i>
+                    <p class="text-gray-600">Cargando adopción...</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" id="errorMensaje" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span id="errorTexto"></span>
+                </td>
+            </tr>
+
+            <!-- DETALLES DE LA ADOPCIÓN -->
+            <tr>
+                <td colspan="3">
+                    <div id="adopcionContainer" class="hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <!-- Información de la Mascota -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                                    <i class="fas fa-paw text-blue-600 mr-2"></i>Mascota Adoptada
+                                </h2>
+                                <div id="infoMascota" class="space-y-2 text-sm">
+                                    <!-- Se llenará dinámicamente -->
+                                </div>
+                                <a id="linkMascota" href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-800 text-sm">
+                                    <i class="fas fa-external-link-alt mr-1"></i>Ver detalles de la mascota
+                                </a>
+                            </div>
+
+                            <!-- Información del Adoptante -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                                    <i class="fas fa-user text-green-600 mr-2"></i>Adoptante
+                                </h2>
+                                <div id="infoAdoptante" class="space-y-2 text-sm">
+                                    <!-- Se llenará dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información de la Solicitud -->
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold text-gray-800 mb-3">
+                                <i class="fas fa-file-alt text-purple-600 mr-2"></i>Información de la Solicitud
+                            </h2>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div id="infoSolicitud" class="space-y-2 text-sm">
+                                    <!-- Se llenará dinámicamente -->
+                                </div>
+                                <a id="linkSolicitud" href="#" class="mt-4 inline-block text-purple-600 hover:text-purple-800 text-sm">
+                                    <i class="fas fa-external-link-alt mr-1"></i>Ver detalles de la solicitud
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Notas -->
+                        <div id="notasContainer" class="mb-6 hidden">
+                            <h2 class="text-xl font-bold text-gray-800 mb-3">
+                                <i class="fas fa-sticky-note text-yellow-600 mr-2"></i>Notas
+                            </h2>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p id="notas" class="text-gray-700"></p>
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="flex space-x-4 pt-6 border-t border-gray-200">
+                            <a href="/adopciones" 
+                               class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 font-medium">
+                                <i class="fas fa-arrow-left mr-2"></i>Volver a Lista
+                            </a>
+                            <button id="btnBorrarAdopcion" onclick="eliminarAdopcion()" 
+                                    class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 font-medium hidden">
+                                <i class="fas fa-trash mr-2"></i>Borrar Adopción
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="../js/ver-adopcion.js"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMascotas - Crear Solicitud de Adopción</title>
+    <link rel="icon" type="image/png" href="../img/Logo.png">
+    <link rel="stylesheet" href="../css/Style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <a href="../html/Home.html"><img src="../img/Logo.png" alt="Logo Mascotas" width="100" height="100"></a>
+        </div>
+
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="window.location.href='Adoptar.html'">Adoptar</button>
+            <button class="nav-btn" onclick="window.location.href='Donar.html'">Donar</button>
+            <button class="nav-btn" onclick="window.location.href='Vision.html'">Visión</button>
+        </nav>
+
+        <div class="user-section" onclick="window.location.href='../html/Login.html'">
+            <span>Usuario</span>
+            <div class="user-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="container" style="max-width: 900px; margin-top: 30px;">
+
+        <div class="form-container" 
+             style="background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.08);">
+
+            <h2 class="form-title" style="text-align: center; margin-bottom: 25px;">
+                Crear Solicitud de Adopción
+            </h2>
+
+            <!-- Información de la mascota -->
+            <div class="info-box" 
+                style="background: #f2f6ff; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+
+                <h3 class="info-title" style="display: flex; align-items: center; gap: 6px;">
+                    🐾 Mascota a Adoptar
+                </h3>
+
+                <div id="detallesMascota" class="info-content" style="margin-top: 10px;">
+                    <p>Cargando información de la mascota...</p>
+                </div>
+            </div>
+
+            <form id="solicitudForm" onsubmit="handleSolicitud(event)">
+
+                <input type="hidden" id="idMascota" name="idMascota">
+
+                <!-- Mensaje para el administrador -->
+                <div class="form-group" style="margin-bottom: 25px;">
+                    <label class="form-label" style="font-weight: 600;">
+                        💬 Mensaje para el Administrador *
+                    </label>
+                    <textarea class="form-input" name="mensajeAdoptante" id="mensajeAdoptante" rows="5" required
+                        placeholder="Escribe un mensaje explicando por qué quieres adoptar esta mascota, tu experiencia con mascotas, y cómo planeas cuidarla..."></textarea>
+                    <small style="color: #666;">Este mensaje será revisado antes de aprobar tu solicitud.</small>
+                </div>
+
+                <!-- Información adicional -->
+                <div class="info-box" 
+                    style="background: #f5f9ff; padding: 20px; border-radius: 12px;">
+
+                    <h3 class="info-title" style="display: flex; align-items: center; gap: 6px;">
+                        ℹ️ Información Adicional
+                    </h3>
+
+                    <div class="form-group">
+                        <label class="form-label">¿Tienes experiencia previa con mascotas?</label>
+                        <select class="form-input" id="experiencia" name="experiencia">
+                            <option value="">Seleccionar...</option>
+                            <option value="Si, tengo mucha experiencia">Sí, tengo mucha experiencia</option>
+                            <option value="Si, tengo algo de experiencia">Sí, tengo algo de experiencia</option>
+                            <option value="No, pero estoy dispuesto a aprender">No, pero estoy dispuesto a aprender</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">¿Tienes otras mascotas en casa?</label>
+                        <select class="form-input" id="otrasMascotas" name="otrasMascotas">
+                            <option value="">Seleccionar...</option>
+                            <option value="Si">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- BOTONES -->
+              <div style="display: flex; gap: 15px; margin-top: 30px;">
+
+    <!-- Enviar -->
+<div style="display: flex; gap: 15px; margin-top: 30px;">
+
+    <!-- Enviar -->
+    <button type="submit" 
+        style="
+            flex: 1; 
+            background: #84C441; 
+            color: white; 
+            padding: 12px; 
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+        ">
+        Enviar Solicitud
+    </button>
+
+    <!-- Limpiar -->
+    <button type="reset" 
+        style="
+            flex: 1; 
+            background: #A3DB62; 
+            color: white; 
+            padding: 12px; 
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+        ">
+        Limpiar
+    </button>
+
+    <!-- Volver -->
+    <button type="button" onclick="window.location.href='../html/Adoptar.html'"
+        style="
+            flex: 1; 
+            background: #6AA535; 
+            color: white; 
+            padding: 12px; 
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+        ">
+        ← Volver a Mascotas
+    </button>
+
+</div>
+
+
+    <script src="../js/Crear_Solicitud.js"></script>
+</body>
+</html>
+
