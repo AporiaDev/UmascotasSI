@@ -5,9 +5,12 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Obtener la raíz del proyecto (un nivel arriba de scripts/)
+const projectRoot = path.resolve(__dirname, '..');
+
 // Leer el index.html compilado
-const staticIndexPath = path.join(__dirname, 'src/main/resources/static/index.html');
-const templatePath = path.join(__dirname, 'src/main/resources/templates/view/react-app.html');
+const staticIndexPath = path.join(projectRoot, 'src/main/resources/static/index.html');
+const templatePath = path.join(projectRoot, 'src/main/resources/templates/view/react-app.html');
 
 if (!fs.existsSync(staticIndexPath)) {
   console.log('⚠️  No se encontró index.html compilado. Ejecuta: npm run build');
