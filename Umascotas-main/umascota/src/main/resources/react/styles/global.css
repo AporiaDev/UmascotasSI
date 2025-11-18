@@ -5,7 +5,7 @@
 /* Paleta de colores basada en el logo U-Mascota - Gama completa de verdes */
 :root {
   /* Verde principal del logo - verde brillante/lime */
-  --green-primary: #4ADE80;
+  --green-primary: #1eb154;
   --green-dark: #22C55E;
   --green-light: #86EFAC;
   --green-lighter: #D1FAE5;
@@ -16,9 +16,9 @@
   --green-100: #DCFCE7;
   --green-200: #BBF7D0;
   --green-300: #86EFAC;
-  --green-400: #4ADE80;
+  --green-400: #c2e6cf;
   --green-500: #22C55E;
-  --green-600: #16A34A;
+  --green-600: #4ee685;
   --green-700: #15803D;
   --green-800: #166534;
   --green-900: #14532D;
@@ -27,7 +27,7 @@
   /* Verdes vibrantes para acentos */
   --green-neon: #39FF14;
   --green-mint: #A8E6CF;
-  --green-forest: #228B22;
+  --green-forest: #59c459;
   --green-emerald: #10B981;
   --green-teal: #14B8A6;
   
