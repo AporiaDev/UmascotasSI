@@ -8,6 +8,31 @@ const DashboardUsuario = () => {
   const [adopciones, setAdopciones] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // -------------------------
+  // 🔰 INTEGRACIÓN BOTÓN WOMPI
+  // -------------------------
+
+  const PUBLIC_KEY = "pub_test_MMW6ytZKaIPnXYRE0vnqYc5mHlMNhmwo"; // <-- coloca aquí tu llave pública de Wompi
+
+  const donar = () => {
+    const monto = 20000 * 100; // centavos
+    const referencia = "DONACION_" + Date.now();
+
+    const url = "https://checkout.wompi.co/p/";
+
+    const params = new URLSearchParams({
+      public_key: PUBLIC_KEY,
+      currency: "COP",
+      amount_in_cents: monto,
+      reference: referencia,
+      redirect_url: window.location.origin + "/gracias"
+    });
+
+    window.location.href = `${url}?${params.toString()}`;
+  };
+  // -------------------------
+
+
   useEffect(() => {
     const rol = localStorage.getItem('rol');
     if (rol !== 'USUARIO') {
@@ -80,9 +105,19 @@ const DashboardUsuario = () => {
       <Navbar userRole="USUARIO" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        {/* TÍTULO Y BOTÓN DE DONACIÓN */}
         <div className="mb-8">
           <h1 className="text-4xl font-light text-gray-800 mb-2">Mi Dashboard</h1>
-          <p className="text-gray-500">Gestiona tus adopciones y solicitudes</p>
+          <p className="text-gray-500 mb-4">Gestiona tus adopciones y solicitudes</p>
+
+          {/* 🔰 BOTÓN DONAR */}
+          <button
+            onClick={donar}
+            className="px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all duration-300"
+          >
+            Donar con Wompi ❤️
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -183,4 +218,3 @@ const DashboardUsuario = () => {
 };
 
 export default DashboardUsuario;
-
