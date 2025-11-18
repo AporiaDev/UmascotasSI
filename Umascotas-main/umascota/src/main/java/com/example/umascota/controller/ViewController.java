@@ -8,87 +8,98 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 public class ViewController {
 
-    // Página principal para elegir login o registro
+    // Página principal - React App
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("mensaje", "Bienvenido a U-Mascota");
-        return "view/home"; // templates/home.html
+        return "view/react-app"; // React SPA
     }
 
-    // Vista de login
+    // Vista de login - React App
     @GetMapping("/login")
     public String login() {
-        return "view/login"; // templates/login.html
+        return "view/react-app"; // React SPA
     }
 
-    // Vista de registro
+    // Vista de registro - React App
     @GetMapping("/registro")
     public String register() {
-        return "view/register"; // templates/register.html
+        return "view/react-app"; // React SPA
     }
-        // Vista para crear mascotas
+    // Vista para crear mascotas - React App
     @GetMapping("/crear-mascota")
     public String crearMascota() {
-        return "view/crear-mascota";
+        return "view/react-app";
     }
 
-    // Vista para listar todas las mascotas
+    // Vista para listar todas las mascotas - React App
     @GetMapping("/listar-mascotas")
     public String listarMascotas() {
-        return "view/listar-mascotas";
+        return "view/react-app";
     }
 
-    // Vista para listar todas las solicitudes
+    // Vista para listar todas las solicitudes - React App
     @GetMapping("/listar-solicitudes")
     public String listarSolicitudes() {
-        return "view/listar-solicitudes";
+        return "view/react-app";
     }
 
-    // Vista para ver una solicitud específica
+    // Vista para ver una solicitud específica - React App
     @GetMapping("/ver-solicitud/{id}")
     public String verSolicitud() {
-        return "view/ver-solicitud";
+        return "view/react-app";
     }
 
-    // Vista para crear una solicitud de adopción
+    // Vista para crear una solicitud de adopción - React App
     @GetMapping("/crear-solicitud/{idMascota}")
     public String crearSolicitud() {
-        return "view/crear-solicitud";
+        return "view/react-app";
     }
 
-    // Vista para tomar decisión sobre una solicitud
+    // Vista para tomar decisión sobre una solicitud - React App
     @GetMapping("/decision-solicitud/{idSolicitud}")
     public String decisionSolicitud() {
-        return "view/decision-solicitud";
+        return "view/react-app";
     }
 
-    // Dashboard para usuarios
+    // Dashboard para usuarios - React App
     @GetMapping("/dashboard-usuario")
     public String dashboardUsuario() {
-        return "view/dashboard-usuario";
+        return "view/react-app";
     }
 
-    // Dashboard para administradores
+    // Dashboard para administradores - React App
     @GetMapping("/dashboard-admin")
     public String dashboardAdmin() {
-        return "view/dashboard-admin";
+        return "view/react-app";
     }
 
-    // Vista para ver detalles de una mascota
+    // Vista para ver detalles de una mascota - React App
     @GetMapping("/mascota/{id}")
     public String verMascota() {
-        return "view/ver-mascota";
+        return "view/react-app";
     }
 
-    // Vista para listar todas las adopciones
+    // Vista para editar una mascota - React App
+    @GetMapping("/editar-mascota/{id}")
+    public String editarMascota() {
+        return "view/react-app";
+    }
+
+    // Vista para listar todas las adopciones - React App
     @GetMapping("/adopciones")
     public String listarAdopciones() {
-        return "view/listar-adopciones";
+        return "view/react-app";
     }
 
-    // Vista para ver detalles de una adopción específica
+    // Vista para ver detalles de una adopción específica - React App
     @GetMapping("/adopcion/{id}")
     public String verAdopcion() {
-        return "view/ver-adopcion";
+        return "view/react-app";
+    }
+
+    // Vista de perfil de usuario - React App
+    @GetMapping("/perfil")
+    public String perfilUsuario() {
+        return "view/react-app";
     }
 }

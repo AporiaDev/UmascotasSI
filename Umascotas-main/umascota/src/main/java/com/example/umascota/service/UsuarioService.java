@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import com.example.umascota.model.usuario.Usuario;
 import com.example.umascota.repository.UsuarioRepository;
 import com.example.umascota.util.PasswordUtil;
@@ -23,6 +24,15 @@ public class UsuarioService {
 
         String passwordEncriptada = PasswordUtil.encriptar(user.getContrasena());
         user.setContrasena(passwordEncriptada);
+
+        // Establecer rol por defecto a USUARIO si no viene
+        if (user.getTipoUsuario() == null) {
+            user.setTipoUsuario(Usuario.Rol.USUARIO);
+        }
+
+        // Establecer valores por defecto
+        user.setEmailVerified(false);
+        user.setNotificationsEnabled(true);
 
         try {
             return usuarioRepository.save(user);
@@ -53,5 +63,10 @@ public class UsuarioService {
     // Obtener usuario por correo electrónico
     public Usuario obtenerUsuarioPorCorreo(String correoElectronico) {
         return usuarioRepository.findByCorreoElectronico(correoElectronico.trim().toLowerCase());
+    }
+    
+    // Obtener usuario por ID
+    public Optional<Usuario> obtenerUsuarioPorId(Long id) {
+        return usuarioRepository.findByIdUsuario(id);
     }
 }
