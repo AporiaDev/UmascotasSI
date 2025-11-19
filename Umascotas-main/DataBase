@@ -104,9 +104,9 @@ CREATE TABLE IF NOT EXISTS solicitudes_adopcion (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- Tabla: adopciones
+-- Tabla: adopcion
 -- =========================
-CREATE TABLE IF NOT EXISTS adopciones (
+CREATE TABLE IF NOT EXISTS adopcion (
     id_adopcion BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_mascota BIGINT NOT NULL UNIQUE,         -- una mascota sólo puede tener una adopción activa
     id_adoptante BIGINT NOT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS encuesta_post_adopcion (
     respuestas JSON,
     alerta_critica TINYINT(1) DEFAULT 0,
     FOREIGN KEY (id_solicitud) REFERENCES solicitudes_adopcion(id_solicitud) ON DELETE SET NULL,
-    FOREIGN KEY (id_adopcion) REFERENCES adopciones(id_adopcion) ON DELETE SET NULL
+    FOREIGN KEY (id_adopcion) REFERENCES adopcion(id_adopcion) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
