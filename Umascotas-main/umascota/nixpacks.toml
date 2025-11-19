@@ -8,15 +8,22 @@ cmds = [
 
 [phases.build]
 cmds = [
-  "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || echo /usr/lib/jvm/java-21-openjdk)",
+  "JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || echo '')",
+  "if [ -z \"$JAVA_HOME\" ] || [ ! -d \"$JAVA_HOME\" ]; then JAVA_HOME=$(find /nix/store -name 'openjdk-21*' -type d 2>/dev/null | head -1 || echo ''); fi",
+  "if [ -z \"$JAVA_HOME\" ] || [ ! -d \"$JAVA_HOME\" ]; then JAVA_HOME=$(find /usr/lib/jvm -name '*java*21*' -type d 2>/dev/null | head -1 || echo ''); fi",
+  "export JAVA_HOME",
   "export PATH=$JAVA_HOME/bin:$PATH",
-  "java -version",
-  "echo 'Building React frontend...'",
+  "echo '=== Java Configuration ==='",
+  "echo 'JAVA_HOME:' $JAVA_HOME",
+  "java -version 2>&1 || echo 'Java not found'",
+  "which java",
+  "echo '=== Building React frontend ==='",
   "npm run build",
   "echo 'React build completed'",
-  "echo 'Building Spring Boot backend...'",
+  "echo '=== Building Spring Boot backend ==='",
+  "mvn -version",
   "mvn clean package -DskipTests"
 ]
 
 [start]
-cmd = "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || echo /usr/lib/jvm/java-21-openjdk) && export PATH=$JAVA_HOME/bin:$PATH && java -jar target/umascota-0.0.1-SNAPSHOT.jar"
+cmd = "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || find /nix/store -name 'openjdk-21*' -type d | head -1 || find /usr/lib/jvm -name '*java*21*' -type d 2>/dev/null | head -1 || echo '') && export PATH=$JAVA_HOME/bin:$PATH && java -jar target/umascota-0.0.1-SNAPSHOT.jar"
