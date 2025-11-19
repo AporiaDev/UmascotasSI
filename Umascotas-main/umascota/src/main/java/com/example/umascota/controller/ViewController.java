@@ -1,5 +1,6 @@
 package com.example.umascota.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,21 +9,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 public class ViewController {
 
+    @Value("${GOOGLE_CLIENT_ID:}")
+    private String googleClientId;
+
     // Página principal - React App
     @GetMapping("/")
     public String home(Model model) {
+        model.addAttribute("googleClientId", googleClientId);
         return "view/react-app"; // React SPA
     }
 
     // Vista de login - React App
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("googleClientId", googleClientId);
         return "view/react-app"; // React SPA
     }
 
     // Vista de registro - React App
     @GetMapping("/registro")
-    public String register() {
+    public String register(Model model) {
+        model.addAttribute("googleClientId", googleClientId);
         return "view/react-app"; // React SPA
     }
     // Vista para crear mascotas - React App

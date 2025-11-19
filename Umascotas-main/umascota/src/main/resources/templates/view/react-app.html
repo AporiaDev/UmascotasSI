@@ -10,6 +10,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Google Identity Services para autenticación con Google -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Inyectar Google Client ID desde el backend -->
+    <script>
+        // Hacer disponible el Client ID de Google para React
+        window.GOOGLE_CLIENT_ID = /*[[${googleClientId}]]*/ '';
+        // También para compatibilidad con Vite
+        window.VITE_GOOGLE_CLIENT_ID = /*[[${googleClientId}]]*/ '';
+    </script>
     <!-- React app compiled files - se actualizan automáticamente después de npm run build -->
     <link rel="stylesheet" crossorigin href="/assets/index.C27fSrjS.css" th:href="@{/assets/index.C27fSrjS.css}">
     <script type="module" crossorigin src="/assets/index.XrUafPe5.js" th:src="@{/assets/index.XrUafPe5.js}"></script>

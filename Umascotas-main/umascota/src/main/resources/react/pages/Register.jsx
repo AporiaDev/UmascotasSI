@@ -56,16 +56,25 @@ const Register = () => {
   useEffect(() => {
     // Función para inicializar Google Sign-In
     const initializeGoogleSignIn = () => {
-      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+      // Intentar obtener el clientId de múltiples fuentes (prioridad: window > import.meta.env)
+      const clientId = window.GOOGLE_CLIENT_ID || 
+                      window.VITE_GOOGLE_CLIENT_ID || 
+                      import.meta.env.VITE_GOOGLE_CLIENT_ID || 
+                      '';
       
       console.log('Inicializando Google Sign-In...');
       console.log('Client ID disponible:', clientId ? 'Sí' : 'No');
+      console.log('Client ID value:', clientId ? `${clientId.substring(0, 20)}...` : 'No configurado');
       
       if (!clientId) {
         console.error('VITE_GOOGLE_CLIENT_ID no está configurado');
         // Mostrar mensaje visual si no hay clientId
         if (googleButtonRef.current) {
-          googleButtonRef.current.innerHTML = '<p className="text-sm text-gray-500 text-center">Google Sign-In no disponible</p>';
+          googleButtonRef.current.innerHTML = `
+            <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-xl text-yellow-700 text-sm text-center">
+              Google Sign-In no disponible. Verifica la configuración de VITE_GOOGLE_CLIENT_ID.
+            </div>
+          `;
         }
         return;
       }
