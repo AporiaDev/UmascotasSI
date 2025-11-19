@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs-18_x", "maven"]
+nixPkgs = ["nodejs-18_x", "maven", "openjdk17"]
 
 [phases.install]
 cmds = [
