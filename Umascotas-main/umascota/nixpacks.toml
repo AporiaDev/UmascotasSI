@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs-18_x", "maven", "openjdk17"]
+nixPkgs = ["nodejs-18_x", "maven", "openjdk21"]
 
 [phases.install]
 cmds = [
@@ -8,6 +8,9 @@ cmds = [
 
 [phases.build]
 cmds = [
+  "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || echo /usr/lib/jvm/java-21-openjdk)",
+  "export PATH=$JAVA_HOME/bin:$PATH",
+  "java -version",
   "echo 'Building React frontend...'",
   "npm run build",
   "echo 'React build completed'",
@@ -16,4 +19,4 @@ cmds = [
 ]
 
 [start]
-cmd = "java -jar target/umascota-0.0.1-SNAPSHOT.jar"
+cmd = "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || echo /usr/lib/jvm/java-21-openjdk) && export PATH=$JAVA_HOME/bin:$PATH && java -jar target/umascota-0.0.1-SNAPSHOT.jar"
