@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.umascota.model.mascota.Mascota;
 import com.example.umascota.model.usuario.Usuario;
@@ -12,6 +13,7 @@ import com.example.umascota.repository.MascotaRepository;
 import com.example.umascota.repository.UsuarioRepository;
 
 @Service
+@Transactional
 public class Mascota2Service {
 
     @Autowired
@@ -98,6 +100,14 @@ public class Mascota2Service {
 
     //Obtener todas las mascotas
     public List<Mascota> obtenerTodas(){
-        return mascotaRepository.findAll();
+        List<Mascota> mascotas = mascotaRepository.findAll();
+        // Asegurar que las relaciones estén inicializadas antes de serializar
+        for (Mascota mascota : mascotas) {
+            if (mascota.getUsuarioPublica() != null) {
+                // Forzar la inicialización accediendo a un campo
+                mascota.getUsuarioPublica().getIdUsuario();
+            }
+        }
+        return mascotas;
     }
 }
