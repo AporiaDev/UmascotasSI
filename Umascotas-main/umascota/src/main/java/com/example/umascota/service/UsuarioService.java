@@ -155,12 +155,13 @@ public class UsuarioService {
                 }
                 return usuarioExistente;
             } else {
-                // Usuario no existe - crear nuevo usuario
+                // Usuario no existe - crear nuevo usuario con Google
                 Usuario nuevoUsuario = new Usuario();
                 nuevoUsuario.setCorreoElectronico(emailNormalizado);
                 nuevoUsuario.setNombreCompleto(nombre != null ? nombre : emailNormalizado);
                 nuevoUsuario.setGoogleId(googleId);
                 nuevoUsuario.setEmailVerified(emailVerified);
+                // Establecer rol por defecto: siempre USUARIO para registros con Google
                 nuevoUsuario.setTipoUsuario(Usuario.Rol.USUARIO);
                 nuevoUsuario.setNotificationsEnabled(true);
                 // No establecemos contraseña para usuarios de Google (null es permitido)
