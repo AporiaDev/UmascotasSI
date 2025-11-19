@@ -120,16 +120,37 @@ public class Mascota2Service {
             System.out.println("Total de mascotas encontradas: " + mascotas.size());
             
             // Asegurar que las relaciones estén inicializadas antes de serializar
+            // Esto debe hacerse dentro de la transacción activa
             for (Mascota mascota : mascotas) {
                 try {
+                    // Forzar la inicialización de usuarioPublica si existe
                     if (mascota.getUsuarioPublica() != null) {
-                        // Forzar la inicialización accediendo a varios campos
-                        mascota.getUsuarioPublica().getIdUsuario();
-                        mascota.getUsuarioPublica().getNombreCompleto();
+                        // Acceder a los campos para forzar la inicialización del proxy
+                        Long idUsuario = mascota.getUsuarioPublica().getIdUsuario();
+                        String nombre = mascota.getUsuarioPublica().getNombreCompleto();
+                        // Acceder a correo y rol para asegurar que todo esté cargado
                         mascota.getUsuarioPublica().getCorreoElectronico();
+                        mascota.getUsuarioPublica().getTipoUsuario();
+                        
+                        System.out.println("Mascota " + mascota.getIdMascota() + 
+                            " - Usuario: " + nombre + " (ID: " + idUsuario + ")");
+                    } else {
+                        System.out.println("Mascota " + mascota.getIdMascota() + " - Sin usuarioPublica");
                     }
+                    
+                    // Inicializar otros campos para evitar problemas
+                    mascota.getIdMascota();
+                    mascota.getNombre();
+                    mascota.getEspecie();
+                    mascota.getStatusPublicacion();
+                    
+                } catch (org.hibernate.LazyInitializationException e) {
+                    System.err.println("Error de LazyInitialization para mascota " + 
+                        mascota.getIdMascota() + ": " + e.getMessage());
+                    // Continuar con las demás mascotas
                 } catch (Exception e) {
-                    System.err.println("Error al inicializar usuarioPublica para mascota " + mascota.getIdMascota() + ": " + e.getMessage());
+                    System.err.println("Error al inicializar usuarioPublica para mascota " + 
+                        mascota.getIdMascota() + ": " + e.getMessage());
                     e.printStackTrace();
                 }
             }

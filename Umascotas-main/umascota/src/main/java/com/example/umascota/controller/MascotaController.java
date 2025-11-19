@@ -41,9 +41,34 @@ public class MascotaController {
             logger.info("Solicitud para obtener todas las mascotas");
             List<Mascota> mascotas = mascotaService.obtenerTodas();
             logger.info("Se encontraron {} mascotas", mascotas.size());
+            
+            // Asegurar que todas las relaciones estén inicializadas antes de serializar
+            for (Mascota mascota : mascotas) {
+                try {
+                    // Forzar la inicialización de todas las relaciones necesarias
+                    if (mascota.getUsuarioPublica() != null) {
+                        mascota.getUsuarioPublica().getIdUsuario();
+                        mascota.getUsuarioPublica().getNombreCompleto();
+                        mascota.getUsuarioPublica().getCorreoElectronico();
+                    }
+                    // Inicializar otros campos que puedan causar problemas
+                    mascota.getIdMascota();
+                    mascota.getNombre();
+                    mascota.getEspecie();
+                } catch (Exception e) {
+                    logger.warn("Error al inicializar relaciones para mascota {}: {}", 
+                        mascota.getIdMascota(), e.getMessage());
+                }
+            }
+            
             return ResponseEntity.ok(mascotas);
+        } catch (org.hibernate.LazyInitializationException e) {
+            logger.error("Error de LazyInitialization al obtener las mascotas: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al cargar las mascotas: Problema de inicialización de datos");
         } catch (Exception e) {
             logger.error("Error al obtener las mascotas: ", e);
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al cargar las mascotas: " + e.getMessage());
         }
