@@ -50,9 +50,9 @@ CREATE TABLE IF NOT EXISTS mascotas (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- Tabla: vacunas
+-- Tabla: Vacuna
 -- =========================
-CREATE TABLE IF NOT EXISTS vacunas (
+CREATE TABLE IF NOT EXISTS Vacuna (
     id_vacuna BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_mascota BIGINT NOT NULL,
     nombre VARCHAR(150) NOT NULL,
@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS vacunas (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- Tabla: fotos_mascota (galería)
+-- Tabla: FotoMascota (galería)
 -- =========================
-CREATE TABLE IF NOT EXISTS fotos_mascota (
+CREATE TABLE IF NOT EXISTS FotoMascota (
     id_foto BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_mascota BIGINT NOT NULL,
     url VARCHAR(255) NOT NULL,
@@ -133,9 +133,9 @@ CREATE TABLE IF NOT EXISTS encuesta_post_adopcion (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- Tabla: donaciones
+-- Tabla: donacion
 -- =========================
-CREATE TABLE IF NOT EXISTS donaciones (
+CREATE TABLE IF NOT EXISTS donacion (
     id_donacion BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_usuario_donante BIGINT NULL,
     monto DECIMAL(12,2) NOT NULL,
@@ -150,9 +150,9 @@ CREATE TABLE IF NOT EXISTS donaciones (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================
--- Tabla: transacciones
+-- Tabla: transaccion
 -- =========================
-CREATE TABLE IF NOT EXISTS transacciones (
+CREATE TABLE IF NOT EXISTS transaccion (
     id_transaccion BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_donacion BIGINT NULL,
     monto DECIMAL(12,2),
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS transacciones (
     referencia_externa VARCHAR(255),
     fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     detalle JSON,
-    FOREIGN KEY (id_donacion) REFERENCES donaciones(id_donacion) ON DELETE SET NULL
+    FOREIGN KEY (id_donacion) REFERENCES donacion(id_donacion) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================

@@ -2,6 +2,7 @@ package com.example.umascota.model.adopcion;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "encuesta_post_adopcion")
@@ -18,6 +19,7 @@ public class EncuestaPostAdopcion {
 
     @OneToOne
     @JoinColumn(name = "id_adopcion", nullable = false)
+    @JsonIgnoreProperties({"encuestaPostAdopcion"})
     private Adopcion adopcion;
 
     @Column(name = "fecha_envio")

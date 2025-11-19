@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 
 import com.example.umascota.model.mascota.Mascota;
 import com.example.umascota.model.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "adopcion")
@@ -17,6 +19,7 @@ public class Adopcion {
 
     @ManyToOne
     @JoinColumn(name = "id_mascota", nullable = false)
+    @JsonIgnoreProperties({"usuarioPublica"})
     private Mascota mascota;
 
     @ManyToOne
@@ -25,6 +28,7 @@ public class Adopcion {
 
     @ManyToOne
     @JoinColumn(name = "id_solicitud", nullable = false)
+    @JsonIgnoreProperties({"mascotaSolicitada", "usuarioAdoptante"})
     private SolicitudAdopcion solicitud;
 
     @Column(name = "fecha_adopcion")
@@ -35,6 +39,7 @@ public class Adopcion {
 
     // Relación 1:1 con EncuestaPostAdopcion (Adopcion es el lado "padre")
     @OneToOne(mappedBy = "adopcion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private EncuestaPostAdopcion encuestaPostAdopcion;
 
     // Getters y Setters
