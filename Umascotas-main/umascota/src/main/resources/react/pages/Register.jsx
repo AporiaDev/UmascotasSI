@@ -56,13 +56,31 @@ const Register = () => {
   useEffect(() => {
     // Función para inicializar Google Sign-In
     const initializeGoogleSignIn = () => {
-      if (window.google && googleButtonRef.current) {
-        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
-        if (!clientId) {
-          console.warn('GOOGLE_CLIENT_ID no está configurado');
-          return;
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+      
+      console.log('Inicializando Google Sign-In...');
+      console.log('Client ID disponible:', clientId ? 'Sí' : 'No');
+      
+      if (!clientId) {
+        console.error('VITE_GOOGLE_CLIENT_ID no está configurado');
+        // Mostrar mensaje visual si no hay clientId
+        if (googleButtonRef.current) {
+          googleButtonRef.current.innerHTML = '<p className="text-sm text-gray-500 text-center">Google Sign-In no disponible</p>';
         }
+        return;
+      }
 
+      if (!window.google) {
+        console.warn('Google Identity Services no está cargado');
+        return;
+      }
+
+      if (!googleButtonRef.current) {
+        console.warn('Ref del botón de Google no está disponible');
+        return;
+      }
+
+      try {
         window.google.accounts.id.initialize({
           client_id: clientId,
           callback: handleGoogleSignIn,
@@ -78,23 +96,31 @@ const Register = () => {
             locale: 'es',
           }
         );
+        console.log('Botón de Google renderizado correctamente');
+      } catch (error) {
+        console.error('Error al renderizar botón de Google:', error);
       }
     };
 
     // Esperar a que el script de Google se cargue
-    if (window.google) {
-      initializeGoogleSignIn();
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      // Script ya cargado
+      setTimeout(initializeGoogleSignIn, 100);
     } else {
-      // Si el script aún no está cargado, esperar un poco
+      // Si el script aún no está cargado, esperar
+      let attempts = 0;
+      const maxAttempts = 50; // 5 segundos máximo
+      
       const checkGoogle = setInterval(() => {
-        if (window.google) {
+        attempts++;
+        if (window.google && window.google.accounts && window.google.accounts.id) {
           initializeGoogleSignIn();
+          clearInterval(checkGoogle);
+        } else if (attempts >= maxAttempts) {
+          console.error('Timeout: Google Identity Services no se cargó después de 5 segundos');
           clearInterval(checkGoogle);
         }
       }, 100);
-
-      // Limpiar el intervalo después de 5 segundos
-      setTimeout(() => clearInterval(checkGoogle), 5000);
     }
   }, [handleGoogleSignIn]);
 
