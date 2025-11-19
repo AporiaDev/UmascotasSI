@@ -115,20 +115,29 @@ public class Mascota2Service {
     //Obtener todas las mascotas
     @Transactional(readOnly = true)
     public List<Mascota> obtenerTodas(){
-        List<Mascota> mascotas = mascotaRepository.findAll();
-        // Asegurar que las relaciones estén inicializadas antes de serializar
-        for (Mascota mascota : mascotas) {
-            try {
-                if (mascota.getUsuarioPublica() != null) {
-                    // Forzar la inicialización accediendo a varios campos
-                    mascota.getUsuarioPublica().getIdUsuario();
-                    mascota.getUsuarioPublica().getNombreCompleto();
-                    mascota.getUsuarioPublica().getCorreoElectronico();
+        try {
+            List<Mascota> mascotas = mascotaRepository.findAll();
+            System.out.println("Total de mascotas encontradas: " + mascotas.size());
+            
+            // Asegurar que las relaciones estén inicializadas antes de serializar
+            for (Mascota mascota : mascotas) {
+                try {
+                    if (mascota.getUsuarioPublica() != null) {
+                        // Forzar la inicialización accediendo a varios campos
+                        mascota.getUsuarioPublica().getIdUsuario();
+                        mascota.getUsuarioPublica().getNombreCompleto();
+                        mascota.getUsuarioPublica().getCorreoElectronico();
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error al inicializar usuarioPublica para mascota " + mascota.getIdMascota() + ": " + e.getMessage());
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                System.err.println("Error al inicializar usuarioPublica para mascota " + mascota.getIdMascota() + ": " + e.getMessage());
             }
+            return mascotas;
+        } catch (Exception e) {
+            System.err.println("Error crítico al obtener todas las mascotas: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-        return mascotas;
     }
 }

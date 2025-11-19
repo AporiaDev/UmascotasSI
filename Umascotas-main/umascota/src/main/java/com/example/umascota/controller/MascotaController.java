@@ -19,11 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.umascota.model.mascota.Mascota;
 import com.example.umascota.service.Mascota2Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @RestController
 @RequestMapping("/api/mascotas")
 public class MascotaController {
 
+    private static final Logger logger = LoggerFactory.getLogger(MascotaController.class);
     
     private final Mascota2Service mascotaService;
 
@@ -32,9 +36,17 @@ public class MascotaController {
     // GET - Obtener todas las mascotas
     @GetMapping
     @Transactional(readOnly = true)
-    public ResponseEntity<List<Mascota>> obtenerMascotas(){
-        List<Mascota> mascotas = mascotaService.obtenerTodas();
-        return ResponseEntity.ok(mascotas);
+    public ResponseEntity<?> obtenerMascotas(){
+        try {
+            logger.info("Solicitud para obtener todas las mascotas");
+            List<Mascota> mascotas = mascotaService.obtenerTodas();
+            logger.info("Se encontraron {} mascotas", mascotas.size());
+            return ResponseEntity.ok(mascotas);
+        } catch (Exception e) {
+            logger.error("Error al obtener las mascotas: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al cargar las mascotas: " + e.getMessage());
+        }
     }
 
     // GET - Obtener mascota por ID

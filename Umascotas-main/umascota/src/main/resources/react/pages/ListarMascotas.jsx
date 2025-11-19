@@ -29,15 +29,20 @@ const ListarMascotas = () => {
   const cargarMascotas = async () => {
     try {
       setLoading(true);
+      setError(''); // Limpiar errores previos
       const response = await fetch('/api/mascotas');
       if (response.ok) {
         const data = await response.json();
         setMascotas(Array.isArray(data) ? data : []);
+        setError(''); // Asegurar que no hay error
       } else {
-        setError('Error al cargar las mascotas');
+        const errorText = await response.text();
+        console.error('Error al cargar mascotas:', response.status, errorText);
+        setError(`Error al cargar las mascotas (${response.status}): ${errorText || 'Error desconocido'}`);
       }
     } catch (err) {
-      setError('Error de conexión');
+      console.error('Error de conexión:', err);
+      setError(`Error de conexión: ${err.message}`);
     } finally {
       setLoading(false);
     }
