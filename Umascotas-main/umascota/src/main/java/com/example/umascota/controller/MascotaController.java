@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class MascotaController {
 
     // GET - Obtener todas las mascotas
     @GetMapping
+    @Transactional(readOnly = true)
     public ResponseEntity<List<Mascota>> obtenerMascotas(){
         List<Mascota> mascotas = mascotaService.obtenerTodas();
         return ResponseEntity.ok(mascotas);
@@ -37,6 +39,7 @@ public class MascotaController {
 
     // GET - Obtener mascota por ID
     @GetMapping("/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<Mascota> obtenerMascotaPorId(@PathVariable Long id){
         Optional<Mascota> mascota = mascotaService.obtenerPorId(id);
         if(mascota.isPresent()){

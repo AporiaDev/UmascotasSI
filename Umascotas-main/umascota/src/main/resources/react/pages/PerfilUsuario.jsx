@@ -25,7 +25,7 @@ const PerfilUsuario = () => {
   const rol = localStorage.getItem('rol');
 
   useEffect(() => {
-    if (!rol || rol !== 'USUARIO') {
+    if (!rol || (rol !== 'USUARIO' && rol !== 'ADMIN')) {
       navigate('/');
       return;
     }
@@ -136,7 +136,7 @@ const PerfilUsuario = () => {
         <div className="max-w-7xl mx-auto px-4 py-8">
           <Card className="p-8 text-center">
             <p className="text-red-600 text-xl mb-4">{error || 'Usuario no encontrado'}</p>
-            <Button onClick={() => navigate('/dashboard-usuario')}>Volver al Dashboard</Button>
+            <Button onClick={() => navigate(rol === 'ADMIN' ? '/dashboard-admin' : '/dashboard-usuario')}>Volver al Dashboard</Button>
           </Card>
         </div>
       </div>
@@ -149,7 +149,7 @@ const PerfilUsuario = () => {
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <Button variant="outline" onClick={() => navigate('/dashboard-usuario')}>
+          <Button variant="outline" onClick={() => navigate(rol === 'ADMIN' ? '/dashboard-admin' : '/dashboard-usuario')}>
             <i className="fas fa-arrow-left mr-2"></i>Volver al Dashboard
           </Button>
         </div>
@@ -422,7 +422,7 @@ const PerfilUsuario = () => {
             <div className="flex gap-4 pt-4">
               <Button
                 variant="primary"
-                onClick={() => navigate('/dashboard-usuario')}
+                onClick={() => navigate(rol === 'ADMIN' ? '/dashboard-admin' : '/dashboard-usuario')}
                 className="flex-1"
               >
                 <i className="fas fa-home mr-2"></i>Ir al Dashboard

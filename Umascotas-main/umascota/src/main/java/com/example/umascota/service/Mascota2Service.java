@@ -94,18 +94,39 @@ public class Mascota2Service {
     }
 
     //Listar Mascotas
+    @Transactional(readOnly = true)
     public Optional<Mascota> obtenerPorId(Long id){
-        return mascotaRepository.findByIdMascota(id);
+        Optional<Mascota> mascotaOpt = mascotaRepository.findByIdMascota(id);
+        if (mascotaOpt.isPresent()) {
+            Mascota mascota = mascotaOpt.get();
+            try {
+                if (mascota.getUsuarioPublica() != null) {
+                    // Forzar la inicialización
+                    mascota.getUsuarioPublica().getIdUsuario();
+                    mascota.getUsuarioPublica().getNombreCompleto();
+                }
+            } catch (Exception e) {
+                System.err.println("Error al inicializar usuarioPublica: " + e.getMessage());
+            }
+        }
+        return mascotaOpt;
     }
 
     //Obtener todas las mascotas
+    @Transactional(readOnly = true)
     public List<Mascota> obtenerTodas(){
         List<Mascota> mascotas = mascotaRepository.findAll();
         // Asegurar que las relaciones estén inicializadas antes de serializar
         for (Mascota mascota : mascotas) {
-            if (mascota.getUsuarioPublica() != null) {
-                // Forzar la inicialización accediendo a un campo
-                mascota.getUsuarioPublica().getIdUsuario();
+            try {
+                if (mascota.getUsuarioPublica() != null) {
+                    // Forzar la inicialización accediendo a varios campos
+                    mascota.getUsuarioPublica().getIdUsuario();
+                    mascota.getUsuarioPublica().getNombreCompleto();
+                    mascota.getUsuarioPublica().getCorreoElectronico();
+                }
+            } catch (Exception e) {
+                System.err.println("Error al inicializar usuarioPublica para mascota " + mascota.getIdMascota() + ": " + e.getMessage());
             }
         }
         return mascotas;

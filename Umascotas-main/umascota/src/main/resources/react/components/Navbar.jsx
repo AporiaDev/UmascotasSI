@@ -56,6 +56,12 @@ const Navbar = ({ userRole = null }) => {
                 >
                   <i className="fas fa-plus mr-2"></i>Nueva Mascota
                 </Link>
+                <Link
+                  to="/perfil"
+                  className="text-gray-600 hover:text-[#22C55E] px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <i className="fas fa-user mr-2"></i>Mi Perfil
+                </Link>
               </>
             )}
             

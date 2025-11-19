@@ -34,7 +34,7 @@ function App() {
         {/* Rutas protegidas - Requieren autenticación */}
         <Route path="/dashboard-admin" element={<ProtectedRoute requiredRole="ADMIN"><DashboardAdmin /></ProtectedRoute>} />
         <Route path="/dashboard-usuario" element={<ProtectedRoute requiredRole="USUARIO"><DashboardUsuario /></ProtectedRoute>} />
-        <Route path="/perfil" element={<ProtectedRoute requiredRole="USUARIO"><PerfilUsuario /></ProtectedRoute>} />
+        <Route path="/perfil" element={<ProtectedRoute><PerfilUsuario /></ProtectedRoute>} />
         <Route path="/notificaciones" element={<ProtectedRoute><NotificacionesPage /></ProtectedRoute>} />
         <Route path="/gestionar-encuestas" element={<ProtectedRoute requiredRole="ADMIN"><GestionarEncuestas /></ProtectedRoute>} />
         <Route path="/responder-encuesta/:idEncuesta" element={<ProtectedRoute><ResponderEncuesta /></ProtectedRoute>} />

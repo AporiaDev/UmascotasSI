@@ -48,9 +48,9 @@ public class Mascota {
     @Column(name = "status_publicacion", nullable = false)
     private StatusPublicacion statusPublicacion;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario_publica", referencedColumnName = "id_usuario", nullable = true)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "contrasena", "fechaRegistro"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "contrasena", "fechaRegistro", "googleId"})
     private com.example.umascota.model.usuario.Usuario usuarioPublica;
     
     // Campo auxiliar para facilitar el acceso al ID
@@ -176,8 +176,14 @@ public class Mascota {
 
     @com.fasterxml.jackson.annotation.JsonGetter("idUsuarioPublica")
     public Long getIdUsuarioPublica() {
-        if (usuarioPublica != null) {
-            return usuarioPublica.getIdUsuario();
+        try {
+            if (usuarioPublica != null) {
+                // Intentar acceder al ID, esto inicializará el proxy si es necesario
+                return usuarioPublica.getIdUsuario();
+            }
+        } catch (Exception e) {
+            // Si hay un error de lazy loading, usar el campo transiente
+            System.err.println("Error al obtener idUsuarioPublica: " + e.getMessage());
         }
         return idUsuarioPublica;
     }
