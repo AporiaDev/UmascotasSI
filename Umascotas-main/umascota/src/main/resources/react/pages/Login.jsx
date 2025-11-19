@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
@@ -15,12 +15,91 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const googleButtonRef = useRef(null);
+
+  const handleGoogleSignIn = useCallback(async (response) => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const backendResponse = await fetch('/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken: response.credential }),
+      });
+
+      const data = await backendResponse.json();
+
+      if (backendResponse.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('rol', data.rol);
+        localStorage.setItem('idUsuario', data.idUsuario);
+        // Redirigir según el rol
+        if (data.rol === 'ADMIN') {
+          window.location.href = '/dashboard-admin';
+        } else {
+          window.location.href = '/dashboard-usuario';
+        }
+      } else {
+        setError(data.message || 'Error al autenticar con Google');
+      }
+    } catch (err) {
+      setError('Error de conexión. Por favor, intenta nuevamente.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (location.state?.message) {
       setSuccessMessage(location.state.message);
     }
-  }, [location]);
+
+    // Función para inicializar Google Sign-In
+    const initializeGoogleSignIn = () => {
+      if (window.google && googleButtonRef.current) {
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+        if (!clientId) {
+          console.warn('GOOGLE_CLIENT_ID no está configurado');
+          return;
+        }
+
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: handleGoogleSignIn,
+        });
+
+        window.google.accounts.id.renderButton(
+          googleButtonRef.current,
+          {
+            theme: 'outline',
+            size: 'large',
+            width: '100%',
+            text: 'signin_with',
+            locale: 'es',
+          }
+        );
+      }
+    };
+
+    // Esperar a que el script de Google se cargue
+    if (window.google) {
+      initializeGoogleSignIn();
+    } else {
+      // Si el script aún no está cargado, esperar un poco
+      const checkGoogle = setInterval(() => {
+        if (window.google) {
+          initializeGoogleSignIn();
+          clearInterval(checkGoogle);
+        }
+      }, 100);
+
+      // Limpiar el intervalo después de 5 segundos
+      setTimeout(() => clearInterval(checkGoogle), 5000);
+    }
+  }, [location, handleGoogleSignIn]);
 
   const handleChange = (e) => {
     setFormData({
@@ -65,6 +144,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#4ADE80] via-[#22C55E] to-[#16A34A] flex items-center justify-center p-4">
@@ -128,6 +208,19 @@ const Login = () => {
               {loading ? 'Iniciando sesión...' : 'Continuar'}
             </Button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">O continúa con</span>
+            </div>
+          </div>
+
+          {/* Google Sign-In Button */}
+          <div ref={googleButtonRef} className="w-full flex justify-center"></div>
 
           {/* Enlaces */}
           <div className="mt-6 text-center space-y-2">

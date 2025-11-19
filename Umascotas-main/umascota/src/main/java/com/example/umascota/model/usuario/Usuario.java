@@ -18,7 +18,7 @@ public class Usuario {
     @Column(name = "correo_electronico", nullable = false, unique = true)
     private String correoElectronico;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String contrasena;
 
     @Column(name = "telefono")
@@ -38,6 +38,9 @@ public class Usuario {
     
     @Column(name = "notifications_enabled")
     private boolean notificationsEnabled;
+    
+    @Column(name = "google_id")
+    private String googleId;
 
     @CreationTimestamp
     @Column(name = "fecha_registro", updatable = false)
@@ -133,6 +136,14 @@ public class Usuario {
 
     public void setNotificationsEnabled(boolean notificationsEnabled){
         this.notificationsEnabled = notificationsEnabled;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
     public java.sql.Timestamp getFechaRegistro() {
