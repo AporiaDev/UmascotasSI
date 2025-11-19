@@ -94,71 +94,12 @@ public class Mascota2Service {
     }
 
     //Listar Mascotas
-    @Transactional(readOnly = true)
     public Optional<Mascota> obtenerPorId(Long id){
-        Optional<Mascota> mascotaOpt = mascotaRepository.findByIdMascota(id);
-        if (mascotaOpt.isPresent()) {
-            Mascota mascota = mascotaOpt.get();
-            try {
-                if (mascota.getUsuarioPublica() != null) {
-                    // Forzar la inicialización
-                    mascota.getUsuarioPublica().getIdUsuario();
-                    mascota.getUsuarioPublica().getNombreCompleto();
-                }
-            } catch (Exception e) {
-                System.err.println("Error al inicializar usuarioPublica: " + e.getMessage());
-            }
-        }
-        return mascotaOpt;
+        return mascotaRepository.findByIdMascota(id);
     }
 
     //Obtener todas las mascotas
-    @Transactional(readOnly = true)
     public List<Mascota> obtenerTodas(){
-        try {
-            List<Mascota> mascotas = mascotaRepository.findAll();
-            System.out.println("Total de mascotas encontradas: " + mascotas.size());
-            
-            // Asegurar que las relaciones estén inicializadas antes de serializar
-            // Esto debe hacerse dentro de la transacción activa
-            for (Mascota mascota : mascotas) {
-                try {
-                    // Forzar la inicialización de usuarioPublica si existe
-                    if (mascota.getUsuarioPublica() != null) {
-                        // Acceder a los campos para forzar la inicialización del proxy
-                        Long idUsuario = mascota.getUsuarioPublica().getIdUsuario();
-                        String nombre = mascota.getUsuarioPublica().getNombreCompleto();
-                        // Acceder a correo y rol para asegurar que todo esté cargado
-                        mascota.getUsuarioPublica().getCorreoElectronico();
-                        mascota.getUsuarioPublica().getTipoUsuario();
-                        
-                        System.out.println("Mascota " + mascota.getIdMascota() + 
-                            " - Usuario: " + nombre + " (ID: " + idUsuario + ")");
-                    } else {
-                        System.out.println("Mascota " + mascota.getIdMascota() + " - Sin usuarioPublica");
-                    }
-                    
-                    // Inicializar otros campos para evitar problemas
-                    mascota.getIdMascota();
-                    mascota.getNombre();
-                    mascota.getEspecie();
-                    mascota.getStatusPublicacion();
-                    
-                } catch (org.hibernate.LazyInitializationException e) {
-                    System.err.println("Error de LazyInitialization para mascota " + 
-                        mascota.getIdMascota() + ": " + e.getMessage());
-                    // Continuar con las demás mascotas
-                } catch (Exception e) {
-                    System.err.println("Error al inicializar usuarioPublica para mascota " + 
-                        mascota.getIdMascota() + ": " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-            return mascotas;
-        } catch (Exception e) {
-            System.err.println("Error crítico al obtener todas las mascotas: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
+        return mascotaRepository.findAll();
     }
 }
