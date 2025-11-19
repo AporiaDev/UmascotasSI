@@ -26,12 +26,13 @@ public class EncuestaController {
         try {
             Long idAdopcion = Long.valueOf(request.get("idAdopcion").toString());
             String preguntas = (String) request.get("preguntas");
+            String fechaEnvio = request.containsKey("fechaEnvio") ? (String) request.get("fechaEnvio") : null;
             
             if (preguntas == null || preguntas.isEmpty()) {
                 return ResponseEntity.badRequest().body("Las preguntas son requeridas");
             }
 
-            EncuestaPostAdopcion encuesta = encuestaService.crearEncuesta(idAdopcion, preguntas);
+            EncuestaPostAdopcion encuesta = encuestaService.crearEncuesta(idAdopcion, preguntas, fechaEnvio);
             return ResponseEntity.ok(encuesta);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -9,6 +9,9 @@ import com.example.umascota.model.adopcion.EncuestaPostAdopcion;
 import com.example.umascota.repository.AdopcionRepository;
 import com.example.umascota.repository.EncuestaRepository;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +29,7 @@ public class EncuestaService {
 
     // Crear encuesta para una adopción
     @Transactional
-    public EncuestaPostAdopcion crearEncuesta(Long idAdopcion, String preguntasJson) {
+    public EncuestaPostAdopcion crearEncuesta(Long idAdopcion, String preguntasJson, String fechaEnvioIso) {
         Optional<Adopcion> adopcionOpt = adopcionRepository.findById(idAdopcion);
         
         if (adopcionOpt.isEmpty()) {
@@ -47,11 +50,23 @@ public class EncuestaService {
         encuesta.setPreguntas(preguntasJson);
         encuesta.setEstado("PENDIENTE");
         encuesta.setAlertaCritica(false);
-        encuesta.setFechaEnvio(null);
+        encuesta.setFechaEnvio(parsearFechaEnvio(fechaEnvioIso));
         encuesta.setFechaRespuesta(null);
         encuesta.setRespuestas(null);
 
         return encuestaRepository.save(encuesta);
+    }
+
+    private Timestamp parsearFechaEnvio(String fechaEnvioIso) {
+        if (fechaEnvioIso == null || fechaEnvioIso.isBlank()) {
+            return new Timestamp(System.currentTimeMillis());
+        }
+        try {
+            Instant instant = Instant.parse(fechaEnvioIso);
+            return Timestamp.from(instant);
+        } catch (DateTimeParseException e) {
+            return new Timestamp(System.currentTimeMillis());
+        }
     }
 
     // Enviar encuesta al usuario (cambiar estado a ENVIADA y crear notificación)

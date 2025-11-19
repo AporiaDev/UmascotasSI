@@ -80,6 +80,7 @@ const GestionarEncuestas = () => {
 
     try {
       const preguntasJson = JSON.stringify(preguntasValidas);
+      const fechaCreacionLocal = new Date().toISOString();
       
       const response = await fetch('/api/encuestas', {
         method: 'POST',
@@ -88,7 +89,9 @@ const GestionarEncuestas = () => {
         },
         body: JSON.stringify({
           idAdopcion: adopcionSeleccionada,
-          preguntas: preguntasJson
+          preguntas: preguntasJson,
+          fechaEnvio: fechaCreacionLocal,
+          zonaHoraria: Intl.DateTimeFormat().resolvedOptions().timeZone
         })
       });
 
