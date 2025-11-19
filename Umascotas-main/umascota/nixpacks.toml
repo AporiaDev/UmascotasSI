@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs-18_x", "maven", "openjdk21"]
+nixPkgs = ["nodejs-18_x", "maven", "openjdk17"]
 
 [phases.install]
 cmds = [
@@ -8,9 +8,9 @@ cmds = [
 
 [phases.build]
 cmds = [
-  "JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || echo '')",
-  "if [ -z \"$JAVA_HOME\" ] || [ ! -d \"$JAVA_HOME\" ]; then JAVA_HOME=$(find /nix/store -name 'openjdk-21*' -type d 2>/dev/null | head -1 || echo ''); fi",
-  "if [ -z \"$JAVA_HOME\" ] || [ ! -d \"$JAVA_HOME\" ]; then JAVA_HOME=$(find /usr/lib/jvm -name '*java*21*' -type d 2>/dev/null | head -1 || echo ''); fi",
+  "JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk17 --no-out-link 2>/dev/null || echo '')",
+  "if [ -z \"$JAVA_HOME\" ] || [ ! -d \"$JAVA_HOME\" ]; then JAVA_HOME=$(find /nix/store -name 'openjdk-17*' -type d 2>/dev/null | head -1 || echo ''); fi",
+  "if [ -z \"$JAVA_HOME\" ] || [ ! -d \"$JAVA_HOME\" ]; then JAVA_HOME=$(find /usr/lib/jvm -name '*java*17*' -type d 2>/dev/null | head -1 || echo ''); fi",
   "export JAVA_HOME",
   "export PATH=$JAVA_HOME/bin:$PATH",
   "echo '=== Java Configuration ==='",
@@ -26,4 +26,4 @@ cmds = [
 ]
 
 [start]
-cmd = "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || find /nix/store -name 'openjdk-21*' -type d | head -1 || find /usr/lib/jvm -name '*java*21*' -type d 2>/dev/null | head -1 || echo '') && export PATH=$JAVA_HOME/bin:$PATH && java -jar target/umascota-0.0.1-SNAPSHOT.jar"
+cmd = "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk17 --no-out-link 2>/dev/null || find /nix/store -name 'openjdk-17*' -type d | head -1 || find /usr/lib/jvm -name '*java*17*' -type d 2>/dev/null | head -1 || echo '') && export PATH=$JAVA_HOME/bin:$PATH && java -jar target/umascota-0.0.1-SNAPSHOT.jar"

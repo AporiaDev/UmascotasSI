@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk21 --no-out-link 2>/dev/null || find /nix/store -name 'openjdk-21*' -type d 2>/dev/null | head -1 || find /usr/lib/jvm -name '*java*21*' -type d 2>/dev/null | head -1 || echo '') && export PATH=$JAVA_HOME/bin:$PATH && java -jar target/umascota-0.0.1-SNAPSHOT.jar",
+    "startCommand": "export JAVA_HOME=$(nix-build '<nixpkgs>' -A openjdk17 --no-out-link 2>/dev/null || find /nix/store -name 'openjdk-17*' -type d 2>/dev/null | head -1 || find /usr/lib/jvm -name '*java*17*' -type d 2>/dev/null | head -1 || echo '') && export PATH=$JAVA_HOME/bin:$PATH && java -jar target/umascota-0.0.1-SNAPSHOT.jar",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
