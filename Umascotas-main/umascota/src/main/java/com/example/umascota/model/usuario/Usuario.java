@@ -1,10 +1,12 @@
 package com.example.umascota.model.usuario;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 
 @Entity
 @Table(name = "usuarios")
+@DynamicInsert
 public class Usuario {
 
     @Id

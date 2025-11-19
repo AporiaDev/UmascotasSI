@@ -164,8 +164,9 @@ public class UsuarioService {
                 // Establecer rol por defecto: siempre USUARIO para registros con Google
                 nuevoUsuario.setTipoUsuario(Usuario.Rol.USUARIO);
                 nuevoUsuario.setNotificationsEnabled(true);
-                // No establecemos contraseña para usuarios de Google (null es permitido)
-                nuevoUsuario.setContrasena(null);
+                // No establecemos contraseña para usuarios de Google
+                // Con @DynamicInsert, Hibernate no incluirá este campo en el INSERT
+                // nuevoUsuario.setContrasena(null); // No establecer - dejar null implícito
                 
                 return usuarioRepository.save(nuevoUsuario);
             }
