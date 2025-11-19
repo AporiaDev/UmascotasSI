@@ -5,6 +5,11 @@ import Card from '../components/Card';
 import Input from '../components/Input';
 import Button from '../components/Button';
 
+const normalizarTamano = (valor) => {
+  if (!valor) return '';
+  return valor.replace(/ñ/gi, 'n').toUpperCase();
+};
+
 const CrearMascota = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -34,9 +39,10 @@ const CrearMascota = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const nuevoValor = type === 'checkbox' ? checked : value;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: name === 'tamano' ? normalizarTamano(nuevoValor) : nuevoValor,
     });
     setError('');
   };
@@ -61,7 +67,7 @@ const CrearMascota = () => {
         raza: formData.raza || null,
         edad: formData.edad ? parseInt(formData.edad) : null,
         sexo: formData.sexo || null,
-        tamano: formData.tamano || null,
+        tamano: normalizarTamano(formData.tamano) || null,
         descripcion: formData.descripcion || null,
         estadoSalud: formData.estadoSalud || null,
         foto: formData.foto || null,
