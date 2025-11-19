@@ -8,8 +8,21 @@ const Input = ({
   onChange, 
   error,
   className = '',
+  multiline = false,
+  rows = 4,
   ...props 
 }) => {
+  const baseClasses = `
+    w-full px-4 py-3 rounded-xl
+    bg-gray-50 border-2 border-gray-200
+    text-gray-900 placeholder-gray-400
+    transition-all duration-300
+    focus:outline-none focus:border-[#4ADE80] focus:bg-white
+    focus:ring-4 focus:ring-[#4ADE80]/20
+    ${error ? 'border-red-300 focus:border-red-400 focus:ring-red-400/20' : ''}
+    ${className}
+  `;
+
   return (
     <div className="w-full">
       {label && (
@@ -17,23 +30,25 @@ const Input = ({
           {label}
         </label>
       )}
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        className={`
-          w-full px-4 py-3 rounded-xl
-          bg-gray-50 border-2 border-gray-200
-          text-gray-900 placeholder-gray-400
-          transition-all duration-300
-          focus:outline-none focus:border-[#4ADE80] focus:bg-white
-          focus:ring-4 focus:ring-[#4ADE80]/20
-          ${error ? 'border-red-300 focus:border-red-400 focus:ring-red-400/20' : ''}
-          ${className}
-        `}
-        {...props}
-      />
+      {multiline ? (
+        <textarea
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          rows={rows}
+          className={baseClasses}
+          {...props}
+        />
+      ) : (
+        <input
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          className={baseClasses}
+          {...props}
+        />
+      )}
       {error && (
         <p className="mt-1 text-sm text-red-600">{error}</p>
       )}

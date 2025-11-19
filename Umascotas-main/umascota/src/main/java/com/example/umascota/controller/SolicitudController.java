@@ -105,6 +105,31 @@ public class SolicitudController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // PUT - Cancelar solicitud (solo el usuario que la creó)
+    @PutMapping("/{idSolicitud}/cancelar")
+    public ResponseEntity<?> cancelarSolicitud(@PathVariable Long idSolicitud, @RequestBody java.util.Map<String, Object> datos) {
+        try {
+            Long idUsuario = null;
+            if (datos.containsKey("idUsuario")) {
+                idUsuario = Long.valueOf(datos.get("idUsuario").toString());
+            } else {
+                return ResponseEntity.badRequest().body("ID de usuario requerido");
+            }
+
+            Optional<SolicitudAdopcion> solicitudOpt = solicitudService.cancelarSolicitud(idSolicitud, idUsuario);
+            
+            if (solicitudOpt.isPresent()) {
+                return ResponseEntity.ok(solicitudOpt.get());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cancelar la solicitud: " + e.getMessage());
+        }
+    }
     
 
 }

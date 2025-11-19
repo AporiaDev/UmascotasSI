@@ -20,6 +20,9 @@ public class Mascota2Service {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private NotificacionService notificacionService;
+
     //Crear Mascota
     public Mascota crearMascota(Mascota mascota){
 
@@ -27,15 +30,34 @@ public class Mascota2Service {
             throw new IllegalArgumentException("La mascota ya está registrada");
         }else{
             // Si se proporciona idUsuarioPublica, buscar y establecer la relación
+            Long idUsuarioCreador = null;
             if (mascota.getIdUsuarioPublica() != null) {
                 Optional<Usuario> usuarioOpt = usuarioRepository.findByIdUsuario(mascota.getIdUsuarioPublica());
                 if (usuarioOpt.isPresent()) {
                     mascota.setUsuarioPublica(usuarioOpt.get());
+                    idUsuarioCreador = mascota.getIdUsuarioPublica();
                 } else {
                     throw new IllegalArgumentException("Usuario no encontrado con ID: " + mascota.getIdUsuarioPublica());
                 }
             }
-            return mascotaRepository.save(mascota);  
+            
+            Mascota mascotaGuardada = mascotaRepository.save(mascota);
+            
+            // Crear notificaciones para todos los usuarios cuando se crea una nueva mascota
+            if (mascotaGuardada.getStatusPublicacion() == Mascota.StatusPublicacion.DISPONIBLE) {
+                try {
+                    notificacionService.notificarNuevaMascota(
+                        mascotaGuardada.getIdMascota(),
+                        mascotaGuardada.getNombre(),
+                        idUsuarioCreador != null ? idUsuarioCreador : 0L
+                    );
+                } catch (Exception e) {
+                    // Log el error pero no fallar la creación de la mascota
+                    System.err.println("Error al crear notificaciones: " + e.getMessage());
+                }
+            }
+            
+            return mascotaGuardada;  
         }
 
     }

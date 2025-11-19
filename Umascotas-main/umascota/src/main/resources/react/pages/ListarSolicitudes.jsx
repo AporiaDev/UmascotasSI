@@ -8,6 +8,9 @@ const ListarSolicitudes = () => {
   const navigate = useNavigate();
   const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cancelandoId, setCancelandoId] = useState(null);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const rol = localStorage.getItem('rol');
   const idUsuario = localStorage.getItem('idUsuario');
   const isAdmin = rol === 'ADMIN';
@@ -70,6 +73,42 @@ const ListarSolicitudes = () => {
     }
   };
 
+  const cancelarSolicitud = async (idSolicitud) => {
+    if (!window.confirm('¿Estás seguro de que deseas cancelar esta solicitud?')) {
+      return;
+    }
+
+    setCancelandoId(idSolicitud);
+    setError('');
+    setSuccessMessage('');
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/solicitudes/${idSolicitud}/cancelar`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ idUsuario: parseInt(idUsuario) }),
+      });
+
+      if (response.ok) {
+        setSuccessMessage('Solicitud cancelada exitosamente');
+        setTimeout(() => setSuccessMessage(''), 3000);
+        // Recargar las solicitudes
+        cargarSolicitudes();
+      } else {
+        const errorData = await response.json();
+        setError(typeof errorData === 'string' ? errorData : (errorData.message || 'Error al cancelar la solicitud'));
+      }
+    } catch (err) {
+      setError('Error de conexión. Por favor, intenta nuevamente.');
+    } finally {
+      setCancelandoId(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar userRole={rol} />
@@ -95,6 +134,18 @@ const ListarSolicitudes = () => {
             {isAdmin ? 'Gestiona las solicitudes de adopción' : 'Revisa el estado de tus solicitudes'}
           </p>
         </div>
+
+        {successMessage && (
+          <div className="p-3 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm text-center mb-4">
+            {successMessage}
+          </div>
+        )}
+
+        {error && (
+          <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm text-center mb-4">
+            {error}
+          </div>
+        )}
 
         {loading ? (
           <div className="text-center py-12">
@@ -174,14 +225,35 @@ const ListarSolicitudes = () => {
                         )}
                       </>
                     ) : (
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        className="w-full"
-                        onClick={() => navigate(`/mascota/${solicitud.mascotaSolicitada?.idMascota || solicitud.mascota?.idMascota}`)}
-                      >
-                        <i className="fas fa-eye mr-2"></i>Ver Mascota
-                      </Button>
+                      <div className="flex flex-col gap-2 w-full">
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          className="w-full"
+                          onClick={() => navigate(`/mascota/${solicitud.mascotaSolicitada?.idMascota || solicitud.mascota?.idMascota}`)}
+                        >
+                          <i className="fas fa-eye mr-2"></i>Ver Mascota
+                        </Button>
+                        {solicitud.estadoSolicitud === 'PENDIENTE' && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full text-red-600 border-red-300 hover:bg-red-50"
+                            onClick={() => cancelarSolicitud(solicitud.idSolicitud)}
+                            disabled={cancelandoId === solicitud.idSolicitud}
+                          >
+                            {cancelandoId === solicitud.idSolicitud ? (
+                              <>
+                                <i className="fas fa-spinner fa-spin mr-2"></i>Cancelando...
+                              </>
+                            ) : (
+                              <>
+                                <i className="fas fa-times mr-2"></i>Cancelar Solicitud
+                              </>
+                            )}
+                          </Button>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

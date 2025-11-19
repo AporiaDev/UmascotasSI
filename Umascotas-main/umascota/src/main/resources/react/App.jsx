@@ -17,6 +17,9 @@ import ListarAdopciones from './pages/ListarAdopciones';
 import VerAdopcion from './pages/VerAdopcion';
 import EditarMascota from './pages/EditarMascota';
 import PerfilUsuario from './pages/PerfilUsuario';
+import NotificacionesPage from './pages/NotificacionesPage';
+import GestionarEncuestas from './pages/GestionarEncuestas';
+import ResponderEncuesta from './pages/ResponderEncuesta';
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
         <Route path="/dashboard-admin" element={<ProtectedRoute requiredRole="ADMIN"><DashboardAdmin /></ProtectedRoute>} />
         <Route path="/dashboard-usuario" element={<ProtectedRoute requiredRole="USUARIO"><DashboardUsuario /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute requiredRole="USUARIO"><PerfilUsuario /></ProtectedRoute>} />
+        <Route path="/notificaciones" element={<ProtectedRoute><NotificacionesPage /></ProtectedRoute>} />
+        <Route path="/gestionar-encuestas" element={<ProtectedRoute requiredRole="ADMIN"><GestionarEncuestas /></ProtectedRoute>} />
+        <Route path="/responder-encuesta/:idEncuesta" element={<ProtectedRoute><ResponderEncuesta /></ProtectedRoute>} />
         <Route path="/crear-mascota" element={<ProtectedRoute requiredRole="ADMIN"><CrearMascota /></ProtectedRoute>} />
         <Route path="/editar-mascota/:id" element={<ProtectedRoute requiredRole="ADMIN"><EditarMascota /></ProtectedRoute>} />
         <Route path="/listar-solicitudes" element={<ProtectedRoute><ListarSolicitudes /></ProtectedRoute>} />

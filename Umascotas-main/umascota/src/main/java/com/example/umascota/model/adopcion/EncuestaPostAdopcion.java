@@ -23,8 +23,17 @@ public class EncuestaPostAdopcion {
     @Column(name = "fecha_envio")
     private Timestamp fechaEnvio;
 
+    @Column(name = "preguntas", columnDefinition = "JSON")
+    private String preguntas; // JSON con las preguntas de la encuesta
+
     @Column(name = "respuestas", columnDefinition = "JSON")
-    private String respuestas;
+    private String respuestas; // JSON con las respuestas del usuario
+
+    @Column(name = "estado", nullable = false)
+    private String estado; // "PENDIENTE", "ENVIADA", "RESPONDIDA", "CANCELADA"
+
+    @Column(name = "fecha_respuesta")
+    private Timestamp fechaRespuesta;
 
     @Column(name = "alerta_critica")
     private boolean alertaCritica;
@@ -76,5 +85,29 @@ public class EncuestaPostAdopcion {
 
     public void setAlertaCritica(boolean alertaCritica) {
         this.alertaCritica = alertaCritica;
+    }
+
+    public String getPreguntas() {
+        return preguntas;
+    }
+
+    public void setPreguntas(String preguntas) {
+        this.preguntas = preguntas;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Timestamp getFechaRespuesta() {
+        return fechaRespuesta;
+    }
+
+    public void setFechaRespuesta(Timestamp fechaRespuesta) {
+        this.fechaRespuesta = fechaRespuesta;
     }
 }

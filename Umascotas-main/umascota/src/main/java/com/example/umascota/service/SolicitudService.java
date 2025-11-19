@@ -125,6 +125,33 @@ public class SolicitudService {
         return solicitudRepository.findByIdSolicitud(idSolicitud);
     }
 
+    // Cancelar solicitud (solo el usuario que la creó puede cancelarla)
+    public Optional<SolicitudAdopcion> cancelarSolicitud(Long idSolicitud, Long idUsuario) {
+        Optional<SolicitudAdopcion> solicitudOpt = solicitudRepository.findById(idSolicitud);
+        
+        if (solicitudOpt.isEmpty()) {
+            throw new RuntimeException("Solicitud no encontrada");
+        }
+        
+        SolicitudAdopcion solicitud = solicitudOpt.get();
+        
+        // Verificar que el usuario que cancela sea el mismo que creó la solicitud
+        if (!solicitud.getUsuarioAdoptante().getIdUsuario().equals(idUsuario)) {
+            throw new RuntimeException("No tienes permiso para cancelar esta solicitud");
+        }
+        
+        // Solo se puede cancelar si está pendiente
+        if (solicitud.getEstadoSolicitud() != SolicitudAdopcion.EstadoSolicitud.PENDIENTE) {
+            throw new RuntimeException("Solo se pueden cancelar solicitudes pendientes");
+        }
+        
+        // Cambiar estado a CANCELADA
+        solicitud.setEstadoSolicitud(SolicitudAdopcion.EstadoSolicitud.CANCELADA);
+        solicitud.setFechaResolucion(new java.sql.Timestamp(System.currentTimeMillis()));
+        
+        return Optional.of(solicitudRepository.save(solicitud));
+    }
+
 }
 
 

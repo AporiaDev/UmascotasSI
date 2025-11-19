@@ -3,12 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 import Button from '../components/Button';
+import Input from '../components/Input';
 
 const PerfilUsuario = () => {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [editando, setEditando] = useState(false);
+  const [formData, setFormData] = useState({
+    nombreCompleto: '',
+    telefono: '',
+    ciudad: '',
+    direccion: '',
+    documentoIdentidad: '',
+    notificationsEnabled: true,
+  });
+  const [guardando, setGuardando] = useState(false);
   const idUsuario = localStorage.getItem('idUsuario');
   const rol = localStorage.getItem('rol');
 
@@ -23,10 +35,24 @@ const PerfilUsuario = () => {
   const cargarPerfil = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/usuarios/${idUsuario}`);
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/usuarios/${idUsuario}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         setUsuario(data);
+        // Inicializar formData con los datos del usuario
+        setFormData({
+          nombreCompleto: data.nombreCompleto || '',
+          telefono: data.telefono || '',
+          ciudad: data.ciudad || '',
+          direccion: data.direccion || '',
+          documentoIdentidad: data.documentoIdentidad || '',
+          notificationsEnabled: data.notificationsEnabled !== undefined ? data.notificationsEnabled : true,
+        });
       } else {
         setError('Error al cargar el perfil');
       }
@@ -35,6 +61,64 @@ const PerfilUsuario = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
+    setError('');
+  };
+
+  const handleGuardar = async () => {
+    setGuardando(true);
+    setError('');
+    setSuccessMessage('');
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/usuarios/${idUsuario}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUsuario(data);
+        setEditando(false);
+        setSuccessMessage('Perfil actualizado exitosamente');
+        setTimeout(() => setSuccessMessage(''), 3000);
+      } else {
+        const errorData = await response.json();
+        setError(typeof errorData === 'string' ? errorData : (errorData.message || 'Error al actualizar el perfil'));
+      }
+    } catch (err) {
+      setError('Error de conexión. Por favor, intenta nuevamente.');
+    } finally {
+      setGuardando(false);
+    }
+  };
+
+  const handleCancelar = () => {
+    // Restaurar los datos originales
+    if (usuario) {
+      setFormData({
+        nombreCompleto: usuario.nombreCompleto || '',
+        telefono: usuario.telefono || '',
+        ciudad: usuario.ciudad || '',
+        direccion: usuario.direccion || '',
+        documentoIdentidad: usuario.documentoIdentidad || '',
+        notificationsEnabled: usuario.notificationsEnabled !== undefined ? usuario.notificationsEnabled : true,
+      });
+    }
+    setEditando(false);
+    setError('');
   };
 
   if (loading) {
@@ -76,10 +160,57 @@ const PerfilUsuario = () => {
               <h1 className="text-4xl font-light text-gray-800 mb-2">Mi Perfil</h1>
               <p className="text-gray-500">Información de tu cuenta</p>
             </div>
-            <div className="w-20 h-20 bg-[#4ADE80] rounded-full flex items-center justify-center">
-              <i className="fas fa-user text-white text-3xl"></i>
+            <div className="flex items-center gap-4">
+              {!editando ? (
+                <Button
+                  variant="primary"
+                  onClick={() => setEditando(true)}
+                >
+                  <i className="fas fa-edit mr-2"></i>Editar Perfil
+                </Button>
+              ) : (
+                <div className="flex gap-2">
+                  <Button
+                    variant="primary"
+                    onClick={handleGuardar}
+                    disabled={guardando}
+                  >
+                    {guardando ? (
+                      <>
+                        <i className="fas fa-spinner fa-spin mr-2"></i>Guardando...
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-save mr-2"></i>Guardar Cambios
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={handleCancelar}
+                    disabled={guardando}
+                  >
+                    <i className="fas fa-times mr-2"></i>Cancelar
+                  </Button>
+                </div>
+              )}
+              <div className="w-20 h-20 bg-[#4ADE80] rounded-full flex items-center justify-center">
+                <i className="fas fa-user text-white text-3xl"></i>
+              </div>
             </div>
           </div>
+
+          {successMessage && (
+            <div className="p-3 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm text-center mb-4">
+              {successMessage}
+            </div>
+          )}
+
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm text-center mb-4">
+              {error}
+            </div>
+          )}
 
           <div className="space-y-6">
             {/* Información Personal */}
@@ -94,37 +225,84 @@ const PerfilUsuario = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Nombre Completo
                     </label>
-                    <p className="text-gray-900 text-lg">{usuario.nombreCompleto || 'No especificado'}</p>
+                    {editando ? (
+                      <Input
+                        name="nombreCompleto"
+                        value={formData.nombreCompleto}
+                        onChange={handleChange}
+                        placeholder="Nombre completo"
+                      />
+                    ) : (
+                      <p className="text-gray-900 text-lg">{usuario.nombreCompleto || 'No especificado'}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Correo Electrónico
                     </label>
                     <p className="text-gray-900 text-lg">{usuario.correoElectronico || 'No especificado'}</p>
+                    <p className="text-xs text-gray-500 mt-1">El correo no se puede modificar</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Teléfono
                     </label>
-                    <p className="text-gray-900 text-lg">{usuario.telefono || 'No especificado'}</p>
+                    {editando ? (
+                      <Input
+                        name="telefono"
+                        type="tel"
+                        value={formData.telefono}
+                        onChange={handleChange}
+                        placeholder="+57 300 123 4567"
+                      />
+                    ) : (
+                      <p className="text-gray-900 text-lg">{usuario.telefono || 'No especificado'}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Ciudad
                     </label>
-                    <p className="text-gray-900 text-lg">{usuario.ciudad || 'No especificado'}</p>
+                    {editando ? (
+                      <Input
+                        name="ciudad"
+                        value={formData.ciudad}
+                        onChange={handleChange}
+                        placeholder="Ciudad"
+                      />
+                    ) : (
+                      <p className="text-gray-900 text-lg">{usuario.ciudad || 'No especificado'}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Dirección
                     </label>
-                    <p className="text-gray-900 text-lg">{usuario.direccion || 'No especificado'}</p>
+                    {editando ? (
+                      <Input
+                        name="direccion"
+                        value={formData.direccion}
+                        onChange={handleChange}
+                        placeholder="Dirección"
+                      />
+                    ) : (
+                      <p className="text-gray-900 text-lg">{usuario.direccion || 'No especificado'}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Documento de Identidad
                     </label>
-                    <p className="text-gray-900 text-lg">{usuario.documentoIdentidad || 'No especificado'}</p>
+                    {editando ? (
+                      <Input
+                        name="documentoIdentidad"
+                        value={formData.documentoIdentidad}
+                        onChange={handleChange}
+                        placeholder="Documento de identidad"
+                      />
+                    ) : (
+                      <p className="text-gray-900 text-lg">{usuario.documentoIdentidad || 'No especificado'}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -176,13 +354,28 @@ const PerfilUsuario = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Notificaciones
                     </label>
-                    <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                      usuario.notificationsEnabled 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {usuario.notificationsEnabled ? 'Activadas' : 'Desactivadas'}
-                    </span>
+                    {editando ? (
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          name="notificationsEnabled"
+                          checked={formData.notificationsEnabled}
+                          onChange={handleChange}
+                          className="w-5 h-5 text-[#22C55E] border-gray-300 rounded focus:ring-[#22C55E]"
+                        />
+                        <span className="text-gray-700">
+                          {formData.notificationsEnabled ? 'Activadas' : 'Desactivadas'}
+                        </span>
+                      </label>
+                    ) : (
+                      <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                        usuario.notificationsEnabled 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {usuario.notificationsEnabled ? 'Activadas' : 'Desactivadas'}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

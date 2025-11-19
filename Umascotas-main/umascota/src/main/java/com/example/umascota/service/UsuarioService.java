@@ -88,6 +88,44 @@ public class UsuarioService {
         return usuarioRepository.findByIdUsuario(id);
     }
     
+    // Actualizar datos del usuario (sin permitir cambiar correo)
+    public Usuario actualizarUsuario(Long id, Usuario datosActualizados) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByIdUsuario(id);
+        
+        if (usuarioOpt.isEmpty()) {
+            throw new IllegalArgumentException("Usuario no encontrado");
+        }
+        
+        Usuario usuarioExistente = usuarioOpt.get();
+        
+        // Actualizar solo los campos permitidos (NO el correo)
+        if (datosActualizados.getNombreCompleto() != null) {
+            usuarioExistente.setNombreCompleto(datosActualizados.getNombreCompleto());
+        }
+        if (datosActualizados.getTelefono() != null) {
+            usuarioExistente.setTelefono(datosActualizados.getTelefono());
+        }
+        if (datosActualizados.getCiudad() != null) {
+            usuarioExistente.setCiudad(datosActualizados.getCiudad());
+        }
+        if (datosActualizados.getDireccion() != null) {
+            usuarioExistente.setDireccion(datosActualizados.getDireccion());
+        }
+        if (datosActualizados.getDocumento() != null) {
+            usuarioExistente.setDocumento(datosActualizados.getDocumento());
+        }
+        // Actualizar notificaciones (siempre se puede actualizar)
+        usuarioExistente.setNotificationsEnabled(datosActualizados.getNotificationsEnabled());
+        
+        // Si se proporciona una nueva contraseña, encriptarla
+        if (datosActualizados.getContrasena() != null && !datosActualizados.getContrasena().isEmpty()) {
+            String passwordEncriptada = PasswordUtil.encriptar(datosActualizados.getContrasena());
+            usuarioExistente.setContrasena(passwordEncriptada);
+        }
+        
+        return usuarioRepository.save(usuarioExistente);
+    }
+    
     // Autenticación/Registro con Google
     public Usuario autenticarConGoogle(String idTokenString) {
         try {

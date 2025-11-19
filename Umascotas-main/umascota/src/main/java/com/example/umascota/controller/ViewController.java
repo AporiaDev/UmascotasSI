@@ -109,4 +109,22 @@ public class ViewController {
     public String perfilUsuario() {
         return "view/react-app";
     }
+
+    // Vista de notificaciones - React App
+    @GetMapping("/notificaciones")
+    public String notificaciones() {
+        return "view/react-app";
+    }
+
+    // Vista para gestionar encuestas - React App
+    @GetMapping("/gestionar-encuestas")
+    public String gestionarEncuestas() {
+        return "view/react-app";
+    }
+
+    // Vista para responder encuesta - React App
+    @GetMapping("/responder-encuesta/{idEncuesta}")
+    public String responderEncuesta() {
+        return "view/react-app";
+    }
 }

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
+import Notificaciones from './Notificaciones';
 
 const Navbar = ({ userRole = null }) => {
   const navigate = useNavigate();
+  const idUsuario = localStorage.getItem('idUsuario');
 
   const cerrarSesion = () => {
     localStorage.removeItem('token');
@@ -41,6 +43,12 @@ const Navbar = ({ userRole = null }) => {
                   className="text-gray-600 hover:text-[#22C55E] px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   <i className="fas fa-file-alt mr-2"></i>Solicitudes
+                </Link>
+                <Link
+                  to="/gestionar-encuestas"
+                  className="text-gray-600 hover:text-[#22C55E] px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <i className="fas fa-clipboard-list mr-2"></i>Encuestas
                 </Link>
                 <Link
                   to="/crear-mascota"
@@ -92,12 +100,15 @@ const Navbar = ({ userRole = null }) => {
             )}
 
             {userRole && (
-              <button
-                onClick={cerrarSesion}
-                className="text-gray-600 hover:text-red-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <i className="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
-              </button>
+              <>
+                <Notificaciones idUsuario={idUsuario} />
+                <button
+                  onClick={cerrarSesion}
+                  className="text-gray-600 hover:text-red-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <i className="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                </button>
+              </>
             )}
           </div>
         </div>
