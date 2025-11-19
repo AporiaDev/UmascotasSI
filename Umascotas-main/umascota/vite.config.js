@@ -8,10 +8,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [react()],
   root: path.resolve(__dirname, 'src/main/resources/react'),
-        build: {
-          outDir: path.resolve(__dirname, 'src/main/resources/static'),
-          emptyOutDir: false, // No vaciar el directorio para preservar imágenes y otros archivos estáticos
-          rollupOptions: {
+  build: {
+    outDir: path.resolve(__dirname, 'src/main/resources/static'),
+    emptyOutDir: false, // No vaciar el directorio para preservar imágenes y otros archivos estáticos
+    rollupOptions: {
       input: path.resolve(__dirname, 'src/main/resources/react/index.html'),
       output: {
         entryFileNames: 'assets/[name].[hash].js',
