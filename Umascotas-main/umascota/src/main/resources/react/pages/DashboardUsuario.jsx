@@ -179,5 +179,5 @@ const DashboardUsuario = () => {
                         src={adopcion.mascota.foto}
                         alt={adopcion.mascota.nombre}
                         className="w-full h-full object-cover"
-                        onError={(e) => {
+                        onError={(e) => { e.target.style.display = 'none'; if (e.target.nextSibling) { e.target.nextSibling.style.display = 'flex'; } }}={(e) => {
                           e.target.style.display = 'none';
