@@ -11,18 +11,18 @@ const DashboardUsuario = () => {
   // -----------------------------------------------------
   // 🔹 CONFIG DONACIONES WOMPI
   // -----------------------------------------------------
-  const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2"; 
-  const redirectUrl = "https://checkout.wompi.co/p/"; 
+  const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2";
 
   const realizarDonacion = (monto) => {
     const amountInCents = monto * 100;
-
-    // Se envía a Wompi con parámetros GET para generar pago externo
     const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}`;
-
     window.location.href = url;
   };
   // -----------------------------------------------------
+
+  // 🔹 Modal Donaciones
+  const [mostrarModalDonacion, setMostrarModalDonacion] = useState(false);
+  const [montoPersonalizado, setMontoPersonalizado] = useState('');
 
   useEffect(() => {
     const rol = localStorage.getItem('rol');
@@ -45,7 +45,6 @@ const DashboardUsuario = () => {
 
   const cargarAdopciones = async () => {
     try {
-      const idUsuario = localStorage.getItem('idUsuario');
       const response = await fetch('/api/adopciones');
       if (response.ok) {
         const todasAdopciones = await response.json();
@@ -61,9 +60,7 @@ const DashboardUsuario = () => {
                   adopcionesValidas.push(adopcion);
                 }
               }
-            } catch (err) {
-              console.error('Error verificando mascota:', err);
-            }
+            } catch {}
           }
         }
 
@@ -76,8 +73,7 @@ const DashboardUsuario = () => {
 
         setAdopciones(misAdopciones.slice(0, 6));
       }
-    } catch (error) {
-      console.error('Error cargando adopciones:', error);
+    } catch {
     } finally {
       setLoading(false);
     }
@@ -103,14 +99,13 @@ const DashboardUsuario = () => {
             <p className="text-gray-500">Gestiona tus adopciones y solicitudes</p>
           </div>
 
-          {/* 🔹 BOTÓN DONAR */}
+          {/* 🔹 BOTÓN QUE ABRE EL MODAL */}
           <button
-            onClick={() => realizarDonacion(20000)} // Monto sugerido: 20.000 COP
+            onClick={() => setMostrarModalDonacion(true)}
             className="px-6 py-3 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-xl shadow-md font-medium transition-all"
           >
             ❤️ Donar
           </button>
-          {/* -------------------- */}
         </div>
 
         {/* Cards principales */}
@@ -186,32 +181,3 @@ const DashboardUsuario = () => {
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                    ) : null}
-                    <div className={`w-full h-full ${adopcion.mascota?.foto ? 'hidden' : 'flex'} items-center justify-center`}>
-                      <i className="fas fa-paw text-gray-400 text-3xl"></i>
-                    </div>
-                  </div>
-
-                  <h3 className="font-semibold text-gray-800">
-                    {adopcion.mascota?.nombre || 'Sin nombre'}
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    {adopcion.mascota?.especie || 'N/A'}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-2">
-                    Adoptado el {new Date(adopcion.fechaAdopcion).toLocaleDateString()}
-                  </p>
-                </div>
-              ))
-            )}
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
-};
-
-export default DashboardUsuario;
