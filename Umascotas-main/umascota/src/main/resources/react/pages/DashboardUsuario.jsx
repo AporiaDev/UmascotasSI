@@ -11,15 +11,21 @@ const DashboardUsuario = () => {
   // -----------------------------------------------------
   // 🔹 CONFIG DONACIONES WOMPI
   // -----------------------------------------------------
-  const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2"; 
-  const redirectUrl = "https://checkout.wompi.co/p/"; 
+  const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2";
+  const redirectUrl = "https://checkout.wompi.co/p/";
+
+  const [mostrarWidgetDonacion, setMostrarWidgetDonacion] = useState(false);
+  const [montoDonacion, setMontoDonacion] = useState(20000);
+  const [errorDonacion, setErrorDonacion] = useState('');
 
   const realizarDonacion = (monto) => {
+    if (!monto || isNaN(monto) || monto < 1000) {
+      setErrorDonacion('Ingresa un monto válido (mínimo 1.000 COP)');
+      return;
+    }
+    setErrorDonacion('');
     const amountInCents = monto * 100;
-
-    // Se envía a Wompi con parámetros GET para generar pago externo
     const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}`;
-
     window.location.href = url;
   };
   // -----------------------------------------------------
@@ -103,13 +109,46 @@ const DashboardUsuario = () => {
             <p className="text-gray-500">Gestiona tus adopciones y solicitudes</p>
           </div>
 
-          {/* 🔹 BOTÓN DONAR */}
-          <button
-            onClick={() => realizarDonacion(20000)} // Monto sugerido: 20.000 COP
-            className="px-6 py-3 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-xl shadow-md font-medium transition-all"
-          >
-            ❤️ Donar
-          </button>
+          {/* 🔹 WIDGET DONAR */}
+          <div className="relative">
+            <button
+              onClick={() => setMostrarWidgetDonacion(prev => !prev)}
+              className="px-6 py-3 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-xl shadow-md font-medium transition-all"
+            >
+              ❤️ Donar
+            </button>
+            {mostrarWidgetDonacion && (
+              <div className="absolute right-0 mt-3 w-72 bg-white p-6 rounded-xl shadow-lg z-50">
+                <label className="block text-gray-700 font-medium mb-2">
+                  Ingresa el valor a donar (COP)
+                </label>
+                <input
+                  type="number"
+                  min="1000"
+                  step="500"
+                  value={montoDonacion}
+                  onChange={e => setMontoDonacion(Number(e.target.value))}
+                  className="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-[#22C55E]"
+                  placeholder="Ej: 20000"
+                />
+                {errorDonacion && (
+                  <div className="text-red-500 text-sm mb-2">{errorDonacion}</div>
+                )}
+                <button
+                  onClick={() => realizarDonacion(montoDonacion)}
+                  className="w-full py-2 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-lg font-medium transition-all"
+                >
+                  Realizar donación
+                </button>
+                <button
+                  onClick={() => setMostrarWidgetDonacion(false)}
+                  className="w-full mt-2 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-all"
+                >
+                  Cancelar
+                </button>
+              </div>
+            )}
+          </div>
           {/* -------------------- */}
         </div>
 
