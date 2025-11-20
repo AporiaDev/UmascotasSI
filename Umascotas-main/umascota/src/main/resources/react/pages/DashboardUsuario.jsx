@@ -8,23 +8,44 @@ const DashboardUsuario = () => {
   const [adopciones, setAdopciones] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // -----------------------------------------------------
+  // 🔹 CONFIG DONACIONES WOMPI
+  // -----------------------------------------------------
+  const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2";
+  const redirectUrl = "https://checkout.wompi.co/p/";
+
+  const [mostrarWidgetDonacion, setMostrarWidgetDonacion] = useState(false);
+  const [montoDonacion, setMontoDonacion] = useState(20000);
+  const [errorDonacion, setErrorDonacion] = useState('');
+
+  const realizarDonacion = (monto) => {
+    if (!monto || isNaN(monto) || monto < 1000) {
+      setErrorDonacion('Ingresa un monto válido (mínimo 1.000 COP)');
+      return;
+    }
+    setErrorDonacion('');
+    const amountInCents = monto * 100;
+    const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}`;
+    window.location.href = url;
+  };
+  // -----------------------------------------------------
+
   useEffect(() => {
     const rol = localStorage.getItem('rol');
     if (rol !== 'USUARIO') {
       navigate('/');
       return;
     }
-    
+
     const cargar = async () => {
       await cargarAdopciones();
     };
     cargar();
-    
-    // Recargar adopciones cada 10 segundos para detectar cambios
+
     const interval = setInterval(() => {
       cargar();
     }, 10000);
-    
+
     return () => clearInterval(interval);
   }, [navigate]);
 
@@ -34,8 +55,7 @@ const DashboardUsuario = () => {
       const response = await fetch('/api/adopciones');
       if (response.ok) {
         const todasAdopciones = await response.json();
-        
-        // Verificar el estado real de cada mascota para filtrar adopciones válidas
+
         const adopcionesValidas = [];
         for (const adopcion of todasAdopciones) {
           if (adopcion.mascota?.idMascota) {
@@ -43,7 +63,6 @@ const DashboardUsuario = () => {
               const mascotaResponse = await fetch(`/api/mascotas/${adopcion.mascota.idMascota}`);
               if (mascotaResponse.ok) {
                 const mascota = await mascotaResponse.json();
-                // Solo incluir si la mascota realmente está adoptada
                 if (mascota.statusPublicacion === 'ADOPTADA') {
                   adopcionesValidas.push(adopcion);
                 }
@@ -53,11 +72,14 @@ const DashboardUsuario = () => {
             }
           }
         }
-        
-        // Filtrar solo las adopciones del usuario actual que sean válidas
+
+        const idUsuarioLocal = localStorage.getItem('idUsuario');
         const misAdopciones = adopcionesValidas.filter(
-          a => a.usuarioAdoptante?.idUsuario?.toString() === idUsuario || a.adoptante?.idUsuario?.toString() === idUsuario
+          a =>
+            a.usuarioAdoptante?.idUsuario?.toString() === idUsuarioLocal ||
+            a.adoptante?.idUsuario?.toString() === idUsuarioLocal
         );
+
         setAdopciones(misAdopciones.slice(0, 6));
       }
     } catch (error) {
@@ -78,13 +100,59 @@ const DashboardUsuario = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar userRole="USUARIO" />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-light text-gray-800 mb-2">Mi Dashboard</h1>
-          <p className="text-gray-500">Gestiona tus adopciones y solicitudes</p>
+
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-light text-gray-800 mb-2">Mi Dashboard</h1>
+            <p className="text-gray-500">Gestiona tus adopciones y solicitudes</p>
+          </div>
+
+          {/* 🔹 WIDGET DONAR */}
+          <div className="relative">
+            <button
+              onClick={() => setMostrarWidgetDonacion(prev => !prev)}
+              className="px-6 py-3 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-xl shadow-md font-medium transition-all"
+            >
+              ❤️ Donar
+            </button>
+            {mostrarWidgetDonacion && (
+              <div className="absolute right-0 mt-3 w-72 bg-white p-6 rounded-xl shadow-lg z-50">
+                <label className="block text-gray-700 font-medium mb-2">
+                  Ingresa el valor a donar (COP)
+                </label>
+                <input
+                  type="number"
+                  min="1000"
+                  step="500"
+                  value={montoDonacion}
+                  onChange={e => setMontoDonacion(Number(e.target.value))}
+                  className="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-[#22C55E]"
+                  placeholder="Ej: 20000"
+                />
+                {errorDonacion && (
+                  <div className="text-red-500 text-sm mb-2">{errorDonacion}</div>
+                )}
+                <button
+                  onClick={() => realizarDonacion(montoDonacion)}
+                  className="w-full py-2 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-lg font-medium transition-all"
+                >
+                  Realizar donación
+                </button>
+                <button
+                  onClick={() => setMostrarWidgetDonacion(false)}
+                  className="w-full mt-2 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-all"
+                >
+                  Cancelar
+                </button>
+              </div>
+            )}
+          </div>
+          {/* -------------------- */}
         </div>
 
+        {/* Cards principales */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/listar-mascotas')}>
             <div className="w-16 h-16 bg-[#D1FAE5] rounded-full flex items-center justify-center mx-auto mb-4">
@@ -119,6 +187,7 @@ const DashboardUsuario = () => {
           </Card>
         </div>
 
+        {/* Adopciones recientes */}
         <Card className="p-6 mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold text-gray-800">Mis Adopciones Recientes</h2>
@@ -129,6 +198,7 @@ const DashboardUsuario = () => {
               Ver todas <i className="fas fa-arrow-right ml-2"></i>
             </button>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {adopciones.length === 0 ? (
               <div className="col-span-3 text-center py-8 text-gray-400">
@@ -163,6 +233,7 @@ const DashboardUsuario = () => {
                       <i className="fas fa-paw text-gray-400 text-3xl"></i>
                     </div>
                   </div>
+
                   <h3 className="font-semibold text-gray-800">
                     {adopcion.mascota?.nombre || 'Sin nombre'}
                   </h3>
@@ -183,4 +254,3 @@ const DashboardUsuario = () => {
 };
 
 export default DashboardUsuario;
-
