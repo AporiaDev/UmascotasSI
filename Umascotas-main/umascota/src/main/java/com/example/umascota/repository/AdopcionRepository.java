@@ -11,5 +11,6 @@ public interface AdopcionRepository extends JpaRepository<Adopcion, Long>{
 
     Optional<Adopcion> findByIdAdopcion(Long idAdopcion);
     boolean existsByIdAdopcion(Long idAdopcion);
+    Optional<Adopcion> findByMascotaIdMascota(Long idMascota);
 
 }

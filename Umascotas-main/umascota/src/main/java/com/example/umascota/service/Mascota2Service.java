@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.umascota.model.mascota.Mascota;
 import com.example.umascota.model.usuario.Usuario;
+import com.example.umascota.repository.AdopcionRepository;
 import com.example.umascota.repository.MascotaRepository;
 import com.example.umascota.repository.UsuarioRepository;
 
@@ -24,6 +25,9 @@ public class Mascota2Service {
 
     @Autowired
     private NotificacionService notificacionService;
+
+    @Autowired
+    private AdopcionRepository adopcionRepository;
 
     //Crear Mascota
     public Mascota crearMascota(Mascota mascota){
@@ -78,6 +82,9 @@ public class Mascota2Service {
     public Optional<Mascota> actualizarDatosMascota(Long id, Mascota nuevosDatosMascota){
 
         return mascotaRepository.findByIdMascota(id).map(mascota -> {
+            Mascota.StatusPublicacion estadoAnterior = mascota.getStatusPublicacion();
+            Mascota.StatusPublicacion nuevoEstado = nuevosDatosMascota.getStatusPublicacion();
+
             mascota.setNombre(nuevosDatosMascota.getNombre());
             mascota.setEspecie(nuevosDatosMascota.getEspecie());
             mascota.setRaza(nuevosDatosMascota.getRaza());
@@ -87,9 +94,22 @@ public class Mascota2Service {
             mascota.setDescripcion(nuevosDatosMascota.getDescripcion());
             mascota.setEstadoSalud(nuevosDatosMascota.getEstadoSalud());
             mascota.setFoto(nuevosDatosMascota.getFoto());
-            mascota.setStatusPublicacion(nuevosDatosMascota.getStatusPublicacion());
+            if (nuevoEstado != null) {
+                mascota.setStatusPublicacion(nuevoEstado);
+            } else {
+                nuevoEstado = estadoAnterior;
+            }
             mascota.setIdUsuarioPublica(nuevosDatosMascota.getIdUsuarioPublica());
-            return mascotaRepository.save(mascota);            
+
+            Mascota mascotaActualizada = mascotaRepository.save(mascota);
+
+            if (estadoAnterior == Mascota.StatusPublicacion.ADOPTADA
+                    && nuevoEstado != Mascota.StatusPublicacion.ADOPTADA) {
+                adopcionRepository.findByMascotaIdMascota(mascotaActualizada.getIdMascota())
+                    .ifPresent(adopcionRepository::delete);
+            }
+
+            return mascotaActualizada;            
         });
     }
 
