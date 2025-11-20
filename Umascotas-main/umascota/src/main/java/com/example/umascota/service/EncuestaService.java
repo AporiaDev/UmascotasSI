@@ -38,12 +38,8 @@ public class EncuestaService {
 
         Adopcion adopcion = adopcionOpt.get();
 
-        // Verificar si ya existe una encuesta para esta adopción
-        List<EncuestaPostAdopcion> encuestasExistentes = encuestaRepository.findByAdopcionIdAdopcion(idAdopcion);
-        if (!encuestasExistentes.isEmpty()) {
-            throw new IllegalArgumentException("Ya existe una encuesta para esta adopción");
-        }
-
+        // Permitir crear múltiples encuestas para la misma adopción
+        // (útil para encuestas de seguimiento periódico)
         EncuestaPostAdopcion encuesta = new EncuestaPostAdopcion();
         encuesta.setAdopcion(adopcion);
         encuesta.setSolicitud(adopcion.getSolicitud());

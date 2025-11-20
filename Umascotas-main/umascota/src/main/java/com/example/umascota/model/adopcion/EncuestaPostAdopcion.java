@@ -17,9 +17,9 @@ public class EncuestaPostAdopcion {
     @JoinColumn(name = "id_solicitud", nullable = false)
     private SolicitudAdopcion solicitud;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_adopcion", nullable = false)
-    @JsonIgnoreProperties({"encuestaPostAdopcion"})
+    @JsonIgnoreProperties({"encuestasPostAdopcion"})
     private Adopcion adopcion;
 
     @Column(name = "fecha_envio")

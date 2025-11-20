@@ -37,10 +37,10 @@ public class Adopcion {
     @Column(name = "notas")
     private String notas;
 
-    // Relación 1:1 con EncuestaPostAdopcion (Adopcion es el lado "padre")
-    @OneToOne(mappedBy = "adopcion", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Relación 1:N con EncuestaPostAdopcion (una adopción puede tener múltiples encuestas)
+    @OneToMany(mappedBy = "adopcion", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private EncuestaPostAdopcion encuestaPostAdopcion;
+    private java.util.List<EncuestaPostAdopcion> encuestasPostAdopcion;
 
     // Getters y Setters
     public Long getIdAdopcion() {
@@ -91,11 +91,11 @@ public class Adopcion {
         this.notas = notas;
     }
 
-    public EncuestaPostAdopcion getEncuestaPostAdopcion() {
-        return encuestaPostAdopcion;
+    public java.util.List<EncuestaPostAdopcion> getEncuestasPostAdopcion() {
+        return encuestasPostAdopcion;
     }
 
-    public void setEncuestaPostAdopcion(EncuestaPostAdopcion encuestaPostAdopcion) {
-        this.encuestaPostAdopcion = encuestaPostAdopcion;
+    public void setEncuestasPostAdopcion(java.util.List<EncuestaPostAdopcion> encuestasPostAdopcion) {
+        this.encuestasPostAdopcion = encuestasPostAdopcion;
     }
 }

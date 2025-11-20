@@ -243,16 +243,22 @@ const VerAdopcion = () => {
                   <span className="font-medium">Fecha de Adopción:</span>{' '}
                   {new Date(adopcion.fechaAdopcion).toLocaleDateString()}
                 </p>
-                {adopcion.encuestaPostAdopcion && (
+                {adopcion.encuestasPostAdopcion && adopcion.encuestasPostAdopcion.length > 0 && (
                   <div className="mt-4">
-                    <p className="font-medium text-gray-800 mb-2">Encuesta Post-Adopción:</p>
-                    <div className="text-sm text-gray-600 space-y-1">
-                      {adopcion.encuestaPostAdopcion.saludMascota && (
-                        <p>Salud: {adopcion.encuestaPostAdopcion.saludMascota}</p>
-                      )}
-                      {adopcion.encuestaPostAdopcion.adaptacionMascota && (
-                        <p>Adaptación: {adopcion.encuestaPostAdopcion.adaptacionMascota}</p>
-                      )}
+                    <p className="font-medium text-gray-800 mb-2">Encuestas Post-Adopción ({adopcion.encuestasPostAdopcion.length}):</p>
+                    <div className="text-sm text-gray-600 space-y-2">
+                      {adopcion.encuestasPostAdopcion.map((encuesta, index) => (
+                        <div key={encuesta.idEncuesta || index} className="border-l-2 border-[#22C55E] pl-2">
+                          <p className="font-medium">Encuesta #{index + 1}</p>
+                          <p>Estado: {encuesta.estado || 'N/A'}</p>
+                          {encuesta.fechaEnvio && (
+                            <p>Fecha de envío: {new Date(encuesta.fechaEnvio).toLocaleDateString()}</p>
+                          )}
+                          {encuesta.fechaRespuesta && (
+                            <p>Fecha de respuesta: {new Date(encuesta.fechaRespuesta).toLocaleDateString()}</p>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}

@@ -49,8 +49,12 @@ public class Mascota2Service {
             
             Mascota mascotaGuardada = mascotaRepository.save(mascota);
             
-            // Crear notificaciones para todos los usuarios cuando se crea una nueva mascota
+            // Si la mascota se crea como DISPONIBLE, eliminar cualquier adopción existente
             if (mascotaGuardada.getStatusPublicacion() == Mascota.StatusPublicacion.DISPONIBLE) {
+                adopcionRepository.findByMascotaIdMascota(mascotaGuardada.getIdMascota())
+                    .ifPresent(adopcionRepository::delete);
+                
+                // Crear notificaciones para todos los usuarios cuando se crea una nueva mascota
                 try {
                     notificacionService.notificarNuevaMascota(
                         mascotaGuardada.getIdMascota(),
@@ -103,8 +107,9 @@ public class Mascota2Service {
 
             Mascota mascotaActualizada = mascotaRepository.save(mascota);
 
-            if (estadoAnterior == Mascota.StatusPublicacion.ADOPTADA
-                    && nuevoEstado != Mascota.StatusPublicacion.ADOPTADA) {
+            // Si se pone la mascota como DISPONIBLE, eliminar cualquier adopción existente
+            // Esto asegura que no queden adopciones huérfanas cuando una mascota vuelve a estar disponible
+            if (nuevoEstado == Mascota.StatusPublicacion.DISPONIBLE) {
                 adopcionRepository.findByMascotaIdMascota(mascotaActualizada.getIdMascota())
                     .ifPresent(adopcionRepository::delete);
             }
