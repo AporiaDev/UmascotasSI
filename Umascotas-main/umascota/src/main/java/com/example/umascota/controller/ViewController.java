@@ -127,4 +127,10 @@ public class ViewController {
     public String responderEncuesta() {
         return "view/react-app";
     }
+
+    // Vista para ver respuestas de encuesta - React App
+    @GetMapping("/ver-encuesta/{idEncuesta}")
+    public String verEncuesta() {
+        return "view/react-app";
+    }
 }

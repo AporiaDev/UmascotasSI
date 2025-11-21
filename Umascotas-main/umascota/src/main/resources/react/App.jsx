@@ -20,6 +20,7 @@ import PerfilUsuario from './pages/PerfilUsuario';
 import NotificacionesPage from './pages/NotificacionesPage';
 import GestionarEncuestas from './pages/GestionarEncuestas';
 import ResponderEncuesta from './pages/ResponderEncuesta';
+import VerEncuesta from './pages/VerEncuesta';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/notificaciones" element={<ProtectedRoute><NotificacionesPage /></ProtectedRoute>} />
         <Route path="/gestionar-encuestas" element={<ProtectedRoute requiredRole="ADMIN"><GestionarEncuestas /></ProtectedRoute>} />
         <Route path="/responder-encuesta/:idEncuesta" element={<ProtectedRoute><ResponderEncuesta /></ProtectedRoute>} />
+        <Route path="/ver-encuesta/:idEncuesta" element={<ProtectedRoute requiredRole="ADMIN"><VerEncuesta /></ProtectedRoute>} />
         <Route path="/crear-mascota" element={<ProtectedRoute requiredRole="ADMIN"><CrearMascota /></ProtectedRoute>} />
         <Route path="/editar-mascota/:id" element={<ProtectedRoute requiredRole="ADMIN"><EditarMascota /></ProtectedRoute>} />
         <Route path="/listar-solicitudes" element={<ProtectedRoute><ListarSolicitudes /></ProtectedRoute>} />
