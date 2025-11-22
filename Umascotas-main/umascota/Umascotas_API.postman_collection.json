@@ -1,0 +1,775 @@
+{
+	"info": {
+		"_postman_id": "umascotas-api-collection",
+		"name": "Umascotas API - Documentación Completa",
+		"description": "Colección completa de endpoints de la API Umascotas. Documenta todos los servicios disponibles en la capa service.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Registro de Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombreCompleto\": \"Juan Pérez\",\n  \"correoElectronico\": \"juan@example.com\",\n  \"contrasena\": \"password123\",\n  \"telefono\": \"3001234567\",\n  \"ciudad\": \"Bucaramanga\",\n  \"direccion\": \"Calle 123\",\n  \"documento\": \"1234567890\",\n  \"tipoUsuario\": \"USUARIO\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/registro",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "registro"]
+						},
+						"description": "Registra un nuevo usuario en el sistema. El rol por defecto es USUARIO si no se especifica."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"correoElectronico\": \"juan@example.com\",\n  \"contrasena\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Inicia sesión con correo y contraseña. Retorna un token JWT, el rol del usuario y su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Login con Google",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idToken\": \"token_de_google_aqui\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/google",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "google"]
+						},
+						"description": "Autentica o registra un usuario usando Google OAuth. Si el usuario no existe, se crea automáticamente."
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar Token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/verificar?token=token_aqui",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "verificar"],
+							"query": [
+								{
+									"key": "token",
+									"value": "token_aqui"
+								}
+							]
+						},
+						"description": "Verifica si un token JWT es válido."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints relacionados con autenticación y registro de usuarios."
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Obtener Usuario por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/usuarios/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "usuarios", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información de un usuario por su ID. No retorna la contraseña por seguridad."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Usuario",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombreCompleto\": \"Juan Pérez Actualizado\",\n  \"telefono\": \"3009876543\",\n  \"ciudad\": \"Bogotá\",\n  \"direccion\": \"Calle 456\",\n  \"documento\": \"0987654321\",\n  \"notificationsEnabled\": true,\n  \"contrasena\": \"nuevaPassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/usuarios/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "usuarios", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualiza los datos de un usuario. No permite cambiar el correo electrónico. Si se proporciona una nueva contraseña, se encripta automáticamente."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestión de usuarios."
+		},
+		{
+			"name": "Mascotas",
+			"item": [
+				{
+					"name": "Obtener Todas las Mascotas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mascotas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "mascotas"]
+						},
+						"description": "Obtiene la lista completa de todas las mascotas registradas en el sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Mascota por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mascotas/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "mascotas", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información detallada de una mascota específica por su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Mascota",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Max\",\n  \"especie\": \"Perro\",\n  \"raza\": \"Labrador\",\n  \"edad\": 2,\n  \"sexo\": \"Macho\",\n  \"tamano\": \"Grande\",\n  \"descripcion\": \"Perro muy amigable\",\n  \"estadoSalud\": \"Saludable\",\n  \"foto\": \"url_de_la_foto\",\n  \"statusPublicacion\": \"DISPONIBLE\",\n  \"idUsuarioPublica\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mascotas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "mascotas"]
+						},
+						"description": "Crea una nueva mascota en el sistema. Si el estado es DISPONIBLE, se crean notificaciones para todos los usuarios (excepto el creador). Si ya existe una mascota con el mismo nombre, retorna error."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Mascota",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Max Actualizado\",\n  \"especie\": \"Perro\",\n  \"raza\": \"Labrador Retriever\",\n  \"edad\": 3,\n  \"sexo\": \"Macho\",\n  \"tamano\": \"Grande\",\n  \"descripcion\": \"Perro muy amigable y juguetón\",\n  \"estadoSalud\": \"Saludable\",\n  \"foto\": \"nueva_url_de_la_foto\",\n  \"statusPublicacion\": \"DISPONIBLE\",\n  \"idUsuarioPublica\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mascotas/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "mascotas", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualiza los datos de una mascota existente. Si se cambia el estado a DISPONIBLE, se eliminan las adopciones existentes asociadas."
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Mascota",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mascotas/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "mascotas", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Elimina una mascota del sistema por su ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestión de mascotas. Incluye operaciones CRUD completas."
+		},
+		{
+			"name": "Solicitudes de Adopción",
+			"item": [
+				{
+					"name": "Obtener Todas las Solicitudes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes",
+							"host": ["{{base_url}}"],
+							"path": ["api", "solicitudes"]
+						},
+						"description": "Obtiene la lista completa de todas las solicitudes de adopción en el sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Solicitud por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "solicitudes", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información detallada de una solicitud de adopción específica por su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Solicitud de Adopción",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idUsuario\": 1,\n  \"mensajeAdoptante\": \"Me encantaría adoptar esta mascota porque...\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes/mascota/:idMascota",
+							"host": ["{{base_url}}"],
+							"path": ["api", "solicitudes", "mascota", ":idMascota"],
+							"variable": [
+								{
+									"key": "idMascota",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Crea una nueva solicitud de adopción para una mascota específica. El estado por defecto es PENDIENTE. Requiere el ID del usuario que realiza la solicitud."
+					},
+					"response": []
+				},
+				{
+					"name": "Tomar Decisión sobre Solicitud",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idUsuario\": 1,\n  \"estadoSolicitud\": \"ACEPTADA\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes/:idSolicitud/decision",
+							"host": ["{{base_url}}"],
+							"path": ["api", "solicitudes", ":idSolicitud", "decision"],
+							"variable": [
+								{
+									"key": "idSolicitud",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Permite a un administrador tomar una decisión sobre una solicitud (ACEPTADA, RECHAZADA). Si se acepta, se crea automáticamente un registro de adopción y se cambia el estado de la mascota a ADOPTADA."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Solicitud",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idUsuario\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes/:idSolicitud/cancelar",
+							"host": ["{{base_url}}"],
+							"path": ["api", "solicitudes", ":idSolicitud", "cancelar"],
+							"variable": [
+								{
+									"key": "idSolicitud",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Cancela una solicitud de adopción. Solo el usuario que creó la solicitud puede cancelarla, y solo si está en estado PENDIENTE."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestión de solicitudes de adopción. Incluye creación, consulta, decisión y cancelación."
+		},
+		{
+			"name": "Adopciones",
+			"item": [
+				{
+					"name": "Obtener Todas las Adopciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/adopciones",
+							"host": ["{{base_url}}"],
+							"path": ["api", "adopciones"]
+						},
+						"description": "Obtiene la lista completa de todas las adopciones registradas en el sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Adopción por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/adopciones/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "adopciones", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información detallada de una adopción específica por su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Adopción",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notas\": \"Notas adicionales sobre la adopción\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/adopciones/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "adopciones", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualiza los datos de una adopción existente. Principalmente permite actualizar las notas."
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Adopción",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/adopciones/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "adopciones", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Elimina una adopción del sistema. Al eliminar una adopción, el estado de la mascota asociada se cambia automáticamente a DISPONIBLE."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestión de adopciones. Las adopciones se crean automáticamente cuando se acepta una solicitud."
+		},
+		{
+			"name": "Encuestas Post-Adopción",
+			"item": [
+				{
+					"name": "Obtener Todas las Encuestas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "encuestas"]
+						},
+						"description": "Obtiene la lista completa de todas las encuestas post-adopción en el sistema (solo admin)."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Encuesta por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/:idEncuesta",
+							"host": ["{{base_url}}"],
+							"path": ["api", "encuestas", ":idEncuesta"],
+							"variable": [
+								{
+									"key": "idEncuesta",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información detallada de una encuesta específica por su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Encuestas por Estado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/estado/:estado",
+							"host": ["{{base_url}}"],
+							"path": ["api", "encuestas", "estado", ":estado"],
+							"variable": [
+								{
+									"key": "estado",
+									"value": "PENDIENTE",
+									"description": "PENDIENTE, ENVIADA, RESPONDIDA"
+								}
+							]
+						},
+						"description": "Obtiene todas las encuestas filtradas por estado (PENDIENTE, ENVIADA, RESPONDIDA)."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Encuestas de un Usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/usuario/:idUsuario",
+							"host": ["{{base_url}}"],
+							"path": ["api", "encuestas", "usuario", ":idUsuario"],
+							"variable": [
+								{
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene todas las encuestas asociadas a un usuario específico."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Encuestas Pendientes de un Usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/usuario/:idUsuario/pendientes",
+							"host": ["{{base_url}}"],
+							"path": ["api", "encuestas", "usuario", ":idUsuario", "pendientes"],
+							"variable": [
+								{
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene todas las encuestas en estado ENVIADA (pendientes de respuesta) de un usuario específico."
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Encuesta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idAdopcion\": 1,\n  \"preguntas\": \"[{\\\"pregunta\\\": \\\"¿Cómo está la mascota?\\\", \\\"tipo\\\": \\\"texto\\\"}]\",\n  \"fechaEnvio\": \"2024-12-31T00:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/encuestas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "encuestas"]
+						},
+						"description": "Crea una nueva encuesta post-adopción para una adopción específica. El estado inicial es PENDIENTE. Las preguntas deben estar en formato JSON. La fechaEnvio es opcional (si no se proporciona, se usa la fecha actual)."
+					},
+					"response": []
+				},
+				{
+					"name": "Enviar Encuesta",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/:idEncuesta/enviar",
+							"host": ["{{base_url}}"],
+							"path": ["api", "encuestas", ":idEncuesta", "enviar"],
+							"variable": [
+								{
+									"key": "idEncuesta",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Envía una encuesta al usuario (cambia el estado de PENDIENTE a ENVIADA) y crea una notificación para el adoptante. Solo se pueden enviar encuestas en estado PENDIENTE (solo admin)."
+					},
+					"response": []
+				},
+				{
+					"name": "Responder Encuesta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idUsuario\": 1,\n  \"respuestas\": \"[{\\\"pregunta\\\": \\\"¿Cómo está la mascota?\\\", \\\"respuesta\\\": \\\"Muy bien\\\"}]\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/:idEncuesta/responder",
+							"host": ["{{base_url}}"],
+							"path": ["api", "encuestas", ":idEncuesta", "responder"],
+							"variable": [
+								{
+									"key": "idEncuesta",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Permite a un usuario responder una encuesta. Solo el adoptante puede responder su encuesta, y solo si está en estado ENVIADA. Las respuestas deben estar en formato JSON. El sistema evalúa automáticamente si hay alertas críticas."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestión de encuestas post-adopción. Permite crear, enviar y responder encuestas de seguimiento."
+		},
+		{
+			"name": "Notificaciones",
+			"item": [
+				{
+					"name": "Obtener Notificaciones de Usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/usuario/:idUsuario",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notificaciones", "usuario", ":idUsuario"],
+							"variable": [
+								{
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene todas las notificaciones de un usuario, ordenadas por fecha de creación (más recientes primero)."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Notificaciones No Leídas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/usuario/:idUsuario/no-leidas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notificaciones", "usuario", ":idUsuario", "no-leidas"],
+							"variable": [
+								{
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene solo las notificaciones no leídas de un usuario, ordenadas por fecha de creación (más recientes primero)."
+					},
+					"response": []
+				},
+				{
+					"name": "Contar Notificaciones No Leídas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/usuario/:idUsuario/contar",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notificaciones", "usuario", ":idUsuario", "contar"],
+							"variable": [
+								{
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Retorna el número total de notificaciones no leídas de un usuario. Útil para mostrar badges de notificaciones."
+					},
+					"response": []
+				},
+				{
+					"name": "Marcar Notificación como Leída",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/:idNotificacion/leida",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notificaciones", ":idNotificacion", "leida"],
+							"variable": [
+								{
+									"key": "idNotificacion",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Marca una notificación específica como leída."
+					},
+					"response": []
+				},
+				{
+					"name": "Marcar Todas las Notificaciones como Leídas",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/usuario/:idUsuario/marcar-todas-leidas",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notificaciones", "usuario", ":idUsuario", "marcar-todas-leidas"],
+							"variable": [
+								{
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Marca todas las notificaciones no leídas de un usuario como leídas."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gestión de notificaciones. Las notificaciones se crean automáticamente cuando se crea una nueva mascota o se envía una encuesta."
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
+

@@ -74,6 +74,8 @@ const VerSolicitud = () => {
     }
   };
 
+  const rol = localStorage.getItem('rol');
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar userRole="ADMIN" />
