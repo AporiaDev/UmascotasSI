@@ -1,0 +1,1141 @@
+{
+	"info": {
+		"_postman_id": "48731230-1e6621eb-4345-4379-acb6-a9b7e9ebc773",
+		"name": "Umascotas API - Documentación Completa",
+		"description": "Colección completa de endpoints de la API Umascotas. Documenta todos los servicios disponibles en la capa service.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Registro de Usuario",
+					"id": "48731230-979c47c0-e49b-413c-8e9a-33ea239390ea",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombreCompleto\": \"Juan Pérez\",\n  \"correoElectronico\": \"juan@example.com\",\n  \"contrasena\": \"password123\",\n  \"telefono\": \"3001234567\",\n  \"ciudad\": \"Bucaramanga\",\n  \"direccion\": \"Calle 123\",\n  \"documento\": \"1234567890\",\n  \"tipoUsuario\": \"USUARIO\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/registro",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"registro"
+							]
+						},
+						"description": "Registra un nuevo usuario en el sistema. El rol por defecto es USUARIO si no se especifica."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"id": "48731230-70a3d216-2a57-42e3-8d0a-af0a9513b7ef",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"correoElectronico\": \"juan@example.com\",\n  \"contrasena\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Inicia sesión con correo y contraseña. Retorna un token JWT, el rol del usuario y su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Login con Google",
+					"id": "48731230-b1cbbaef-b852-4758-8cd8-3ededbf25a52",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idToken\": \"token_de_google_aqui\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/google",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"google"
+							]
+						},
+						"description": "Autentica o registra un usuario usando Google OAuth. Si el usuario no existe, se crea automáticamente."
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar Token",
+					"id": "48731230-efbb2e1b-c2f4-414f-aefa-00d4642626ca",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/verificar?token=token_aqui",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"verificar"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "token_aqui"
+								}
+							]
+						},
+						"description": "Verifica si un token JWT es válido."
+					},
+					"response": []
+				}
+			],
+			"id": "48731230-da8a38e7-64df-4501-9b8f-f8ab80ad3f30",
+			"description": "Endpoints relacionados con autenticación y registro de usuarios."
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Obtener Usuario por ID",
+					"id": "48731230-288857bd-bca7-438c-9d9e-90b2a2dc68d5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/usuarios/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "6f1fb52c-5858-45ac-bcb4-7f270472419c",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información de un usuario por su ID. No retorna la contraseña por seguridad."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Usuario",
+					"id": "48731230-47aa5527-3bd5-4c31-bf4f-b21fa63c9700",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombreCompleto\": \"Juan Pérez Actualizado\",\n  \"telefono\": \"3009876543\",\n  \"ciudad\": \"Bogotá\",\n  \"direccion\": \"Calle 456\",\n  \"documento\": \"0987654321\",\n  \"notificationsEnabled\": true,\n  \"contrasena\": \"nuevaPassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/usuarios/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "77aab535-ef3c-4a74-9fe0-84d0d236af63",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualiza los datos de un usuario. No permite cambiar el correo electrónico. Si se proporciona una nueva contraseña, se encripta automáticamente."
+					},
+					"response": []
+				}
+			],
+			"id": "48731230-02883ccf-e200-40a5-9f60-d8974542aeb7",
+			"description": "Endpoints para gestión de usuarios."
+		},
+		{
+			"name": "Mascotas",
+			"item": [
+				{
+					"name": "Obtener Todas las Mascotas",
+					"id": "48731230-d6ad491a-131f-4fb9-8019-49c3d650f547",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mascotas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mascotas"
+							]
+						},
+						"description": "Obtiene la lista completa de todas las mascotas registradas en el sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Mascota por ID",
+					"id": "48731230-01a486c9-a598-4532-a03c-9132b7a39227",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mascotas/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mascotas",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "64181429-31b7-4824-9066-0ac46d8a6234",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información detallada de una mascota específica por su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Mascota",
+					"id": "48731230-bcfcf2cc-156f-4e09-a56e-d02a40590984",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Max\",\n  \"especie\": \"Perro\",\n  \"raza\": \"Labrador\",\n  \"edad\": 2,\n  \"sexo\": \"Macho\",\n  \"tamano\": \"Grande\",\n  \"descripcion\": \"Perro muy amigable\",\n  \"estadoSalud\": \"Saludable\",\n  \"foto\": \"url_de_la_foto\",\n  \"statusPublicacion\": \"DISPONIBLE\",\n  \"idUsuarioPublica\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mascotas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mascotas"
+							]
+						},
+						"description": "Crea una nueva mascota en el sistema. Si el estado es DISPONIBLE, se crean notificaciones para todos los usuarios (excepto el creador). Si ya existe una mascota con el mismo nombre, retorna error."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Mascota",
+					"id": "48731230-2661b561-7fa4-4ad8-9eca-85da44d7bb90",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Max Actualizado\",\n  \"especie\": \"Perro\",\n  \"raza\": \"Labrador Retriever\",\n  \"edad\": 3,\n  \"sexo\": \"Macho\",\n  \"tamano\": \"Grande\",\n  \"descripcion\": \"Perro muy amigable y juguetón\",\n  \"estadoSalud\": \"Saludable\",\n  \"foto\": \"nueva_url_de_la_foto\",\n  \"statusPublicacion\": \"DISPONIBLE\",\n  \"idUsuarioPublica\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/mascotas/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mascotas",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "b3c4b8a8-c60a-4de5-8fb0-538175b04f2d",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualiza los datos de una mascota existente. Si se cambia el estado a DISPONIBLE, se eliminan las adopciones existentes asociadas."
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Mascota",
+					"id": "48731230-ad6d5877-bc88-4e80-8e76-c5f207a99745",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/mascotas/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"mascotas",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "0d824cb9-f47c-4c90-881a-b883e1424030",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Elimina una mascota del sistema por su ID."
+					},
+					"response": []
+				}
+			],
+			"id": "48731230-e5fcbb54-4f3f-47a3-a5e3-c7f39dd2afc0",
+			"description": "Endpoints para gestión de mascotas. Incluye operaciones CRUD completas."
+		},
+		{
+			"name": "Solicitudes de Adopción",
+			"item": [
+				{
+					"name": "Obtener Todas las Solicitudes",
+					"id": "48731230-98fbe82f-5a52-489c-9919-6444f3a9148f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"solicitudes"
+							]
+						},
+						"description": "Obtiene la lista completa de todas las solicitudes de adopción en el sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Solicitud por ID",
+					"id": "48731230-55441a3b-e611-4e04-b963-872883b2b9ec",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"solicitudes",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "3cfcfd49-d3e3-4855-8ca3-a517c8f072ea",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información detallada de una solicitud de adopción específica por su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Solicitud de Adopción",
+					"id": "48731230-161cab8c-bb6e-4ece-a81e-2862867ba29c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idUsuario\": 1,\n  \"mensajeAdoptante\": \"Me encantaría adoptar esta mascota porque...\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes/mascota/:idMascota",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"solicitudes",
+								"mascota",
+								":idMascota"
+							],
+							"variable": [
+								{
+									"id": "dbb0979b-1c20-48f1-b499-f824a1ccbc4e",
+									"key": "idMascota",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Crea una nueva solicitud de adopción para una mascota específica. El estado por defecto es PENDIENTE. Requiere el ID del usuario que realiza la solicitud."
+					},
+					"response": []
+				},
+				{
+					"name": "Tomar Decisión sobre Solicitud",
+					"id": "48731230-72bc28db-d804-4f21-961c-c207cd374480",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idUsuario\": 1,\n  \"estadoSolicitud\": \"ACEPTADA\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes/:idSolicitud/decision",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"solicitudes",
+								":idSolicitud",
+								"decision"
+							],
+							"variable": [
+								{
+									"id": "69236dcd-eda1-42f6-ab4f-4eaf8166aa45",
+									"key": "idSolicitud",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Permite a un administrador tomar una decisión sobre una solicitud (ACEPTADA, RECHAZADA). Si se acepta, se crea automáticamente un registro de adopción y se cambia el estado de la mascota a ADOPTADA."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Solicitud",
+					"id": "48731230-9a45eb34-815d-49a0-b12a-a0aa36a9332d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idUsuario\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/solicitudes/:idSolicitud/cancelar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"solicitudes",
+								":idSolicitud",
+								"cancelar"
+							],
+							"variable": [
+								{
+									"id": "7d5db296-ae22-4cc1-aee5-f3e48b30a577",
+									"key": "idSolicitud",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Cancela una solicitud de adopción. Solo el usuario que creó la solicitud puede cancelarla, y solo si está en estado PENDIENTE."
+					},
+					"response": []
+				}
+			],
+			"id": "48731230-a4230bb6-642e-43a7-a2c8-98b3854c0e46",
+			"description": "Endpoints para gestión de solicitudes de adopción. Incluye creación, consulta, decisión y cancelación."
+		},
+		{
+			"name": "Adopciones",
+			"item": [
+				{
+					"name": "Obtener Todas las Adopciones",
+					"id": "48731230-bce19b9d-07ff-4a5b-a227-21c91195aa58",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/adopciones",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"adopciones"
+							]
+						},
+						"description": "Obtiene la lista completa de todas las adopciones registradas en el sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Adopción por ID",
+					"id": "48731230-f277bd32-7082-4e30-bfc6-1135b9c6015a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/adopciones/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"adopciones",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "44847204-abb6-4760-b534-d9e0d5c3580d",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información detallada de una adopción específica por su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Adopción",
+					"id": "48731230-61b7f843-61f9-4291-97be-2810de9d6416",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notas\": \"Notas adicionales sobre la adopción\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/adopciones/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"adopciones",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "dc823842-5fcb-4129-894b-591c378a249b",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Actualiza los datos de una adopción existente. Principalmente permite actualizar las notas."
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Adopción",
+					"id": "48731230-f13ab14c-df81-4972-86a3-88d546d8446a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/adopciones/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"adopciones",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "4176dedf-266b-41b6-9f65-bea0e762347d",
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Elimina una adopción del sistema. Al eliminar una adopción, el estado de la mascota asociada se cambia automáticamente a DISPONIBLE."
+					},
+					"response": []
+				}
+			],
+			"id": "48731230-1706ca3e-be26-454e-adeb-3029e4f977fd",
+			"description": "Endpoints para gestión de adopciones. Las adopciones se crean automáticamente cuando se acepta una solicitud."
+		},
+		{
+			"name": "Encuestas Post-Adopción",
+			"item": [
+				{
+					"name": "Obtener Todas las Encuestas",
+					"id": "48731230-8d66306b-9df6-4c3d-9c9b-13f9a62e2aa4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"encuestas"
+							]
+						},
+						"description": "Obtiene la lista completa de todas las encuestas post-adopción en el sistema (solo admin)."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Encuesta por ID",
+					"id": "48731230-603f57b5-08fd-41b7-9c9a-abddf4768dc4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/:idEncuesta",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"encuestas",
+								":idEncuesta"
+							],
+							"variable": [
+								{
+									"id": "dc037f08-3d08-427a-b744-947700a39588",
+									"key": "idEncuesta",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene la información detallada de una encuesta específica por su ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Encuestas por Estado",
+					"id": "48731230-a81e9229-a69a-4498-9507-bb64390aa3b0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/estado/:estado",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"encuestas",
+								"estado",
+								":estado"
+							],
+							"variable": [
+								{
+									"id": "fca78d34-c4e6-4916-8112-1a40cc5ec4c1",
+									"key": "estado",
+									"value": "PENDIENTE",
+									"description": "PENDIENTE, ENVIADA, RESPONDIDA"
+								}
+							]
+						},
+						"description": "Obtiene todas las encuestas filtradas por estado (PENDIENTE, ENVIADA, RESPONDIDA)."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Encuestas de un Usuario",
+					"id": "48731230-d424f296-1749-454d-9370-9f6208637cc6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/usuario/:idUsuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"encuestas",
+								"usuario",
+								":idUsuario"
+							],
+							"variable": [
+								{
+									"id": "88613264-452e-498f-a457-52f089ee66a9",
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene todas las encuestas asociadas a un usuario específico."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Encuestas Pendientes de un Usuario",
+					"id": "48731230-01975cd4-638d-47cf-84dc-bbeababd97a0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/usuario/:idUsuario/pendientes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"encuestas",
+								"usuario",
+								":idUsuario",
+								"pendientes"
+							],
+							"variable": [
+								{
+									"id": "a2b6c929-5ab6-4c66-af5b-32a5660891df",
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene todas las encuestas en estado ENVIADA (pendientes de respuesta) de un usuario específico."
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Encuesta",
+					"id": "48731230-e8e5b140-5e9e-408e-841e-7f6dfa317a75",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idAdopcion\": 1,\n  \"preguntas\": \"[{\\\"pregunta\\\": \\\"¿Cómo está la mascota?\\\", \\\"tipo\\\": \\\"texto\\\"}]\",\n  \"fechaEnvio\": \"2024-12-31T00:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/encuestas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"encuestas"
+							]
+						},
+						"description": "Crea una nueva encuesta post-adopción para una adopción específica. El estado inicial es PENDIENTE. Las preguntas deben estar en formato JSON. La fechaEnvio es opcional (si no se proporciona, se usa la fecha actual)."
+					},
+					"response": []
+				},
+				{
+					"name": "Enviar Encuesta",
+					"id": "48731230-93f725c4-1c84-4d52-b73f-4996b8c45662",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/:idEncuesta/enviar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"encuestas",
+								":idEncuesta",
+								"enviar"
+							],
+							"variable": [
+								{
+									"id": "b1178b1d-96b7-489a-bcac-3b8bcd468354",
+									"key": "idEncuesta",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Envía una encuesta al usuario (cambia el estado de PENDIENTE a ENVIADA) y crea una notificación para el adoptante. Solo se pueden enviar encuestas en estado PENDIENTE (solo admin)."
+					},
+					"response": []
+				},
+				{
+					"name": "Responder Encuesta",
+					"id": "48731230-9b0a6f73-715d-422e-bc23-49241bb627c3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idUsuario\": 1,\n  \"respuestas\": \"[{\\\"pregunta\\\": \\\"¿Cómo está la mascota?\\\", \\\"respuesta\\\": \\\"Muy bien\\\"}]\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/encuestas/:idEncuesta/responder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"encuestas",
+								":idEncuesta",
+								"responder"
+							],
+							"variable": [
+								{
+									"id": "9e68ef56-7b37-433d-9617-e44514f3b190",
+									"key": "idEncuesta",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Permite a un usuario responder una encuesta. Solo el adoptante puede responder su encuesta, y solo si está en estado ENVIADA. Las respuestas deben estar en formato JSON. El sistema evalúa automáticamente si hay alertas críticas."
+					},
+					"response": []
+				}
+			],
+			"id": "48731230-3cb42285-82ea-4fa3-955b-fb2d0647a2f6",
+			"description": "Endpoints para gestión de encuestas post-adopción. Permite crear, enviar y responder encuestas de seguimiento."
+		},
+		{
+			"name": "Notificaciones",
+			"item": [
+				{
+					"name": "Obtener Notificaciones de Usuario",
+					"id": "48731230-84a29d82-8773-4b72-836b-f43affa31646",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/usuario/:idUsuario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"notificaciones",
+								"usuario",
+								":idUsuario"
+							],
+							"variable": [
+								{
+									"id": "4df59653-b4d5-4d60-8642-9041da33acdc",
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene todas las notificaciones de un usuario, ordenadas por fecha de creación (más recientes primero)."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Notificaciones No Leídas",
+					"id": "48731230-ba49dd9d-ecd1-452b-9ccf-5b321cd03af5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/usuario/:idUsuario/no-leidas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"notificaciones",
+								"usuario",
+								":idUsuario",
+								"no-leidas"
+							],
+							"variable": [
+								{
+									"id": "aa15c454-4a07-4320-90f3-c5618f8cedf0",
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Obtiene solo las notificaciones no leídas de un usuario, ordenadas por fecha de creación (más recientes primero)."
+					},
+					"response": []
+				},
+				{
+					"name": "Contar Notificaciones No Leídas",
+					"id": "48731230-a220381a-883f-4042-9a0b-eb03a500e24f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/usuario/:idUsuario/contar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"notificaciones",
+								"usuario",
+								":idUsuario",
+								"contar"
+							],
+							"variable": [
+								{
+									"id": "f3c60baf-f8c0-480d-b2e2-8b7b27cdbc93",
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Retorna el número total de notificaciones no leídas de un usuario. Útil para mostrar badges de notificaciones."
+					},
+					"response": []
+				},
+				{
+					"name": "Marcar Notificación como Leída",
+					"id": "48731230-959346dd-db83-4886-8aa1-4181b6a063af",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/:idNotificacion/leida",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"notificaciones",
+								":idNotificacion",
+								"leida"
+							],
+							"variable": [
+								{
+									"id": "c85051fc-0626-437d-b858-3d488376c5a5",
+									"key": "idNotificacion",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Marca una notificación específica como leída."
+					},
+					"response": []
+				},
+				{
+					"name": "Marcar Todas las Notificaciones como Leídas",
+					"id": "48731230-930533a5-4a6c-48a1-9598-61bd0e885278",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/notificaciones/usuario/:idUsuario/marcar-todas-leidas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"notificaciones",
+								"usuario",
+								":idUsuario",
+								"marcar-todas-leidas"
+							],
+							"variable": [
+								{
+									"id": "0b3cdc47-0bfa-499c-90be-3ac183667dbe",
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Marca todas las notificaciones no leídas de un usuario como leídas."
+					},
+					"response": []
+				}
+			],
+			"id": "48731230-bb755349-19bd-450d-b01c-a18ad6247645",
+			"description": "Endpoints para gestión de notificaciones. Las notificaciones se crean automáticamente cuando se crea una nueva mascota o se envía una encuesta."
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
