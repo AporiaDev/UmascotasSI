@@ -48,7 +48,7 @@ const DashboardUsuario = () => {
       const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}` +
                   `&amount-in-cents=${amountInCents}` +
                   `&currency=COP&reference=${reference}` +
-                  `&signature:integrity=${signature}`;
+                  `&signature.integrity=${signature}`;
 
       // ✔ 3️⃣ Redirigir al checkout
       window.location.href = url;
