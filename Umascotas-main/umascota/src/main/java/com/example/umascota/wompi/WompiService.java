@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 @Service
 public class WompiService {
 
-    @Value("${WOMPI_INTEGRITY_SECRET}")
+    @Value("${wompi.integrity.secret}")
     private String integritySecret;
 
     public String generarFirma(String reference, Integer amountInCents) throws Exception {
