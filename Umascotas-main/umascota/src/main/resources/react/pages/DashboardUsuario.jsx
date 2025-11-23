@@ -9,8 +9,9 @@ const DashboardUsuario = () => {
   const [loading, setLoading] = useState(true);
 
   // -----------------------------
-  // 🔹 DONACIONES WOMPI (NUEVO)
+  // 🔹 DONACIONES WOMPI – USA TU BACKEND REAL
   // -----------------------------
+  const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2";
   const [mostrarWidgetDonacion, setMostrarWidgetDonacion] = useState(false);
   const [montoDonacion, setMontoDonacion] = useState(20000);
   const [errorDonacion, setErrorDonacion] = useState('');
@@ -22,33 +23,39 @@ const DashboardUsuario = () => {
     }
 
     setErrorDonacion('');
+    const amountInCents = monto * 100;
+    const reference = `donacion-${Date.now()}`;
 
     try {
-      const response = await fetch("/api/wompi/crear-transaccion", {
+      // ✔ 1️⃣ Pedir firma al backend (ESTO YA EXISTE EN TU BACKEND)
+      const res = await fetch("/api/wompi/firma", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amountInPesos: monto,
-          reference: `donacion-${Date.now()}`,
-          currency: "COP",
-        })
+        body: JSON.stringify({ reference, amountInCents }),
       });
 
-      if (!response.ok) {
-        throw new Error("No se pudo crear la transacción");
+      if (!res.ok) {
+        throw new Error("Error generando firma en el backend");
       }
 
-      const data = await response.json();
+      const { signature } = await res.json();
 
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl; // redirección al checkout real
-      } else {
-        setErrorDonacion("Error generando la URL de pago");
+      if (!signature) {
+        throw new Error("Firma no recibida del backend");
       }
 
-    } catch (error) {
-      console.error("Error al procesar la donación:", error);
-      setErrorDonacion("No se pudo procesar la donación. Intenta nuevamente.");
+      // ✔ 2️⃣ Construir URL de Wompi con firma correcta
+      const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}` +
+                  `&amount-in-cents=${amountInCents}` +
+                  `&currency=COP&reference=${reference}` +
+                  `&signature:integrity=${signature}`;
+
+      // ✔ 3️⃣ Redirigir al checkout
+      window.location.href = url;
+
+    } catch (err) {
+      console.error("Error en donación:", err);
+      setErrorDonacion("Error procesando la donación. Intenta nuevamente.");
     }
   };
   // -----------------------------------------------------
@@ -232,8 +239,7 @@ const DashboardUsuario = () => {
                 No tienes adopciones aún. <br />
                 <button
                   onClick={() => navigate('/listar-mascotas')}
-                  className="text-[#22C55E] hover:text-[#16A34A] font-medium mt-2"
-                >
+                  className="text-[#22C55E] hover:text-[#16A34A] font-medium mt-2">
                   Ver mascotas disponibles →
                 </button>
               </div>
@@ -276,6 +282,7 @@ const DashboardUsuario = () => {
             )}
           </div>
         </Card>
+
       </div>
     </div>
   );
