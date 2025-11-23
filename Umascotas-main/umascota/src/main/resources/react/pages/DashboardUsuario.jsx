@@ -28,7 +28,7 @@ const DashboardUsuario = () => {
 
     try {
       // ✔ 1️⃣ Pedir firma al backend (ESTO YA EXISTE EN TU BACKEND)
-      const res = await fetch("/api/wompi/firma", {
+      const res = await fetch("/api/wompi", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reference, amountInCents }),
