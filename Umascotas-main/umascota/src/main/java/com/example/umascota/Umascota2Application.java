@@ -11,3 +11,9 @@ public class Umascota2Application {
 	}
 
 }
+@SpringBootApplication(scanBasePackages = "com.example.umascota")
+public class Umascota2Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Umascota2Application.class, args);
+    }
+}
