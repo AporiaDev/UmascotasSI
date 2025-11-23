@@ -8,25 +8,48 @@ const DashboardUsuario = () => {
   const [adopciones, setAdopciones] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // -----------------------------------------------------
-  // 🔹 CONFIG DONACIONES WOMPI
-  // -----------------------------------------------------
-  const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2";
-  const redirectUrl = "https://checkout.wompi.co/p/";
-
+  // -----------------------------
+  // 🔹 DONACIONES WOMPI (NUEVO)
+  // -----------------------------
   const [mostrarWidgetDonacion, setMostrarWidgetDonacion] = useState(false);
   const [montoDonacion, setMontoDonacion] = useState(20000);
   const [errorDonacion, setErrorDonacion] = useState('');
 
-  const realizarDonacion = (monto) => {
+  const realizarDonacion = async (monto) => {
     if (!monto || isNaN(monto) || monto < 1000) {
       setErrorDonacion('Ingresa un monto válido (mínimo 1.000 COP)');
       return;
     }
+
     setErrorDonacion('');
-    const amountInCents = monto * 100;
-    const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}`;
-    window.location.href = url;
+
+    try {
+      const response = await fetch("/api/wompi/crear-transaccion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amountInPesos: monto,
+          reference: `donacion-${Date.now()}`,
+          currency: "COP",
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("No se pudo crear la transacción");
+      }
+
+      const data = await response.json();
+
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl; // redirección al checkout real
+      } else {
+        setErrorDonacion("Error generando la URL de pago");
+      }
+
+    } catch (error) {
+      console.error("Error al procesar la donación:", error);
+      setErrorDonacion("No se pudo procesar la donación. Intenta nuevamente.");
+    }
   };
   // -----------------------------------------------------
 
@@ -117,11 +140,13 @@ const DashboardUsuario = () => {
             >
               ❤️ Donar
             </button>
+
             {mostrarWidgetDonacion && (
               <div className="absolute right-0 mt-3 w-72 bg-white p-6 rounded-xl shadow-lg z-50">
                 <label className="block text-gray-700 font-medium mb-2">
                   Ingresa el valor a donar (COP)
                 </label>
+
                 <input
                   type="number"
                   min="1000"
@@ -131,15 +156,18 @@ const DashboardUsuario = () => {
                   className="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-[#22C55E]"
                   placeholder="Ej: 20000"
                 />
+
                 {errorDonacion && (
                   <div className="text-red-500 text-sm mb-2">{errorDonacion}</div>
                 )}
+
                 <button
                   onClick={() => realizarDonacion(montoDonacion)}
                   className="w-full py-2 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-lg font-medium transition-all"
                 >
                   Realizar donación
                 </button>
+
                 <button
                   onClick={() => setMostrarWidgetDonacion(false)}
                   className="w-full mt-2 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-all"
@@ -149,7 +177,6 @@ const DashboardUsuario = () => {
               </div>
             )}
           </div>
-          {/* -------------------- */}
         </div>
 
         {/* Cards principales */}
@@ -229,6 +256,7 @@ const DashboardUsuario = () => {
                         }}
                       />
                     ) : null}
+
                     <div className={`w-full h-full ${adopcion.mascota?.foto ? 'hidden' : 'flex'} items-center justify-center`}>
                       <i className="fas fa-paw text-gray-400 text-3xl"></i>
                     </div>
