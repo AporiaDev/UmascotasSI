@@ -1,6 +1,7 @@
-package com.umascota.wompi;
+package com.example.umascota.model.dto;
 
 public class WompiRequest {
+
     private String reference;
     private Integer amountInCents;
 

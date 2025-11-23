@@ -1,5 +1,7 @@
-package com.umascota.wompi;
+package com.example.umascota.controller;
 
+import com.example.umascota.model.dto.WompiRequest;
+import com.example.umascota.service.WompiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

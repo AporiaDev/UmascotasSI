@@ -1,4 +1,4 @@
-package com.umascota.wompi;
+package com.example.umascota.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 @Service
 public class WompiService {
 
-    @Value("${wompi.integrity.secret}")
+    @Value("${WOMPI_INTEGRITY_SECRET}")
     private String integritySecret;
 
     public String generarFirma(String reference, Integer amountInCents) throws Exception {
