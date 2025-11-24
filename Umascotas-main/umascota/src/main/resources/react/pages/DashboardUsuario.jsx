@@ -8,55 +8,25 @@ const DashboardUsuario = () => {
   const [adopciones, setAdopciones] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // -----------------------------
-  // 🔹 DONACIONES WOMPI – USA TU BACKEND REAL
-  // -----------------------------
+  // -----------------------------------------------------
+  // 🔹 CONFIG DONACIONES WOMPI
+  // -----------------------------------------------------
   const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2";
+  const redirectUrl = "https://checkout.wompi.co/p/";
+
   const [mostrarWidgetDonacion, setMostrarWidgetDonacion] = useState(false);
   const [montoDonacion, setMontoDonacion] = useState(20000);
   const [errorDonacion, setErrorDonacion] = useState('');
 
-  const realizarDonacion = async (monto) => {
+  const realizarDonacion = (monto) => {
     if (!monto || isNaN(monto) || monto < 1000) {
       setErrorDonacion('Ingresa un monto válido (mínimo 1.000 COP)');
       return;
     }
-
     setErrorDonacion('');
     const amountInCents = monto * 100;
-    const reference = `donacion-${Date.now()}`;
-
-    try {
-      // ✔ 1️⃣ Pedir firma al backend (ESTO YA EXISTE EN TU BACKEND)
-      const res = await fetch("/api/wompi", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reference, amountInCents }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Error generando firma en el backend");
-      }
-
-      const { signature } = await res.json();
-
-      if (!signature) {
-        throw new Error("Firma no recibida del backend");
-      }
-
-      // ✔ 2️⃣ Construir URL de Wompi con firma correcta
-      const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}` +
-                  `&amount-in-cents=${amountInCents}` +
-                  `&currency=COP&reference=${reference}` +
-                  `&signature.integrity=${signature}`;
-
-      // ✔ 3️⃣ Redirigir al checkout
-      window.location.href = url;
-
-    } catch (err) {
-      console.error("Error en donación:", err);
-      setErrorDonacion("Error procesando la donación. Intenta nuevamente.");
-    }
+    const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}`;
+    window.location.href = url;
   };
   // -----------------------------------------------------
 
@@ -147,13 +117,11 @@ const DashboardUsuario = () => {
             >
               ❤️ Donar
             </button>
-
             {mostrarWidgetDonacion && (
               <div className="absolute right-0 mt-3 w-72 bg-white p-6 rounded-xl shadow-lg z-50">
                 <label className="block text-gray-700 font-medium mb-2">
                   Ingresa el valor a donar (COP)
                 </label>
-
                 <input
                   type="number"
                   min="1000"
@@ -163,18 +131,15 @@ const DashboardUsuario = () => {
                   className="w-full px-4 py-2 border rounded-lg mb-3 focus:outline-none focus:ring-2 focus:ring-[#22C55E]"
                   placeholder="Ej: 20000"
                 />
-
                 {errorDonacion && (
                   <div className="text-red-500 text-sm mb-2">{errorDonacion}</div>
                 )}
-
                 <button
                   onClick={() => realizarDonacion(montoDonacion)}
                   className="w-full py-2 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-lg font-medium transition-all"
                 >
                   Realizar donación
                 </button>
-
                 <button
                   onClick={() => setMostrarWidgetDonacion(false)}
                   className="w-full mt-2 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-all"
@@ -184,6 +149,7 @@ const DashboardUsuario = () => {
               </div>
             )}
           </div>
+          {/* -------------------- */}
         </div>
 
         {/* Cards principales */}
@@ -239,7 +205,8 @@ const DashboardUsuario = () => {
                 No tienes adopciones aún. <br />
                 <button
                   onClick={() => navigate('/listar-mascotas')}
-                  className="text-[#22C55E] hover:text-[#16A34A] font-medium mt-2">
+                  className="text-[#22C55E] hover:text-[#16A34A] font-medium mt-2"
+                >
                   Ver mascotas disponibles →
                 </button>
               </div>
@@ -262,7 +229,6 @@ const DashboardUsuario = () => {
                         }}
                       />
                     ) : null}
-
                     <div className={`w-full h-full ${adopcion.mascota?.foto ? 'hidden' : 'flex'} items-center justify-center`}>
                       <i className="fas fa-paw text-gray-400 text-3xl"></i>
                     </div>
@@ -282,7 +248,6 @@ const DashboardUsuario = () => {
             )}
           </div>
         </Card>
-
       </div>
     </div>
   );

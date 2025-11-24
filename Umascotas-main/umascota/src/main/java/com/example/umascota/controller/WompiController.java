@@ -1,32 +1,29 @@
 package com.example.umascota.controller;
 
-import com.example.umascota.model.dto.WompiRequest;
 import com.example.umascota.service.WompiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
-@RequestMapping("/api/wompi")
-@CrossOrigin("*")
+@RequestMapping("/wompi")
 public class WompiController {
 
     @Autowired
     private WompiService wompiService;
 
-    @PostMapping("/firma")
-    public Map<String, String> generarFirma(@RequestBody WompiRequest body) throws Exception {
-
-        String signature = wompiService.generarFirma(
-                body.getReference(),
-                body.getAmountInCents()
-        );
-
-        Map<String, String> response = new HashMap<>();
-        response.put("signature", signature);
-
-        return response;
+    @PostMapping("/webhook")
+    public String recibirWebhook(@RequestBody String payload,
+                                 @RequestHeader("X-Integrity-Signature") String signature) {
+        try {
+            boolean valido = wompiService.validarIntegridad(payload, signature);
+            if (valido) {
+                // Aquí procesas la donación (guardar en BD, actualizar estado, etc.)
+                return "OK";
+            } else {
+                return "Firma inválida";
+            }
+        } catch (Exception e) {
+            return "Error en validación";
+        }
     }
 }
