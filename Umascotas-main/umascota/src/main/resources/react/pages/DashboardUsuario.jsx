@@ -26,7 +26,7 @@ const DashboardUsuario = () => {
     }
     setErrorDonacion('');
     const amountInCents = monto * 100;
-    const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}&signature:integrity=${signature}`;
+    const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}&signature`;
     window.location.href = url;
   };
   // -----------------------------------------------------
