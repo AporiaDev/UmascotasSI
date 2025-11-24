@@ -9,24 +9,58 @@ const DashboardUsuario = () => {
   const [loading, setLoading] = useState(true);
 
   // -----------------------------------------------------
-  // 🔹 CONFIG DONACIONES WOMPI
+  // 🔹 CONFIG DONACIONES WOMPI 
   // -----------------------------------------------------
   const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2";
-  const redirectUrl = "https://checkout.wompi.co/p/";
-  const signature = "prod_integrity_9HnRoNX4OkNyex6Jsay8qKM2OU29TyIJ"
-
   const [mostrarWidgetDonacion, setMostrarWidgetDonacion] = useState(false);
   const [montoDonacion, setMontoDonacion] = useState(20000);
   const [errorDonacion, setErrorDonacion] = useState('');
 
-  const realizarDonacion = (monto) => {
+  // 🔹 Función para generar SHA-256 en navegador
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    return hashHex;
+  }
+
+  const realizarDonacion = async (monto) => {
     if (!monto || isNaN(monto) || monto < 1000) {
       setErrorDonacion('Ingresa un monto válido (mínimo 1.000 COP)');
       return;
     }
+
     setErrorDonacion('');
+
     const amountInCents = monto * 100;
-    const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}&signature:integrity=${signature}`;
+    const reference = `donacion-${Date.now()}`;
+    const currency = "COP";
+
+    
+    const INTEGRITY_SECRET = "pprod_integrity_9HnRoNX4OkNyex6Jsay8qKM2OU29TyIJ";
+
+    // 🔹 Expiration-time: 1 hora desde ahora
+    const expirationDate = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // ISO 8601
+
+    // 🔹 Cadena a firmar incluyendo expiration-time
+    const dataToSign = `${reference}${amountInCents}${currency}${expirationDate}${INTEGRITY_SECRET}`;
+    const signature = await sha256(dataToSign);
+
+    console.log("Referencia:", reference);
+    console.log("Expiration:", expirationDate);
+    console.log("Cadena firmada:", dataToSign);
+    console.log("Firma generada:", signature);
+
+    // 🔹 Construir URL final con firma y expiration-time
+    const url =
+      `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}` +
+      `&amount-in-cents=${amountInCents}` +
+      `&currency=${currency}` +
+      `&reference=${reference}` +
+      `&expiration-time=${encodeURIComponent(expirationDate)}` +
+      `&signature:integrity=${signature}`;
+
     window.location.href = url;
   };
   // -----------------------------------------------------
@@ -52,7 +86,6 @@ const DashboardUsuario = () => {
 
   const cargarAdopciones = async () => {
     try {
-      const idUsuario = localStorage.getItem('idUsuario');
       const response = await fetch('/api/adopciones');
       if (response.ok) {
         const todasAdopciones = await response.json();
