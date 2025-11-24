@@ -38,7 +38,7 @@ const DashboardUsuario = () => {
     const currency = "COP";
 
     
-    const INTEGRITY_SECRET = "pprod_integrity_9HnRoNX4OkNyex6Jsay8qKM2OU29TyIJ";
+    const INTEGRITY_SECRET = "prod_integrity_9HnRoNX4OkNyex6Jsay8qKM2OU29TyIJ";
 
     // 🔹 Expiration-time: 1 hora desde ahora
     const expirationDate = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // ISO 8601
