@@ -13,6 +13,7 @@ const DashboardUsuario = () => {
   // -----------------------------------------------------
   const PUBLIC_KEY = "pub_prod_CVG61fiOVk8dpewC2F0oCKrlr7zpekg2";
   const redirectUrl = "https://checkout.wompi.co/p/";
+  const signature = "prod_integrity_9HnRoNX4OkNyex6Jsay8qKM2OU29TyIJ"
 
   const [mostrarWidgetDonacion, setMostrarWidgetDonacion] = useState(false);
   const [montoDonacion, setMontoDonacion] = useState(20000);
@@ -25,7 +26,7 @@ const DashboardUsuario = () => {
     }
     setErrorDonacion('');
     const amountInCents = monto * 100;
-    const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}`;
+    const url = `https://checkout.wompi.co/p/?public-key=${PUBLIC_KEY}&amount-in-cents=${amountInCents}&currency=COP&reference=donacion-${Date.now()}&signature:integrity=${signature}`;
     window.location.href = url;
   };
   // -----------------------------------------------------
